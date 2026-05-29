@@ -3,35 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Café Especial Colombiano de Origen | Paz Magdalena</title>
+    <title>Catálogo | Paz Magdalena</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=DM+Sans:opsz,wght@9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=DM+Sans:opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/coleccion-ltc.css">
+    <script src="js/nav-ltc.js" defer></script>
 </head>
 <body>
 
-<div class="ltc-top-promo">
-    <strong>Mega promo del día</strong> — 10% en selección especial · Envío nacional · Inspirado en <em>latienda.delcafé</em>
-</div>
-
-<header class="ltc-header">
-    <div class="ltc-header-inner">
-        <a href="coleccion.html" class="ltc-brand">
-            <h1>Paz Magdalena</h1>
-            <span>Café especial colombiano</span>
-        </a>
-        <nav class="ltc-nav">
-            <a href="coleccion.html">Catálogo</a>
-            <a href="Benta de cafe.html">Tienda</a>
-            <a href="Historia.html">Historia</a>
-            <a href="Granos de café.html">Narrador</a>
-            <a href="certificado cafe.html">Trazabilidad</a>
-            <a href="Registrarse.html">Cuenta</a>
-            <a href="iniciar-sesion.html">Entrar</a>
-        </nav>
-    </div>
-</header>
+<div id="ltc-nav-global"></div>
 
 <section class="ltc-mega-promo">
     <h2>Mega promo del día</h2>
@@ -48,25 +29,39 @@
         <h3>Filtros</h3>
 
         <div class="ltc-filter-block">
-            <label class="block-title">Precio</label>
-            <p style="font-size:0.75rem;color:var(--ltc-muted);margin-bottom:0.5rem">El valor más alto es $120.000</p>
-            <div class="ltc-price-inputs">
-                <input type="number" id="priceMin" min="0" max="120000" step="500" value="0" aria-label="Precio mínimo">
-                <span>—</span>
-                <input type="number" id="priceMax" min="0" max="120000" step="500" value="120000" aria-label="Precio máximo">
-            </div>
-            <div class="ltc-range-dual">
-                <input type="range" id="rangeMin" min="0" max="120000" step="500" value="0" aria-label="Deslizar mínimo">
-                <input type="range" id="rangeMax" min="0" max="120000" step="500" value="120000" aria-label="Deslizar máximo" style="margin-top:0.5rem">
-                <div class="ltc-range-labels">
-                    <span id="labelMin">$0</span>
-                    <span id="labelMax">$120.000</span>
+            <label class="block-title">Precio (COP)</label>
+            <p class="ltc-price-hint">Ajusta mínimo, máximo o el rango entre ambos</p>
+
+            <div class="ltc-price-fields">
+                <div class="ltc-price-field">
+                    <span class="ltc-price-label ltc-label-min">Mínimo</span>
+                    <input type="number" id="priceMin" min="0" max="120000" step="500" value="0" aria-label="Precio mínimo">
+                </div>
+                <div class="ltc-price-field ltc-price-field-rango">
+                    <span class="ltc-price-label ltc-label-rango">Rango</span>
+                    <span class="ltc-rango-valor" id="rangoDisplay">$0 — $120.000</span>
+                </div>
+                <div class="ltc-price-field">
+                    <span class="ltc-price-label ltc-label-max">Máximo</span>
+                    <input type="number" id="priceMax" min="0" max="120000" step="500" value="120000" aria-label="Precio máximo">
                 </div>
             </div>
+
+            <div class="ltc-range-dual">
+                <div class="ltc-slider-block">
+                    <span class="ltc-slider-name">Deslizador mínimo</span>
+                    <input type="range" id="rangeMin" min="0" max="120000" step="500" value="0">
+                </div>
+                <div class="ltc-slider-block">
+                    <span class="ltc-slider-name">Deslizador máximo</span>
+                    <input type="range" id="rangeMax" min="0" max="120000" step="500" value="120000">
+                </div>
+            </div>
+
             <div class="ltc-price-presets">
                 <button type="button" data-min="0" data-max="30000">Menos de $30.000</button>
-                <button type="button" data-min="30000" data-max="60000">$30.000 — $60.000</button>
-                <button type="button" data-min="60000" data-max="100000">$60.000 — $100.000</button>
+                <button type="button" data-min="30000" data-max="60000">Rango $30.000 — $60.000</button>
+                <button type="button" data-min="60000" data-max="100000">Rango $60.000 — $100.000</button>
                 <button type="button" data-min="100000" data-max="120000">Más de $100.000</button>
             </div>
         </div>
@@ -83,7 +78,7 @@
     <main>
         <div class="ltc-main-header">
             <div>
-                <h2>Café especial colombiano</h2>
+                <h2>Catálogo de café</h2>
                 <p class="ltc-results-count" id="resultsCount">— resultados</p>
             </div>
             <div class="ltc-sort">
@@ -102,9 +97,9 @@
 </div>
 
 <footer class="ltc-footer">
-    <p>© 2026 Paz Magdalena · Hackathon Regional Magdalena · Trazabilidad Finca Porvenir</p>
+    <p>© 2026 Paz Magdalena · Hackathon Regional Magdalena</p>
     <p style="margin-top:0.5rem">
-        <a href="Benta de cafe.html">Tienda completa</a>
+        <a href="ventas de cafe.html">Inicio</a>
         <a href="pagina 2 cafe.html">Experiencia IA</a>
     </p>
 </footer>

@@ -4,7 +4,7 @@ Café especial colombiano con diseño inspirado en [La Tienda del Café](https:/
 
 ## Página principal del catálogo
 
-Abre **`coleccion.html`** (o `index.html`, que redirige ahí).
+Abre **`ventas de cafe.html`** (o `index.html`, que redirige ahí). Catálogo: **`coleccion.html`**.
 
 Incluye:
 
@@ -24,7 +24,7 @@ Incluye:
 
 ## Otras páginas
 
-- `Benta de cafe.html` — Tienda / landing
+- `ventas de cafe.html` — Inicio / landing
 - `Historia.html`, `Granos de café.html`, `certificado cafe.html`, etc.
 
 ## Ver en VS Code

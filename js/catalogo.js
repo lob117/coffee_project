@@ -103,6 +103,8 @@
         if (maxR) maxR.value = state.max;
         if (lblMin) lblMin.textContent = formatCOP(state.min);
         if (lblMax) lblMax.textContent = formatCOP(state.max);
+        var rango = document.getElementById('rangoDisplay');
+        if (rango) rango.textContent = formatCOP(state.min) + ' — ' + formatCOP(state.max);
     }
 
     function setPreset(min, max) {

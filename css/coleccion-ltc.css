@@ -142,19 +142,50 @@ body { font-family: var(--ltc-font); background: var(--ltc-bg); color: var(--ltc
     font-weight: 600;
     margin-bottom: 0.65rem;
 }
-.ltc-price-inputs {
-    display: flex;
-    align-items: center;
+.ltc-price-hint { font-size: 0.75rem; color: var(--ltc-muted); margin-bottom: 0.85rem; }
+.ltc-price-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 0.5rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.85rem;
 }
-.ltc-price-inputs span { color: var(--ltc-muted); font-size: 0.85rem; }
-.ltc-price-inputs input {
+.ltc-price-field { display: flex; flex-direction: column; gap: 0.35rem; }
+.ltc-price-field-rango { justify-content: center; text-align: center; }
+.ltc-price-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.ltc-label-min { color: #2d6a4f; }
+.ltc-label-rango { color: var(--ltc-muted); }
+.ltc-label-max { color: #8b4513; }
+.ltc-rango-valor {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--ltc-text);
+    padding: 0.5rem 0.25rem;
+    background: var(--ltc-soft);
+    border: 1px dashed var(--ltc-border);
+}
+.ltc-price-field input {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid var(--ltc-border);
     font-family: inherit;
     font-size: 0.85rem;
+}
+.ltc-slider-block { margin-bottom: 0.65rem; }
+.ltc-slider-name {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--ltc-muted);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+@media (max-width: 480px) {
+    .ltc-price-fields { grid-template-columns: 1fr; }
 }
 .ltc-range-dual { margin: 0.5rem 0 0.75rem; }
 .ltc-range-dual input[type="range"] {
