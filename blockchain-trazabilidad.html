@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain · Trazabilidad Inmutable | Paz Magdalena</title>
+    <link rel="stylesheet" href="css/coleccion-ltc.css">
+    <link rel="stylesheet" href="css/blockchain-trazabilidad.css">
+    <script src="js/nav-ltc.js" defer></script>
+</head>
+<body class="bc-page">
+
+<div id="ltc-nav-global"></div>
+
+<header class="bc-hero">
+    <h1>Trazabilidad inmutable (Blockchain)</h1>
+    <p>Simulación de transacción internacional segura bajo protocolos TIC: registro en finca, puntos de control logísticos y verificación por la compradora en EE.UU.</p>
+    <div class="bc-case">
+        <span>🌱 Eder Ochoa · Finca Porvenir</span>
+        <span>📦 Cacao y Café Artesanal</span>
+        <span>🇺🇸 Vianis Judith Flórez Ramos</span>
+    </div>
+    <nav class="bc-role-nav" aria-label="Rol de usuario">
+        <button type="button" class="bc-role-btn is-active" data-role="producer">Productor</button>
+        <button type="button" class="bc-role-btn" data-role="intermediary">Intermediario</button>
+        <button type="button" class="bc-role-btn" data-role="buyer">Compradora</button>
+    </nav>
+    <p class="bc-subnav">
+        <a href="trazabilidad.html">← Mapa GIS y perfiles QR</a>
+        · <a href="certificado cafe.html">Pasaporte digital</a>
+    </p>
+</header>
+
+<main class="bc-main">
+
+    <!-- VISTA PRODUCTOR -->
+    <section id="view-producer" class="bc-view is-active" aria-label="Vista productor">
+        <div class="bc-card">
+            <h2>Panel de registro de lote</h2>
+            <p class="bc-sub">Eder Ochoa — Finca Porvenir, Sierra Nevada de Santa Marta</p>
+            <form id="producerForm" class="bc-form-grid">
+                <div>
+                    <label class="bc-label" for="prodType">Tipo de producto</label>
+                    <select class="bc-select" id="prodType" required>
+                        <option value="Cacao y Café Artesanal">Cacao y Café Artesanal</option>
+                        <option value="Café Especial">Café Especial</option>
+                        <option value="Cacao Fino de Aroma">Cacao Fino de Aroma</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="bc-label" for="prodLot">Número de lote</label>
+                    <input class="bc-input" id="prodLot" type="text" placeholder="LOTE-PV-2026-001" required>
+                </div>
+                <div>
+                    <label class="bc-label" for="prodWeight">Peso exacto de la bolsa (kg)</label>
+                    <input class="bc-input" id="prodWeight" type="number" step="0.01" min="0.1" placeholder="25.40" required>
+                </div>
+                <div>
+                    <label class="bc-label" for="prodIot">ID sensor IoT (opcional)</label>
+                    <input class="bc-input" id="prodIot" type="text" placeholder="IOT-SN-BAL-001">
+                </div>
+                <div style="grid-column:1/-1">
+                    <label class="bc-label">Captura inicial — foto caja con QR impreso</label>
+                    <label class="bc-photo-zone" for="prodPhoto">
+                        <span>📷 Tomar / subir foto (obligatorio para iniciar cadena)</span>
+                        <div id="prodPhotoPreview"></div>
+                        <input type="file" id="prodPhoto" accept="image/*" capture="environment">
+                    </label>
+                </div>
+                <div style="grid-column:1/-1">
+                    <button type="submit" class="bc-btn bc-btn-primary">Registrar lote en blockchain</button>
+                </div>
+            </form>
+            <div id="producerAlert" class="bc-alert" hidden></div>
+            <div id="producerHashPanel" class="bc-hash-box" hidden>
+                <strong>Código único / hash genesis (SHA-256)</strong>
+                <div>ID Lote: <span id="prodLotIdOut"></span></div>
+                <div>Código paquete (QR): <span id="prodCodeOut" style="color:var(--bc-gold)"></span></div>
+                <div style="margin-top:0.5rem" id="prodHashOut"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA INTERMEDIARIO -->
+    <section id="view-intermediary" class="bc-view" aria-label="Vista intermediario">
+        <p class="bc-mobile-hint">📱 Interfaz optimizada para operador logístico o recepción hotelera</p>
+        <div class="bc-card">
+            <h2>Punto de control / Recibido</h2>
+            <p class="bc-sub">Transportes SierraMar · Hoteles aliados Santa Marta</p>
+            <form id="interForm">
+                <div class="bc-form-grid bc-form-grid-2">
+                    <div>
+                        <label class="bc-label" for="interType">Tipo de punto</label>
+                        <select class="bc-select" id="interType">
+                            <option value="transport">🚚 Transportador</option>
+                            <option value="hotel">🏨 Hotel (lobby / custodia)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="bc-label" for="interCode">Código único (escaneo QR / hash)</label>
+                        <input class="bc-input" id="interCode" type="text" placeholder="Código de 16 caracteres" required autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="bc-label" for="interWeight">Peso actual del paquete (kg) — doble verificación</label>
+                        <input class="bc-input" id="interWeight" type="number" step="0.01" min="0.1" required>
+                    </div>
+                    <div>
+                        <label class="bc-label" for="interIotWeight">Peso sensor IoT (opcional, n8n)</label>
+                        <input class="bc-input" id="interIotWeight" type="number" step="0.01" placeholder="Lectura automática">
+                    </div>
+                </div>
+                <div style="margin-top:1rem">
+                    <label class="bc-label" for="interNote">Nota de control</label>
+                    <input class="bc-input" id="interNote" type="text" placeholder="Ej. Recibido sin daños, sello íntegro">
+                </div>
+                <div style="margin-top:1rem">
+                    <label class="bc-label">Foto obligatoria — estado actual de la caja</label>
+                    <label class="bc-photo-zone" for="interPhoto">
+                        <span>📷 Tomar / subir evidencia fotográfica</span>
+                        <div id="interPhotoPreview"></div>
+                        <input type="file" id="interPhoto" accept="image/*" capture="environment" required>
+                    </label>
+                </div>
+                <button type="submit" class="bc-btn bc-btn-primary">Validar bloque y añadir a la cadena</button>
+            </form>
+            <div id="interAlert" class="bc-alert" hidden></div>
+            <div id="interBlockPreview" class="bc-block-preview" hidden>
+                <div id="interBlockText"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA COMPRADORA -->
+    <section id="view-buyer" class="bc-view" aria-label="Vista compradora">
+        <div class="bc-tic-banner">
+            <h3>✓ Transacción comercial internacional — Protocolos TIC</h3>
+            <p style="font-size:0.85rem;color:var(--bc-beige-dim);margin:0">Caso por defecto: exportación segura USA · Lote TRZ-SN-2026-0842</p>
+        </div>
+        <div class="bc-card">
+            <h2>Dashboard — Vianis Judith Flórez Ramos</h2>
+            <p class="bc-sub">Compradora internacional · Estados Unidos</p>
+            <div class="bc-lookup-row">
+                <input class="bc-input" id="buyerCodeInput" type="text" placeholder="Código único del paquete" aria-label="Código de lote">
+                <button type="button" class="bc-btn bc-btn-primary" id="btnBuyerLookup">Ver cadena</button>
+            </div>
+            <p id="buyerSummary" style="font-size:0.88rem;line-height:1.55;color:var(--bc-beige)"></p>
+            <div id="buyerVerify" class="bc-alert ok" style="margin-top:1rem">Verificando integridad…</div>
+            <h3 style="color:var(--bc-gold);font-family:var(--bc-serif);font-style:italic;margin:1.5rem 0 0.75rem">Línea de tiempo inmutable (smart contract visual)</h3>
+            <div class="bc-timeline" id="buyerTimeline"></div>
+            <div style="margin-top:1rem">
+                <label class="bc-label" for="buyerWeight">Confirmar peso en recepción (kg)</label>
+                <input class="bc-input" id="buyerWeight" type="number" step="0.01" value="25.4" style="max-width:200px">
+                <button type="button" class="bc-btn bc-btn-outline" id="btnBuyerDelivery" style="margin-top:0.75rem">Registrar entrega final</button>
+            </div>
+            <div id="buyerDeliveryAlert" class="bc-alert" hidden></div>
+        </div>
+        <div class="bc-card">
+            <h2>Certificación y estándares</h2>
+            <p class="bc-sub">Protocolos TIC cumplidos · Estándares artesanales verificados</p>
+            <div class="bc-certs" id="buyerCerts"></div>
+        </div>
+    </section>
+
+    <p style="text-align:center;margin-top:1rem">
+        <button type="button" class="bc-btn bc-btn-outline" id="btnResetDemo">Restaurar demo Eder → Vianis</button>
+    </p>
+</main>
+
+<footer class="bc-footer-links">
+    <a href="trazabilidad.html">Mapa GIS</a>
+    <a href="ventas de cafe.html">Inicio</a>
+    <a href="coleccion.html">Catálogo</a>
+</footer>
+
+<script src="js/blockchain-ledger.js"></script>
+<script src="js/blockchain-ui.js"></script>
+</body>
+</html>

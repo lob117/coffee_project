@@ -28,6 +28,7 @@ Incluye:
 - `Historia.html` — Historia + narrador de voz
 - `ventas de cafe.html#monitor-promo` — Monitor de ofertas (antes `pagina 2 cafe.html`)
 - `trazabilidad.html` — Mapa GIS (Leaflet) + perfiles QR (5 fincas)
+- `blockchain-trazabilidad.html` — Cadena inmutable (productor / intermediario / compradora Vianis)
 - `certificado cafe.html` — Pasaporte digital mock (complemento)
 
 ## Ver en VS Code
