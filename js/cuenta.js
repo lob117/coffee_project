@@ -1,5 +1,5 @@
 /**
- * Cuentas: usuario (comprador) y productor (campesino)
+ * Cuentas: usuario (comprador) y empresa (finca, transportadora, tienda)
  */
 var PazCuenta = (function () {
     'use strict';
@@ -14,6 +14,14 @@ var PazCuenta = (function () {
         FINCA: 'finca_produccion',
         TRANSPORTE: 'transportadora',
         PUESTO: 'puesto_venta'
+    };
+
+    var TIPO_VEHICULO_LABELS = {
+        carro_moto: 'Carro moto',
+        furgon: 'Furgón',
+        furgon_grande: 'Furgón grande',
+        camioneta: 'Camioneta',
+        tracto_camion: 'Tracto camión'
     };
 
     var TIPO_EMPRESA_LABELS = {
@@ -60,7 +68,7 @@ var PazCuenta = (function () {
     function registrarProductor(datos) {
         var lista = getProductores();
         if (lista.some(function (p) { return p.email.toLowerCase() === datos.email.toLowerCase(); })) {
-            return { ok: false, msg: 'Este correo ya está registrado como productor.' };
+            return { ok: false, msg: 'Este correo ya está registrado como empresa.' };
         }
         if (!datos.tipoEmpresa || !TIPO_EMPRESA_LABELS[datos.tipoEmpresa]) {
             return { ok: false, msg: 'Seleccione un tipo de empresa válido.' };
@@ -77,6 +85,10 @@ var PazCuenta = (function () {
 
     function getTipoEmpresaLabel(tipo) {
         return TIPO_EMPRESA_LABELS[tipo] || tipo || '—';
+    }
+
+    function getTipoVehiculoLabel(tipo) {
+        return TIPO_VEHICULO_LABELS[tipo] || tipo || '—';
     }
 
     function puedeVerBlockchainProductor(productor) {
@@ -234,6 +246,8 @@ var PazCuenta = (function () {
         TIPO_EMPRESA: TIPO_EMPRESA,
         TIPO_EMPRESA_LABELS: TIPO_EMPRESA_LABELS,
         getTipoEmpresaLabel: getTipoEmpresaLabel,
+        getTipoVehiculoLabel: getTipoVehiculoLabel,
+        TIPO_VEHICULO_LABELS: TIPO_VEHICULO_LABELS,
         puedeVerBlockchainProductor: puedeVerBlockchainProductor,
         puedeVerBlockchainIntermediario: puedeVerBlockchainIntermediario,
         getBlockchainRolesPermitidos: getBlockchainRolesPermitidos,
