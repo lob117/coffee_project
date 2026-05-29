@@ -16,13 +16,13 @@
 
 <section class="trz-hero">
     <h1>Trazabilidad Sierra Nevada</h1>
-    <p>Explora el mapa interactivo de Santa Marta y la Sierra Nevada: fincas, rutas logísticas y hoteles aliados. Simula el escaneo QR o la <a href="blockchain-trazabilidad.html" style="color:var(--ltc-green);font-weight:600">cadena blockchain Eder Ochoa → Vianis Flórez</a>.</p>
+    <p>Explora el mapa interactivo de Santa Marta y la Sierra Nevada. La cadena blockchain completa solo está en el panel de empresas o compradores registrados.</p>
 </section>
 
 <nav class="trz-tabs" aria-label="Secciones de trazabilidad">
     <button type="button" class="trz-tab is-active" data-tab="mapa">① Mapa GIS</button>
     <button type="button" class="trz-tab" data-tab="perfiles">② Perfiles QR</button>
-    <a href="blockchain-trazabilidad.html" class="trz-tab" style="text-decoration:none;display:inline-block">③ Blockchain</a>
+    <button type="button" class="trz-tab" data-tab="cadena">③ Línea de sucesión</button>
 </nav>
 
 <!-- SECCIÓN 1: Mapa -->
@@ -86,7 +86,7 @@
         <article class="trz-qr-card" data-perfil="qr05" tabindex="0">
             <div class="trz-qr-placeholder">QR_05<small>Escanear</small></div>
             <h4>Finca El Mirador</h4>
-            <p>Eder Ochoa · Porvenir</p>
+            <p>Sierra Nevada</p>
         </article>
     </div>
 
@@ -98,6 +98,19 @@
     </p>
 </section>
 
+<section id="panel-cadena" class="trz-panel" aria-label="Línea de sucesión">
+    <div class="trz-cadena-box">
+        <h2 class="ltc-section-title">Línea de sucesión del producto</h2>
+        <p class="trz-qr-intro">Consulta pública: solo muestra el orden de empresas que intervinieron. Ingrese el <strong>código principal</strong> impreso en el empaque (16 caracteres). No abre el módulo blockchain ni datos sensibles del lote.</p>
+        <form id="trzCadenaForm" class="trz-cadena-form">
+            <label for="trzCodigoPrincipal">Código principal del producto</label>
+            <input type="text" id="trzCodigoPrincipal" placeholder="Ej. código de 16 caracteres" required autocomplete="off">
+            <button type="submit" class="ltc-btn ltc-btn-primary" style="width:auto;margin-top:0.75rem">Consultar sucesión</button>
+        </form>
+        <div id="trzCadenaResult" class="trz-cadena-result" aria-live="polite"></div>
+    </div>
+</section>
+
 <p class="trz-footer-note">
     <a href="certificado cafe.html">Ver pasaporte digital / certificado mock</a> ·
     <a href="ventas de cafe.html">Inicio</a> ·
@@ -105,6 +118,8 @@
 </p>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="js/blockchain-ledger.js"></script>
 <script src="js/trazabilidad-mapa.js"></script>
+<script src="js/trazabilidad-cadena.js"></script>
 </body>
 </html>

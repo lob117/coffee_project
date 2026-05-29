@@ -19,6 +19,7 @@
     <div class="ltc-card">
         <h3>Tu perfil de productor</h3>
         <dl class="ltc-profile-dl" id="perfilProductor"></dl>
+        <a href="blockchain-trazabilidad.html" id="linkBlockchain" class="ltc-btn ltc-btn-primary" style="margin-top:1rem;width:auto;display:none;padding:0.65rem 1.5rem">Blockchain — trazabilidad inmutable</a>
     </div>
 
     <div class="ltc-panel-grid">
@@ -111,12 +112,22 @@
     var productor = PazCuenta.requireSesion('productor');
     if (!productor) return;
 
+    var tipoLabel = PazCuenta.getTipoEmpresaLabel(productor.tipoEmpresa || 'finca_produccion');
     document.getElementById('perfilProductor').innerHTML =
         '<dt>Correo</dt><dd>' + productor.email + '</dd>' +
         '<dt>Celular</dt><dd>' + productor.celular + '</dd>' +
         '<dt>Nacionalidad</dt><dd>' + productor.nacionalidad + '</dd>' +
-        '<dt>Finca</dt><dd>' + productor.nombreFinca + '</dd>' +
-        '<dt>Empresa</dt><dd>' + productor.nombreEmpresa + '</dd>';
+        '<dt>Tipo de empresa</dt><dd>' + tipoLabel + '</dd>' +
+        '<dt>Nombre de la empresa</dt><dd>' + (productor.nombreEmpresa || '—') + '</dd>';
+
+    var bcLink = document.getElementById('linkBlockchain');
+    if (bcLink) {
+        if (PazCuenta.puedeVerBlockchainProductor(productor) || PazCuenta.puedeVerBlockchainIntermediario(productor)) {
+            bcLink.style.display = 'inline-block';
+        } else {
+            bcLink.style.display = 'none';
+        }
+    }
 
     document.getElementById('btnSalir').onclick = PazCuenta.cerrarSesion;
 
@@ -197,8 +208,8 @@
             tipoCafe: document.getElementById('tipoCafe').value,
             kilos: kilos,
             valeroso: esValeroso,
-            fincaProductor: productor.nombreFinca,
             empresaProductor: productor.nombreEmpresa,
+            tipoEmpresa: productor.tipoEmpresa,
             fecha: new Date().toISOString()
         });
         PazCuenta.saveCampesinos(vendors);
@@ -208,7 +219,7 @@
         logAccess('Registro: ' + codigo + ' por ' + productor.email);
     });
 
-    logAccess('Ingreso panel productor: ' + productor.nombreFinca);
+    logAccess('Ingreso panel: ' + productor.nombreEmpresa);
     renderVendorList();
     renderLog();
 })();

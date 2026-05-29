@@ -32,14 +32,23 @@
             <a href="Historia.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Ver historia</a>
         </div>
         <div class="ltc-card">
-            <h3>Certificado digital</h3>
-            <p>Verifica transacciones y pasaporte del lote.</p>
-            <a href="trazabilidad.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Mapa y trazabilidad</a>
+            <h3>Código de producto comprado</h3>
+            <p>Vincule el código principal del empaque para ver la cadena blockchain como comprador.</p>
+            <input type="text" id="codigoCompra" class="ltc-form-group input" placeholder="Código principal" style="width:100%;padding:0.6rem;border:1px solid var(--ltc-border);margin:0.75rem 0">
+            <button type="button" id="btnVincularCompra" class="ltc-btn ltc-btn-primary" style="width:auto;display:inline-block;padding:0.65rem 1.5rem">Vincular compra</button>
+            <p id="vincularMsg" style="font-size:0.85rem;margin-top:0.75rem;color:var(--ltc-muted)"></p>
+            <a href="blockchain-trazabilidad.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Abrir blockchain (comprador)</a>
+        </div>
+        <div class="ltc-card">
+            <h3>Consulta pública</h3>
+            <p>En trazabilidad puede ver solo la línea de sucesión (nombres de empresas) con su código.</p>
+            <a href="trazabilidad.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Línea de sucesión</a>
         </div>
     </div>
 </div>
 
 <script src="js/cuenta.js"></script>
+<script src="js/blockchain-ledger.js"></script>
 <script>
 var user = PazCuenta.requireSesion('usuario');
 if (user) {
@@ -50,6 +59,19 @@ if (user) {
         '<dt>Registro</dt><dd>' + (user.fecha ? new Date(user.fecha).toLocaleString('es-CO') : '—') + '</dd>';
 }
 document.getElementById('btnSalir').onclick = PazCuenta.cerrarSesion;
+
+document.getElementById('btnVincularCompra').onclick = function () {
+    var code = document.getElementById('codigoCompra').value;
+    var msg = document.getElementById('vincularMsg');
+    var r = window.PAZ_BLOCKCHAIN.assignBuyer(code, user.email);
+    if (r.ok) {
+        msg.textContent = 'Compra vinculada. Código: ' + r.lot.packageCode;
+        msg.style.color = 'var(--ltc-green-dark)';
+    } else {
+        msg.textContent = r.error;
+        msg.style.color = '#c0392b';
+    }
+};
 </script>
 </body>
 </html>

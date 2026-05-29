@@ -1,15 +1,18 @@
 /**
- * UI — Trazabilidad inmutable por roles (Productor / Intermediario / Compradora)
+ * UI blockchain — acceso por tipo de empresa y comprador vinculado
  */
 (function () {
     'use strict';
 
     var BC = window.PAZ_BLOCKCHAIN;
-    if (!BC) return;
+    var Cuenta = window.PazCuenta;
+    if (!BC || !Cuenta) return;
 
     var state = {
-        role: 'producer',
-        lastLot: null,
+        role: null,
+        allowedRoles: [],
+        session: null,
+        account: null,
         photoCache: {}
     };
 
@@ -25,24 +28,24 @@
     }
 
     function switchRole(role) {
+        if (state.allowedRoles.indexOf(role) < 0) return;
         state.role = role;
         document.querySelectorAll('.bc-role-btn').forEach(function (b) {
             b.classList.toggle('is-active', b.dataset.role === role);
+            b.style.display = state.allowedRoles.indexOf(b.dataset.role) >= 0 ? '' : 'none';
         });
         document.querySelectorAll('.bc-view').forEach(function (v) {
             v.classList.toggle('is-active', v.id === 'view-' + role);
         });
         if (role === 'buyer') {
-            refreshBuyerView($('buyerCodeInput')?.value || BC.DEFAULT_LOT.packageCode);
+            var code = $('buyerCodeInput')?.value;
+            if (code) refreshBuyerView(code);
         }
     }
 
     function formatTs(iso) {
         try {
-            return new Date(iso).toLocaleString('es-CO', {
-                dateStyle: 'medium',
-                timeStyle: 'short'
-            });
+            return new Date(iso).toLocaleString('es-CO', { dateStyle: 'medium', timeStyle: 'short' });
         } catch (e) {
             return iso;
         }
@@ -59,39 +62,124 @@
                 state.photoCache[cacheKey] = url;
                 if (preview) {
                     preview.innerHTML = '<img src="' + url + '" alt="Vista previa">';
-                    preview.closest('.bc-photo-zone')?.classList.add('has-file');
+                    var zone = preview.closest('.bc-photo-zone');
+                    if (zone) zone.classList.add('has-file');
                 }
             });
         });
     }
 
+    function setupAccess() {
+        var gate = $('bcAccessGate');
+        var main = $('bcMain');
+        state.session = Cuenta.getSesion();
+
+        if (!state.session) {
+            if (gate) {
+                gate.hidden = false;
+                gate.innerHTML =
+                    '<div class="bc-card"><h2>Acceso restringido</h2><p>Inicie sesión con su cuenta de <strong>empresa</strong> (productor) o de <strong>comprador</strong> para operar la blockchain.</p>' +
+                    '<p style="margin-top:1rem"><a href="iniciar-sesion.html" class="bc-btn bc-btn-primary" style="display:inline-block;width:auto;text-decoration:none">Iniciar sesión</a></p></div>';
+            }
+            if (main) main.hidden = true;
+            document.querySelector('.bc-role-nav')?.style.setProperty('display', 'none');
+            return;
+        }
+
+        if (gate) gate.hidden = true;
+        if (main) main.hidden = false;
+
+        state.allowedRoles = Cuenta.getBlockchainRolesPermitidos();
+
+        if (state.session.tipo === 'productor') {
+            state.account = Cuenta.getProductores().find(function (p) {
+                return p.email === state.session.email;
+            });
+            var sub = $('producerSub');
+            if (sub && state.account) {
+                sub.textContent =
+                    Cuenta.getTipoEmpresaLabel(state.account.tipoEmpresa) +
+                    ' — ' +
+                    state.account.nombreEmpresa;
+            }
+            var interSub = $('intermediarySub');
+            if (interSub && state.account) {
+                interSub.textContent = state.account.nombreEmpresa;
+            }
+            if (Cuenta.puedeVerBlockchainIntermediario(state.account)) {
+                var interType = $('interType');
+                if (interType) {
+                    if (state.account.tipoEmpresa === Cuenta.TIPO_EMPRESA.TRANSPORTE) {
+                        interType.innerHTML =
+                            '<option value="transport">Transportadora de café</option>';
+                    } else {
+                        interType.innerHTML =
+                            '<option value="puesto_venta">Puesto de venta de café</option>';
+                    }
+                }
+            }
+        }
+
+        if (state.session.tipo === 'usuario') {
+            state.account = Cuenta.getUsuarios().find(function (u) {
+                return u.email === state.session.email;
+            });
+            var buyerSub = $('buyerSub');
+            if (buyerSub && state.account) {
+                buyerSub.textContent = 'Comprador: ' + state.account.email;
+            }
+        }
+
+        if (!state.allowedRoles.length) {
+            if (gate) {
+                gate.hidden = false;
+                gate.innerHTML =
+                    '<div class="bc-card"><h2>Sin permiso blockchain</h2><p>Su tipo de cuenta no puede operar este módulo. Las fincas registran lotes; transportadoras y puestos de venta validan puntos de control; los compradores ven productos que hayan vinculado con su código.</p></div>';
+            }
+            if (main) main.hidden = true;
+            return;
+        }
+
+        document.querySelectorAll('.bc-role-btn').forEach(function (btn) {
+            var r = btn.dataset.role;
+            btn.style.display = state.allowedRoles.indexOf(r) >= 0 ? '' : 'none';
+        });
+
+        switchRole(state.allowedRoles[0]);
+    }
+
     function handleProducerSubmit(e) {
         e.preventDefault();
+        if (state.session.tipo !== 'productor' || !Cuenta.puedeVerBlockchainProductor(state.account)) return;
+
         var alert = $('producerAlert');
         var photo = state.photoCache.producer || null;
         if (!photo) {
             showAlert(alert, 'Debe tomar o subir la foto de la caja con QR antes de registrar.', false);
             return;
         }
+
         BC.createLot({
             productType: $('prodType')?.value,
             lotNumber: $('prodLot')?.value,
             weightKg: $('prodWeight')?.value,
             photoDataUrl: photo,
-            iotSensorId: $('prodIot')?.value || null
+            iotSensorId: $('prodIot')?.value || null,
+            producerCompany: state.account.nombreEmpresa,
+            producerEmail: state.account.email,
+            producerTipo: state.account.tipoEmpresa
         }).then(function (res) {
             if (!res.ok) {
                 showAlert(alert, res.error, false);
                 return;
             }
-            state.lastLot = res.lot;
             $('prodHashOut').textContent = res.lot.blocks[0].hash;
             $('prodCodeOut').textContent = res.lot.packageCode;
             $('prodLotIdOut').textContent = res.lot.lotId;
             $('producerHashPanel').hidden = false;
             showAlert(
                 alert,
-                'Lote registrado. Código único: ' + res.lot.packageCode + ' — compártalo con logística.',
+                'Lote registrado. Código principal: ' + res.lot.packageCode,
                 true
             );
         });
@@ -99,13 +187,25 @@
 
     function handleIntermediarySubmit(e) {
         e.preventDefault();
+        if (state.session.tipo !== 'productor' || !Cuenta.puedeVerBlockchainIntermediario(state.account)) return;
+
         var alert = $('interAlert');
         var photo = state.photoCache.inter || null;
+        if (!photo) {
+            showAlert(alert, 'Suba la foto obligatoria del estado de la caja.', false);
+            return;
+        }
+
+        var interType =
+            state.account.tipoEmpresa === Cuenta.TIPO_EMPRESA.PUESTO ? 'puesto_venta' : 'transport';
+
         BC.appendCheckpoint({
             packageCode: $('interCode')?.value,
             weightKg: $('interWeight')?.value,
             photoDataUrl: photo,
-            intermediaryType: $('interType')?.value,
+            intermediaryType: interType,
+            companyName: state.account.nombreEmpresa,
+            operatorEmail: state.account.email,
             iotWeight: $('interIotWeight')?.value,
             note: $('interNote')?.value
         }).then(function (res) {
@@ -119,89 +219,60 @@
             $('interBlockText').innerHTML =
                 '<strong>Nuevo bloque #' +
                 b.index +
-                '</strong> añadido<br>' +
-                '<span class="bc-ts">' +
+                '</strong><br><span class="bc-ts">' +
                 formatTs(b.timestamp) +
                 '</span><br>' +
-                b.location.label +
-                '<br>Hash: <code style="color:var(--bc-hash)">' +
-                b.hash.slice(0, 24) +
-                '…</code>';
-            showAlert(alert, 'Punto de control inmutable registrado. Peso verificado.', true);
+                b.location.label;
+            showAlert(alert, 'Punto de control registrado en la cadena.', true);
             state.photoCache.inter = null;
         });
     }
 
-    function handleBuyerLookup() {
-        var code = $('buyerCodeInput')?.value?.trim();
-        refreshBuyerView(code);
-    }
-
-    function renderTimeline(lot, container) {
-        if (!container || !lot) return;
-        var labels = {
-            GENESIS: 'Origen — Productor',
-            CHECKPOINT: 'Punto de control',
-            DELIVERY: 'Entrega internacional'
-        };
-
-        container.innerHTML = lot.blocks
-            .map(function (b) {
-                var stepLabel = labels[b.type] || b.type;
-                if (b.type === 'CHECKPOINT' && b.meta && b.meta.intermediaryType === 'hotel') {
-                    stepLabel = 'Hotel — Custodia pre-exportación';
-                } else if (b.type === 'CHECKPOINT') {
-                    stepLabel = 'Transporte — Logística';
-                }
-                var photoHtml = b.photoDataUrl
-                    ? '<img class="bc-tl-photo" src="' +
-                      b.photoDataUrl +
-                      '" alt="Evidencia">'
-                    : '<div class="bc-tl-photo placeholder">📷 Placeholder — evidencia en finca / ruta simulada</div>';
-                var wBadge = b.weightMatch
-                    ? '<span class="bc-weight-badge ok">Peso ' + b.weightKg + ' kg ✓</span>'
-                    : '<span class="bc-weight-badge fail">Peso alterado</span>';
-
-                return (
-                    '<article class="bc-tl-item done">' +
-                    '<h3>' +
-                    stepLabel +
-                    '</h3>' +
-                    '<p class="bc-tl-meta">' +
-                    b.actorName +
-                    ' · ' +
-                    b.actorOrg +
-                    '<br>' +
-                    formatTs(b.timestamp) +
-                    ' · ' +
-                    (b.location && b.location.label ? b.location.label : '') +
-                    '</p>' +
-                    wBadge +
-                    photoHtml +
-                    '<p class="bc-tl-hash">#' +
-                    b.index +
-                    ' · ' +
-                    b.hash.slice(0, 32) +
-                    '…</p></article>'
-                );
-            })
-            .join('');
-    }
-
     function refreshBuyerView(code) {
-        var lot =
-            BC.findLot(code) ||
-            BC.findLot(BC.DEFAULT_LOT.lotId) ||
-            BC.listLots()[0];
+        var alert = $('buyerAccessAlert');
         var timeline = $('buyerTimeline');
         var summary = $('buyerSummary');
         var verify = $('buyerVerify');
+        var certs = $('buyerCerts');
+        var deliveryBox = $('buyerDeliveryBox');
 
-        if (!lot) {
-            if (summary) summary.textContent = 'No hay lotes. Registre uno como productor.';
+        code = (code || '').trim().toUpperCase();
+        if (!code) {
+            if (alert) {
+                alert.hidden = false;
+                alert.className = 'bc-alert err';
+                alert.textContent = 'Ingrese el código principal del producto.';
+            }
             if (timeline) timeline.innerHTML = '';
             return;
         }
+
+        var lot = BC.findLot(code);
+        if (!lot) {
+            if (alert) {
+                alert.hidden = false;
+                alert.className = 'bc-alert err';
+                alert.textContent = 'Código no encontrado.';
+            }
+            if (timeline) timeline.innerHTML = '';
+            return;
+        }
+
+        if (!BC.userCanViewAsBuyer(lot, state.account.email)) {
+            if (alert) {
+                alert.hidden = false;
+                alert.className = 'bc-alert err';
+                alert.textContent =
+                    'Solo el comprador que vinculó este producto puede ver esta cadena. Use "Vincular compra" en su panel de usuario con este código.';
+            }
+            if (timeline) timeline.innerHTML = '';
+            if (summary) summary.textContent = '';
+            if (deliveryBox) deliveryBox.hidden = true;
+            return;
+        }
+
+        if (alert) alert.hidden = true;
+        if (deliveryBox) deliveryBox.hidden = false;
 
         if (summary) {
             summary.innerHTML =
@@ -209,33 +280,50 @@
                 lot.productType +
                 '</strong> · Lote ' +
                 lot.lotNumber +
-                '<br>Vendedor: <em>' +
-                lot.producer.name +
-                '</em> (' +
-                lot.producer.org +
-                ')<br>Compradora: <em>' +
-                lot.buyer.name +
-                '</em> — ' +
-                lot.buyer.country +
-                '<br>Código inmutable: <code style="color:var(--bc-hash)">' +
+                '<br>Origen: <em>' +
+                lot.producerCompany +
+                '</em><br>Código: <code style="color:var(--bc-hash)">' +
                 lot.packageCode +
                 '</code> · Peso sellado: <strong>' +
                 lot.weightKg +
                 ' kg</strong>';
         }
 
-        renderTimeline(lot, timeline);
+        if (timeline) {
+            timeline.innerHTML = lot.blocks
+                .map(function (b) {
+                    var label =
+                        b.type === 'GENESIS'
+                            ? 'Origen — Finca'
+                            : b.type === 'DELIVERY'
+                              ? 'Entrega comprador'
+                              : b.meta && b.meta.intermediaryType === 'puesto_venta'
+                                ? 'Puesto de venta'
+                                : 'Transporte';
+                    return (
+                        '<article class="bc-tl-item done"><h3>' +
+                        label +
+                        '</h3><p class="bc-tl-meta">' +
+                        (b.actorOrg || b.actorName) +
+                        '<br>' +
+                        formatTs(b.timestamp) +
+                        '</p><span class="bc-weight-badge ok">Peso ' +
+                        b.weightKg +
+                        ' kg</span></article>'
+                    );
+                })
+                .join('');
+        }
 
         BC.verifyChain(lot).then(function (v) {
             if (verify) {
                 verify.className = 'bc-alert ' + (v.valid ? 'ok' : 'err');
                 verify.textContent = v.valid
-                    ? '✓ Cadena íntegra — Smart contract visual validado (SHA-256 simulado)'
-                    : '✗ Integridad comprometida: ' + v.errors.join('; ');
+                    ? 'Cadena íntegra verificada (SHA-256)'
+                    : 'Integridad comprometida: ' + v.errors.join('; ');
             }
         });
 
-        var certs = $('buyerCerts');
         if (certs) {
             certs.innerHTML = (lot.certifications || [])
                 .map(function (c) {
@@ -245,12 +333,36 @@
         }
     }
 
+    function handleBuyerLookup() {
+        refreshBuyerView($('buyerCodeInput')?.value);
+    }
+
+    function handleLinkPurchase() {
+        var code = $('buyerLinkCode')?.value;
+        var res = BC.assignBuyer(code, state.account.email);
+        var el = $('buyerLinkAlert');
+        if (res.ok) {
+            showAlert(el, 'Producto vinculado. Ya puede consultar la cadena completa.', true);
+            $('buyerCodeInput').value = res.lot.packageCode;
+            refreshBuyerView(res.lot.packageCode);
+        } else {
+            showAlert(el, res.error, false);
+        }
+    }
+
     function handleDeliveryConfirm() {
         var code = $('buyerCodeInput')?.value;
-        BC.confirmDelivery({ packageCode: code, weightKg: $('buyerWeight')?.value }).then(function (res) {
+        BC.confirmDelivery({
+            packageCode: code,
+            weightKg: $('buyerWeight')?.value,
+            buyerEmail: state.account.email,
+            buyerCompany: state.account.nacionalidad
+                ? 'Comprador · ' + state.account.nacionalidad
+                : 'Comprador registrado'
+        }).then(function (res) {
             var el = $('buyerDeliveryAlert');
             if (res.ok) {
-                showAlert(el, 'Entrega internacional registrada en blockchain.', true);
+                showAlert(el, 'Entrega registrada en blockchain.', true);
                 refreshBuyerView(code);
             } else {
                 showAlert(el, res.error, false);
@@ -258,43 +370,10 @@
         });
     }
 
-    function getDemoLot() {
-        var lots = BC.listLots();
-        if (lots.length) return lots[0];
-        return {
-            lotNumber: BC.DEFAULT_LOT.lotNumber,
-            weightKg: BC.DEFAULT_LOT.weightKg,
-            packageCode: BC.DEFAULT_LOT.packageCode,
-            lotId: BC.DEFAULT_LOT.lotId
-        };
-    }
-
-    function initDefaults() {
-        var demo = getDemoLot();
-        var prodLot = $('prodLot');
-        if (prodLot && !prodLot.value) prodLot.value = demo.lotNumber;
-        var prodWeight = $('prodWeight');
-        if (prodWeight && !prodWeight.value) prodWeight.value = String(demo.weightKg);
-        var prodType = $('prodType');
-        if (prodType) prodType.value = 'Cacao y Café Artesanal';
-
-        var interCode = $('interCode');
-        if (interCode) interCode.value = demo.packageCode || '';
-        var interWeight = $('interWeight');
-        if (interWeight) interWeight.value = String(demo.weightKg);
-
-        var buyerCode = $('buyerCodeInput');
-        if (buyerCode) buyerCode.value = demo.packageCode || demo.lotId || '';
-        var buyerWeight = $('buyerWeight');
-        if (buyerWeight) buyerWeight.value = String(demo.weightKg);
-
-        setTimeout(function () {
-            refreshBuyerView(buyerCode?.value);
-        }, 100);
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
         if (!document.body.classList.contains('bc-page')) return;
+
+        setupAccess();
 
         document.querySelectorAll('.bc-role-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -305,23 +384,19 @@
         $('producerForm')?.addEventListener('submit', handleProducerSubmit);
         $('interForm')?.addEventListener('submit', handleIntermediarySubmit);
         $('btnBuyerLookup')?.addEventListener('click', handleBuyerLookup);
+        $('btnBuyerLink')?.addEventListener('click', handleLinkPurchase);
         $('btnBuyerDelivery')?.addEventListener('click', handleDeliveryConfirm);
         $('btnResetDemo')?.addEventListener('click', function () {
             BC.resetDemo().then(function () {
-                initDefaults();
-                refreshBuyerView(BC.DEFAULT_LOT.packageCode);
-                alert('Demo restaurada: caso Eder Ochoa → Vianis Flórez.');
+                alert('Cadena de demostración restaurada.');
+                location.reload();
             });
         });
 
         bindPhotoInput('prodPhoto', 'prodPhotoPreview', 'producer');
         bindPhotoInput('interPhoto', 'interPhotoPreview', 'inter');
 
-        initDefaults();
-        switchRole('buyer');
-
         var hash = (location.hash || '').replace('#', '');
-        if (hash === 'intermediary' || hash === 'inter') switchRole('intermediary');
-        if (hash === 'buyer' || hash === 'compradora') switchRole('buyer');
+        if (hash && state.allowedRoles.indexOf(hash) >= 0) switchRole(hash);
     });
 })();

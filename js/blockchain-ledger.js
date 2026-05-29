@@ -1,91 +1,36 @@
 /**
  * PAZ Magdalena — Ledger de trazabilidad inmutable (simulación blockchain)
- * Diseñado para futura integración: REST Python, n8n, sensores IoT (peso).
  */
 (function (global) {
     'use strict';
 
     var STORAGE_KEY = 'paz_blockchain_ledger_v1';
 
-    var ACTORS = {
-        producer: {
-            id: 'eder-ochoa',
-            name: 'Eder Ochoa',
-            role: 'Productor',
-            org: 'Finca Porvenir',
-            location: { label: 'Sierra Nevada de Santa Marta', lat: 11.1418, lng: -74.0712 }
-        },
-        transport: {
-            id: 'sierramar',
-            name: 'Transportes SierraMar',
-            role: 'Intermediario logístico',
-            location: { label: 'Vía Minca — Troncal Magdalena', lat: 11.1082, lng: -74.152 }
-        },
-        hotel: {
-            id: 'bahia-dorada',
-            name: 'Hotel Bahía Dorada',
-            role: 'Intermediario hotelero',
-            location: { label: 'Santa Marta, Magdalena', lat: 11.2412, lng: -74.2145 }
-        },
-        buyer: {
-            id: 'vianis-florez',
-            name: 'Vianis Judith Flórez Ramos',
-            role: 'Compradora internacional',
-            country: 'Estados Unidos',
-            location: { label: 'Miami, FL — Hub de importación', lat: 25.7617, lng: -80.1918 }
-        }
+    var LOCATIONS = {
+        finca: { label: 'Sierra Nevada de Santa Marta', lat: 11.1418, lng: -74.0712 },
+        transport: { label: 'Vía Minca — Troncal Magdalena', lat: 11.1082, lng: -74.152 },
+        puesto: { label: 'Santa Marta, Magdalena', lat: 11.2412, lng: -74.2145 },
+        buyer: { label: 'Hub de importación internacional', lat: 25.7617, lng: -80.1918 }
     };
 
     var DEFAULT_LOT = {
         lotId: 'TRZ-SN-2026-0842',
         productType: 'Cacao y Café Artesanal',
-        lotNumber: 'LOTE-PV-2026-001',
+        lotNumber: 'LOTE-2026-001',
         weightKg: 25.4,
-        producer: ACTORS.producer,
-        buyer: ACTORS.buyer,
+        producerCompany: 'Finca La Esperanza',
+        producerTipo: 'finca_produccion',
+        buyerEmail: null,
         certifications: ['Fairtrade International', 'Rainforest Alliance', 'Protocolo TIC Paz Magdalena v1.2'],
         status: 'delivered'
     };
 
-    /** @type {Object<string, ChainRecord>} */
     var ledger = {};
-
-    /**
-     * @typedef {Object} ChainRecord
-     * @property {string} lotId
-     * @property {string} productType
-     * @property {string} lotNumber
-     * @property {number} weightKg — peso sellado en origen
-     * @property {Object} producer
-     * @property {Object} buyer
-     * @property {string[]} certifications
-     * @property {string} status
-     * @property {string} packageCode — hash público / QR
-     * @property {Block[]} blocks
-     */
-
-    /**
-     * @typedef {Object} Block
-     * @property {number} index
-     * @property {string} type — GENESIS | CHECKPOINT | DELIVERY
-     * @property {string} role — producer | intermediary | buyer
-     * @property {string} actorName
-     * @property {string} actorOrg
-     * @property {string} timestamp ISO
-     * @property {Object} location
-     * @property {number} weightKg
-     * @property {boolean} weightMatch
-     * @property {string|null} photoDataUrl
-     * @property {string} prevHash
-     * @property {string} hash
-     * @property {Object} meta — IoT, notas, tipo intermediario
-     */
 
     function nowIso() {
         return new Date().toISOString();
     }
 
-    /** Simula SHA-256 (async vía SubtleCrypto o fallback determinista) */
     function sha256Hex(input) {
         if (global.crypto && global.crypto.subtle && global.TextEncoder) {
             var enc = new TextEncoder().encode(input);
@@ -145,6 +90,11 @@
         }
     }
 
+    function indexLot(record) {
+        ledger[record.lotId] = record;
+        ledger[record.packageCode] = record;
+    }
+
     function load() {
         try {
             var raw = localStorage.getItem(STORAGE_KEY);
@@ -159,54 +109,66 @@
     }
 
     function seedDemoChain() {
-        var lot = Object.assign({}, DEFAULT_LOT);
-        var blocks = [];
-        var prev = genesisHash();
+        var lot = {
+            lotId: DEFAULT_LOT.lotId,
+            productType: DEFAULT_LOT.productType,
+            lotNumber: DEFAULT_LOT.lotNumber,
+            weightKg: DEFAULT_LOT.weightKg,
+            producerCompany: DEFAULT_LOT.producerCompany,
+            producerEmail: null,
+            producerTipo: DEFAULT_LOT.producerTipo,
+            buyerEmail: null,
+            certifications: DEFAULT_LOT.certifications.slice(),
+            status: DEFAULT_LOT.status,
+            packageCode: '',
+            blocks: []
+        };
 
         var steps = [
             {
                 type: 'GENESIS',
                 role: 'producer',
-                actor: ACTORS.producer,
+                company: 'Finca La Esperanza',
                 weightKg: lot.weightKg,
-                location: ACTORS.producer.location,
-                meta: { note: 'Registro de lote y foto de caja con QR impreso', iot: false }
+                location: LOCATIONS.finca,
+                meta: { note: 'Registro de lote en origen' }
             },
             {
                 type: 'CHECKPOINT',
                 role: 'intermediary',
-                actor: ACTORS.transport,
+                company: 'Transportes del Caribe SAS',
                 weightKg: 25.4,
-                location: ACTORS.transport.location,
-                meta: { intermediaryType: 'transport', note: 'Recibido en ruta logística' }
+                location: LOCATIONS.transport,
+                meta: { intermediaryType: 'transport', note: 'Ruta logística' }
             },
             {
                 type: 'CHECKPOINT',
                 role: 'intermediary',
-                actor: ACTORS.hotel,
+                company: 'Café Origen Santa Marta',
                 weightKg: 25.4,
-                location: ACTORS.hotel.location,
-                meta: { intermediaryType: 'hotel', note: 'Custodia pre-exportación — lobby' }
+                location: LOCATIONS.puesto,
+                meta: { intermediaryType: 'puesto_venta', note: 'Puesto de venta — custodia' }
             },
             {
                 type: 'DELIVERY',
                 role: 'buyer',
-                actor: ACTORS.buyer,
+                company: 'Comprador internacional (sin asignar)',
                 weightKg: 25.4,
-                location: ACTORS.buyer.location,
-                meta: { note: 'Recepción internacional — transacción TIC verificada' }
+                location: LOCATIONS.buyer,
+                meta: { note: 'Pendiente de vincular comprador registrado' }
             }
         ];
 
-        var chain = Promise.resolve(prev);
+        var blocks = [];
+        var chain = Promise.resolve(genesisHash());
         steps.forEach(function (step, idx) {
             chain = chain.then(function (previousHash) {
                 var block = {
                     index: idx,
                     type: step.type,
                     role: step.role,
-                    actorName: step.actor.name,
-                    actorOrg: step.actor.org || step.actor.role,
+                    actorName: step.company,
+                    actorOrg: step.company,
                     timestamp: new Date(Date.now() - (steps.length - idx) * 86400000 * 2).toISOString(),
                     location: step.location,
                     weightKg: step.weightKg,
@@ -227,22 +189,18 @@
         return chain.then(function (lastHash) {
             lot.packageCode = lastHash.slice(0, 16).toUpperCase();
             lot.blocks = blocks;
-            ledger[lot.lotId] = lot;
-            ledger[lot.packageCode] = lot;
+            indexLot(lot);
             persist();
         });
     }
 
-    /**
-     * API pública — crear lote (productor)
-     * @param {Object} input
-     * @returns {Promise<{ok:boolean, lot?:ChainRecord, error?:string}>}
-     */
     function createLot(input) {
         var productType = (input.productType || '').trim();
         var lotNumber = (input.lotNumber || '').trim();
         var weightKg = parseFloat(input.weightKg);
         var photoDataUrl = input.photoDataUrl || null;
+        var company = (input.producerCompany || 'Empresa productora').trim();
+        var producerEmail = input.producerEmail || null;
 
         if (!productType || !lotNumber || isNaN(weightKg) || weightKg <= 0) {
             return Promise.resolve({ ok: false, error: 'Complete tipo, lote y peso válido (kg).' });
@@ -257,16 +215,16 @@
             index: 0,
             type: 'GENESIS',
             role: 'producer',
-            actorName: ACTORS.producer.name,
-            actorOrg: ACTORS.producer.org,
+            actorName: company,
+            actorOrg: company,
             timestamp: nowIso(),
-            location: ACTORS.producer.location,
+            location: LOCATIONS.finca,
             weightKg: weightKg,
             weightMatch: true,
             photoDataUrl: photoDataUrl,
             prevHash: genesisHash(),
             hash: '',
-            meta: { note: 'Captura inicial finca', iotSensorId: input.iotSensorId || null }
+            meta: { note: 'Captura inicial', iotSensorId: input.iotSensorId || null }
         };
 
         return computeBlockHash(block).then(function (hash) {
@@ -276,30 +234,29 @@
                 productType: productType,
                 lotNumber: lotNumber,
                 weightKg: weightKg,
-                producer: ACTORS.producer,
-                buyer: ACTORS.buyer,
-                certifications: DEFAULT_LOT.certifications,
+                producerCompany: company,
+                producerEmail: producerEmail,
+                producerTipo: input.producerTipo || 'finca_produccion',
+                buyerEmail: null,
+                certifications: DEFAULT_LOT.certifications.slice(),
                 status: 'registered',
                 packageCode: hash.slice(0, 16).toUpperCase(),
                 blocks: [block]
             };
-            ledger[lotId] = record;
-            ledger[record.packageCode] = record;
+            indexLot(record);
             persist();
             return { ok: true, lot: record };
         });
     }
 
-    /**
-     * Punto de control intermediario
-     * @param {Object} input — packageCode, weightKg, photoDataUrl, intermediaryType
-     */
     function appendCheckpoint(input) {
         var code = (input.packageCode || '').trim().toUpperCase();
         var weightKg = parseFloat(input.weightKg);
         var photoDataUrl = input.photoDataUrl || null;
-        var type = input.intermediaryType === 'hotel' ? 'hotel' : 'transport';
-        var actor = type === 'hotel' ? ACTORS.hotel : ACTORS.transport;
+        var company = (input.companyName || 'Intermediario').trim();
+        var interType = input.intermediaryType || 'transport';
+        var location =
+            interType === 'puesto_venta' ? LOCATIONS.puesto : LOCATIONS.transport;
 
         var lot = findLot(code);
         if (!lot) {
@@ -319,17 +276,18 @@
             index: lot.blocks.length,
             type: 'CHECKPOINT',
             role: 'intermediary',
-            actorName: actor.name,
-            actorOrg: actor.org || actor.role,
+            actorName: company,
+            actorOrg: company,
             timestamp: nowIso(),
-            location: actor.location,
+            location: location,
             weightKg: weightKg,
             weightMatch: weightMatch,
             photoDataUrl: photoDataUrl,
             prevHash: prevBlock.hash,
             hash: '',
             meta: {
-                intermediaryType: type,
+                intermediaryType: interType,
+                operatorEmail: input.operatorEmail || null,
                 iotWeight: input.iotWeight != null ? parseFloat(input.iotWeight) : null,
                 note: input.note || 'Punto de control validado'
             }
@@ -347,50 +305,109 @@
             }
             block.hash = hash;
             lot.blocks.push(block);
-            lot.status = type === 'hotel' ? 'at_hotel' : 'in_transit';
+            lot.status = interType === 'puesto_venta' ? 'at_puesto' : 'in_transit';
             persist();
             return { ok: true, lot: lot, block: block };
         });
     }
 
-    /**
-     * Cierre compradora (entrega internacional)
-     */
     function confirmDelivery(input) {
         var code = (input.packageCode || '').trim().toUpperCase();
+        var buyerEmail = (input.buyerEmail || '').trim().toLowerCase();
         var lot = findLot(code);
         if (!lot) {
             return Promise.resolve({ ok: false, error: 'Código no encontrado.' });
         }
-        if (lot.blocks.length < 2) {
-            return Promise.resolve({ ok: false, error: 'La cadena aún no tiene puntos de control intermedios.' });
+        if (!buyerEmail) {
+            return Promise.resolve({ ok: false, error: 'Debe iniciar sesión como comprador.' });
+        }
+        if (lot.buyerEmail && lot.buyerEmail !== buyerEmail) {
+            return Promise.resolve({ ok: false, error: 'Este lote está asignado a otro comprador.' });
         }
 
         var prevBlock = lot.blocks[lot.blocks.length - 1];
         var weightKg = parseFloat(input.weightKg) || lot.weightKg;
+        var buyerCompany = input.buyerCompany || 'Comprador registrado';
+
         var block = {
             index: lot.blocks.length,
             type: 'DELIVERY',
             role: 'buyer',
-            actorName: ACTORS.buyer.name,
-            actorOrg: ACTORS.buyer.country,
+            actorName: buyerCompany,
+            actorOrg: buyerCompany,
             timestamp: nowIso(),
-            location: ACTORS.buyer.location,
+            location: LOCATIONS.buyer,
             weightKg: weightKg,
             weightMatch: Math.abs(weightKg - lot.weightKg) < 0.15,
             photoDataUrl: input.photoDataUrl || null,
             prevHash: prevBlock.hash,
             hash: '',
-            meta: { smartContract: 'PAZ-TIC-EXPORT-2026', note: 'Transacción internacional cerrada' }
+            meta: { note: 'Recepción por comprador registrado' }
         };
 
         return computeBlockHash(block).then(function (hash) {
             block.hash = hash;
             lot.blocks.push(block);
             lot.status = 'delivered';
+            lot.buyerEmail = buyerEmail;
             persist();
+            if (global.PazCuenta && global.PazCuenta.registrarCompraLote) {
+                global.PazCuenta.registrarCompraLote(buyerEmail, lot.packageCode);
+            }
             return { ok: true, lot: lot };
         });
+    }
+
+    function assignBuyer(packageCode, buyerEmail) {
+        var lot = findLot(packageCode);
+        if (!lot) return { ok: false, error: 'Código no encontrado.' };
+        buyerEmail = (buyerEmail || '').trim().toLowerCase();
+        if (lot.buyerEmail && lot.buyerEmail !== buyerEmail) {
+            return { ok: false, error: 'Lote ya asignado a otro comprador.' };
+        }
+        lot.buyerEmail = buyerEmail;
+        persist();
+        if (global.PazCuenta && global.PazCuenta.registrarCompraLote) {
+            global.PazCuenta.registrarCompraLote(buyerEmail, lot.packageCode);
+        }
+        return { ok: true, lot: lot };
+    }
+
+    function userCanViewAsBuyer(lot, buyerEmail) {
+        if (!lot || !buyerEmail) return false;
+        buyerEmail = buyerEmail.toLowerCase();
+        if (lot.buyerEmail === buyerEmail) return true;
+        if (global.PazCuenta && global.PazCuenta.usuarioComproLote) {
+            return global.PazCuenta.usuarioComproLote(buyerEmail, lot.packageCode);
+        }
+        return false;
+    }
+
+    function getSuccessionLine(code) {
+        var lot = findLot(code);
+        if (!lot || !lot.blocks || !lot.blocks.length) return null;
+        return {
+            packageCode: lot.packageCode,
+            lotId: lot.lotId,
+            productType: lot.productType,
+            weightKg: lot.weightKg,
+            steps: lot.blocks.map(function (b, i) {
+                var tipo = 'Paso ' + (i + 1);
+                if (b.type === 'GENESIS') tipo = 'Origen';
+                if (b.type === 'DELIVERY') tipo = 'Destino';
+                if (b.type === 'CHECKPOINT') {
+                    tipo =
+                        b.meta && b.meta.intermediaryType === 'puesto_venta'
+                            ? 'Puesto de venta'
+                            : 'Transporte';
+                }
+                return {
+                    tipo: tipo,
+                    empresa: b.actorOrg || b.actorName,
+                    fecha: b.timestamp
+                };
+            })
+        };
     }
 
     function findLot(code) {
@@ -460,7 +477,6 @@
         });
     }
 
-    /** Hook futuro IoT / n8n */
     function ingestIoTReading(payload) {
         return {
             received: true,
@@ -474,11 +490,14 @@
     load();
 
     global.PAZ_BLOCKCHAIN = {
-        ACTORS: ACTORS,
+        LOCATIONS: LOCATIONS,
         DEFAULT_LOT: DEFAULT_LOT,
         createLot: createLot,
         appendCheckpoint: appendCheckpoint,
         confirmDelivery: confirmDelivery,
+        assignBuyer: assignBuyer,
+        userCanViewAsBuyer: userCanViewAsBuyer,
+        getSuccessionLine: getSuccessionLine,
         findLot: findLot,
         verifyChain: verifyChain,
         listLots: listLots,

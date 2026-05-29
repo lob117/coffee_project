@@ -76,10 +76,10 @@
             lat: 11.1418,
             lng: -74.0712,
             escena:
-                'Retrato de Eder Ochoa, 3ª generación, sonriendo frente al beneficio de café con la bahía de Santa Marta visible entre nubes al fondo — Finca Porvenir / El Mirador.',
+                'Tercera generación cafetera frente al beneficio con la bahía de Santa Marta entre nubes al fondo — Finca El Mirador, Sierra Nevada.',
             historia: [
-                'Finca El Mirador, también conocida como Porvenir en registros comerciales, corona una loma con vista al mar Caribe. Eder Ochoa heredó el mando de su abuelo y combina cacao de fino aroma con café especial en lotes separados y trazables.',
-                'El Mirador fue la finca piloto del hackathon Paz Magdalena: cada saco lleva QR, hash blockchain simulado y enlace al perfil del turista. Vianis Flórez, compradora en EE.UU., validó aquí el primer lote TRZ-SN-2026-0842 con certificaciones Fairtrade y Rainforest Alliance.'
+                'Finca El Mirador corona una loma con vista al mar Caribe. La familia combina cacao de fino aroma con café especial en lotes separados y trazables con código principal en cada empaque.',
+                'El Mirador fue finca piloto del hackathon Paz Magdalena: cada saco lleva QR, hash blockchain simulado y enlace al perfil del turista. El primer lote TRZ-SN-2026-0842 cuenta con certificaciones Fairtrade y Rainforest Alliance.'
             ],
             produccion: '2 picos (mayo–junio café; noviembre cacao-café combinado)',
             ambiente: '1.480 m, terraza mirador, brisa marina moderada, suelo rico en hummus de bosque',
@@ -309,6 +309,8 @@
             switchTab('mapa');
         } else if (hash === 'perfiles') {
             switchTab('perfiles');
+        } else if (hash === 'cadena') {
+            switchTab('cadena');
         }
     }
 

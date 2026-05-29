@@ -408,3 +408,87 @@
     color: var(--ltc-green);
     font-weight: 600;
 }
+
+.trz-cadena-box {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.trz-cadena-form label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ltc-muted);
+    margin-bottom: 0.35rem;
+}
+
+.trz-cadena-form input {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--ltc-border);
+    font-family: var(--ltc-font);
+    font-size: 0.95rem;
+}
+
+.trz-cadena-result {
+    margin-top: 1.5rem;
+}
+
+.trz-cadena-meta {
+    background: var(--ltc-soft);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    border-left: 4px solid var(--ltc-green);
+}
+
+.trz-cadena-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 3px solid var(--ltc-green);
+    padding-left: 1.25rem;
+}
+
+.trz-cadena-steps li {
+    position: relative;
+    padding: 0.65rem 0 0.65rem 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.trz-cadena-steps li::before {
+    content: '';
+    position: absolute;
+    left: -1.45rem;
+    top: 0.85rem;
+    width: 10px;
+    height: 10px;
+    background: var(--ltc-green);
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.trz-cadena-tipo {
+    display: block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ltc-muted);
+}
+
+.trz-cadena-empresa {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ltc-green-dark);
+    font-family: var(--ltc-serif);
+    font-style: italic;
+}
+
+.trz-cadena-empty {
+    color: var(--ltc-muted);
+    font-size: 0.9rem;
+}
