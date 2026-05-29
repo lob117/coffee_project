@@ -1,47 +1,41 @@
-# coffee_project — Paz Magdalena / Ciera Origen
+# coffee_project — Paz Magdalena
 
-Proyecto de cafés especiales colombianos con trazabilidad (hackathon Magdalena).
+Café especial colombiano con diseño inspirado en [La Tienda del Café](https://latiendadelcafe.co/collections/cafe-especial-colombiano).
 
-## Diseño
+## Página principal del catálogo
 
-El estilo visual está inspirado en [La Tienda del Café — café especial colombiano](https://latiendadelcafe.co/collections/cafe-especial-colombiano):
+Abre **`coleccion.html`** (o `index.html`, que redirige ahí).
 
-- Fondo blanco y tipografía **DM Sans** + títulos **Cormorant Garamond**
-- Barra superior **Mega promo del día**
-- Grid de productos con **Vista rápida**, precios en COP (“A partir de…”)
-- Barra de colección con **Ordenar** y **Filtros**
-- Navbar clara, minimalista
+Incluye:
 
-Archivos del tema:
+- Diseño tipo colección Shopify (barra promo, grid, “Vista rápida”)
+- **Imágenes** de café especial (Unsplash) por marca/origen
+- **Filtro por rango de precio**: campos min/max, deslizadores y rangos rápidos ($0–30k, 30k–60k, etc.)
+- Filtro por **región** (Huila, Magdalena, Nariño, …)
+- **Ordenar** por precio o nombre
 
-- `css/latienda-del-cafe.css` — hoja de estilos global
-- `js/latienda-ui.js` — barra promo, toolbar de colección
+## Archivos del catálogo
 
-## Cómo ver en VS Code
+| Archivo | Descripción |
+|---------|-------------|
+| `coleccion.html` | Catálogo completo estilo latiendadelcafe.co |
+| `css/coleccion-ltc.css` | Estilos de la colección |
+| `js/catalogo.js` | Productos, filtros y renderizado |
 
-1. Abre la carpeta del repo en Visual Studio Code.
-2. Instala la extensión **Live Server** (opcional).
-3. Abre `index.html` o `Benta de cafe.html` → clic derecho → **Open with Live Server**.
+## Otras páginas
 
-O abre directamente `Benta de cafe.html` en el navegador.
+- `Benta de cafe.html` — Tienda / landing
+- `Historia.html`, `Granos de café.html`, `certificado cafe.html`, etc.
 
-## Páginas
+## Ver en VS Code
 
-| Archivo | Uso |
-|---------|-----|
-| `index.html` | Entrada → redirige al catálogo |
-| `Benta de cafe.html` | Tienda principal / catálogo |
-| `Historia.html` | Historia del café |
-| `Granos de café.html` | Narrador + contenido |
-| `pagina 2 cafe.html` | Agente IA / experiencia |
-| `Registrarse.html` | Registro |
-| `certificado cafe.html` | Certificado / trazabilidad |
+1. Abre esta carpeta en VS Code.
+2. Clic derecho en `coleccion.html` → **Open with Live Server**.
 
-## Subir cambios a GitHub
+## Subir a GitHub
 
 ```bash
-cd coffee_project
-git add css/ js/ index.html README.md *.html
-git commit -m "Aplicar tema visual inspirado en La Tienda del Café"
+git add coleccion.html css/coleccion-ltc.css js/catalogo.js index.html README.md
+git commit -m "Catálogo estilo La Tienda del Café con filtro de precios e imágenes"
 git push origin main
 ```

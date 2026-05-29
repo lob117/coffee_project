@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Especial Colombiano de Origen | Paz Magdalena</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=DM+Sans:opsz,wght@9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/coleccion-ltc.css">
+</head>
+<body>
+
+<div class="ltc-top-promo">
+    <strong>Mega promo del día</strong> — 10% en selección especial · Envío nacional · Inspirado en <em>latienda.delcafé</em>
+</div>
+
+<header class="ltc-header">
+    <div class="ltc-header-inner">
+        <a href="coleccion.html" class="ltc-brand">
+            <h1>Paz Magdalena</h1>
+            <span>Café especial colombiano</span>
+        </a>
+        <nav class="ltc-nav">
+            <a href="coleccion.html">Catálogo</a>
+            <a href="Benta de cafe.html">Tienda</a>
+            <a href="Historia.html">Historia</a>
+            <a href="Granos de café.html">Narrador</a>
+            <a href="certificado cafe.html">Trazabilidad</a>
+            <a href="Registrarse.html">Cuenta</a>
+        </nav>
+    </div>
+</header>
+
+<section class="ltc-mega-promo">
+    <h2>Mega promo del día</h2>
+    <p>Estos productos con súper descuento. Todos los días nuevos orígenes.</p>
+    <div class="ltc-promo-scroll" id="promoScroll"></div>
+</section>
+
+<div class="ltc-filter-overlay" id="filterOverlay"></div>
+
+<div class="ltc-collection-wrap" id="productos">
+    <button type="button" class="ltc-filter-toggle" id="filterToggle">☰ Filtros y rango de precio</button>
+
+    <aside class="ltc-filters" id="filtersSidebar">
+        <h3>Filtros</h3>
+
+        <div class="ltc-filter-block">
+            <label class="block-title">Precio</label>
+            <p style="font-size:0.75rem;color:var(--ltc-muted);margin-bottom:0.5rem">El valor más alto es $120.000</p>
+            <div class="ltc-price-inputs">
+                <input type="number" id="priceMin" min="0" max="120000" step="500" value="0" aria-label="Precio mínimo">
+                <span>—</span>
+                <input type="number" id="priceMax" min="0" max="120000" step="500" value="120000" aria-label="Precio máximo">
+            </div>
+            <div class="ltc-range-dual">
+                <input type="range" id="rangeMin" min="0" max="120000" step="500" value="0" aria-label="Deslizar mínimo">
+                <input type="range" id="rangeMax" min="0" max="120000" step="500" value="120000" aria-label="Deslizar máximo" style="margin-top:0.5rem">
+                <div class="ltc-range-labels">
+                    <span id="labelMin">$0</span>
+                    <span id="labelMax">$120.000</span>
+                </div>
+            </div>
+            <div class="ltc-price-presets">
+                <button type="button" data-min="0" data-max="30000">Menos de $30.000</button>
+                <button type="button" data-min="30000" data-max="60000">$30.000 — $60.000</button>
+                <button type="button" data-min="60000" data-max="100000">$60.000 — $100.000</button>
+                <button type="button" data-min="100000" data-max="120000">Más de $100.000</button>
+            </div>
+        </div>
+
+        <div class="ltc-filter-block">
+            <label class="block-title">Región</label>
+            <ul class="ltc-region-list" id="regionFilters"></ul>
+        </div>
+
+        <button type="button" class="ltc-btn-apply" id="btnApplyFilter">Aplicar filtros</button>
+        <button type="button" class="ltc-btn-clear" id="btnClearFilter">Limpiar filtros</button>
+    </aside>
+
+    <main>
+        <div class="ltc-main-header">
+            <div>
+                <h2>Café especial colombiano</h2>
+                <p class="ltc-results-count" id="resultsCount">— resultados</p>
+            </div>
+            <div class="ltc-sort">
+                <label for="sortSelect" style="font-size:0.8rem;margin-right:0.5rem">Ordenar</label>
+                <select id="sortSelect">
+                    <option value="relevancia">Características</option>
+                    <option value="precio-asc">Precio: menor a mayor</option>
+                    <option value="precio-desc">Precio: mayor a menor</option>
+                    <option value="nombre">Nombre A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="ltc-product-grid" id="productGrid"></div>
+    </main>
+</div>
+
+<footer class="ltc-footer">
+    <p>© 2026 Paz Magdalena · Hackathon Regional Magdalena · Trazabilidad Finca Porvenir</p>
+    <p style="margin-top:0.5rem">
+        <a href="Benta de cafe.html">Tienda completa</a>
+        <a href="pagina 2 cafe.html">Experiencia IA</a>
+    </p>
+</footer>
+
+<script src="js/catalogo.js"></script>
+</body>
+</html>
