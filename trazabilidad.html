@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trazabilidad | Mapa GIS · Paz Magdalena</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="css/coleccion-ltc.css">
+    <link rel="stylesheet" href="css/cuenta-ltc.css">
+    <link rel="stylesheet" href="css/trazabilidad.css">
+    <script src="js/nav-ltc.js" defer></script>
+</head>
+<body class="trz-page">
+
+<div id="ltc-nav-global"></div>
+
+<section class="trz-hero">
+    <h1>Trazabilidad Sierra Nevada</h1>
+    <p>Explora el mapa interactivo de Santa Marta y la Sierra Nevada: fincas, rutas logísticas y hoteles aliados. Simula el escaneo de un código QR para ver el perfil completo de cada origen.</p>
+</section>
+
+<nav class="trz-tabs" aria-label="Secciones de trazabilidad">
+    <button type="button" class="trz-tab is-active" data-tab="mapa">① Mapa GIS</button>
+    <button type="button" class="trz-tab" data-tab="perfiles">② Perfiles QR</button>
+</nav>
+
+<!-- SECCIÓN 1: Mapa -->
+<section id="panel-mapa" class="trz-panel is-active" aria-labelledby="tab-mapa">
+    <div class="trz-mapa-wrap">
+        <aside class="trz-leyenda">
+            <h3>Leyenda del mapa</h3>
+            <div class="trz-leyenda-item">
+                <span class="trz-leyenda-icon finca">☕</span>
+                <span>5 Fincas cafeteras (Sierra Nevada)</span>
+            </div>
+            <div class="trz-leyenda-item">
+                <span class="trz-leyenda-icon transporte">🚚</span>
+                <span>2 Transportadores (vías de acceso)</span>
+            </div>
+            <div class="trz-leyenda-item">
+                <span class="trz-leyenda-icon hotel">🏨</span>
+                <span>3 Hoteles en Santa Marta</span>
+            </div>
+            <div class="trz-filtros">
+                <strong style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em">Mostrar</strong>
+                <label><input type="checkbox" class="trz-filtro-cat" id="filtroFincas" checked> Fincas</label>
+                <label><input type="checkbox" class="trz-filtro-cat" id="filtroTransporte" checked> Transporte</label>
+                <label><input type="checkbox" class="trz-filtro-cat" id="filtroHoteles" checked> Hoteles</label>
+            </div>
+            <p style="font-size:0.72rem;color:var(--ltc-muted);margin-top:1rem;line-height:1.4">
+                Haz clic en un marcador ☕ y elige <em>Ver perfil de trazabilidad</em> para abrir el QR correspondiente.
+            </p>
+        </aside>
+        <div id="trzMap" class="trz-map-container" role="application" aria-label="Mapa interactivo Santa Marta y Sierra Nevada"></div>
+    </div>
+</section>
+
+<!-- SECCIÓN 2: Perfiles QR -->
+<section id="panel-perfiles" class="trz-panel" aria-labelledby="tab-perfiles">
+    <p class="trz-qr-intro">
+        Simula que un turista escanea un código QR en el empaque. Selecciona un placeholder <strong>QR_01</strong> a <strong>QR_05</strong> o llega desde el mapa.
+    </p>
+
+    <div class="trz-qr-grid">
+        <article class="trz-qr-card" data-perfil="qr01" tabindex="0">
+            <div class="trz-qr-placeholder">QR_01<small>Escanear</small></div>
+            <h4>Finca La Esperanza</h4>
+            <p>Castillo · 2 picos</p>
+        </article>
+        <article class="trz-qr-card" data-perfil="qr02" tabindex="0">
+            <div class="trz-qr-placeholder">QR_02<small>Escanear</small></div>
+            <h4>Hacienda El Recuerdo</h4>
+            <p>Caturra · 1 pico</p>
+        </article>
+        <article class="trz-qr-card" data-perfil="qr03" tabindex="0">
+            <div class="trz-qr-placeholder">QR_03<small>Escanear</small></div>
+            <h4>Finca Las Nubes</h4>
+            <p>Typica · 2 picos</p>
+        </article>
+        <article class="trz-qr-card" data-perfil="qr04" tabindex="0">
+            <div class="trz-qr-placeholder">QR_04<small>Escanear</small></div>
+            <h4>Hacienda Sol Naciente</h4>
+            <p>Bourbon Rosado</p>
+        </article>
+        <article class="trz-qr-card" data-perfil="qr05" tabindex="0">
+            <div class="trz-qr-placeholder">QR_05<small>Escanear</small></div>
+            <h4>Finca El Mirador</h4>
+            <p>Eder Ochoa · Porvenir</p>
+        </article>
+    </div>
+
+    <div id="trzPerfilDetalle" aria-live="polite"></div>
+
+    <p class="trz-qr-intro" style="margin-top:2rem">
+        <strong>Prototipo hackathon:</strong> genera 5 QR estáticos gratuitos (por ejemplo en <a href="https://www.qr-code-generator.com/" target="_blank" rel="noopener">qr-code-generator.com</a>) apuntando a URLs como
+        <code>trazabilidad.html#perfil-qr05</code> en tu servidor local.
+    </p>
+</section>
+
+<p class="trz-footer-note">
+    <a href="certificado cafe.html">Ver pasaporte digital / certificado mock</a> ·
+    <a href="ventas de cafe.html">Inicio</a> ·
+    <a href="coleccion.html">Catálogo</a>
+</p>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="js/trazabilidad-mapa.js"></script>
+</body>
+</html>

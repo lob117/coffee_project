@@ -27,7 +27,8 @@ Incluye:
 - `ventas de cafe.html` — Inicio / landing
 - `Historia.html` — Historia + narrador de voz
 - `ventas de cafe.html#monitor-promo` — Monitor de ofertas (antes `pagina 2 cafe.html`)
-- `certificado cafe.html` — Trazabilidad
+- `trazabilidad.html` — Mapa GIS (Leaflet) + perfiles QR (5 fincas)
+- `certificado cafe.html` — Pasaporte digital mock (complemento)
 
 ## Ver en VS Code
 

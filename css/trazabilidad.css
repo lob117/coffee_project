@@ -1,0 +1,410 @@
+/* Trazabilidad Magdalena — mapa GIS + perfiles QR */
+.trz-page {
+    padding-bottom: 4rem;
+}
+
+.trz-hero {
+    background: var(--ltc-soft);
+    border-bottom: 1px solid var(--ltc-border);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+}
+
+.trz-hero h1 {
+    font-family: var(--ltc-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-style: italic;
+    color: var(--ltc-green-dark);
+    margin-bottom: 0.5rem;
+}
+
+.trz-hero p {
+    max-width: 42rem;
+    margin: 0 auto;
+    color: var(--ltc-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.trz-tabs {
+    max-width: var(--ltc-max);
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.trz-tab {
+    padding: 0.65rem 1.25rem;
+    border: 2px solid var(--ltc-border);
+    background: #fff;
+    font-family: var(--ltc-font);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    color: var(--ltc-text);
+    transition: all 0.2s;
+}
+
+.trz-tab:hover {
+    border-color: var(--ltc-green);
+    color: var(--ltc-green-dark);
+}
+
+.trz-tab.is-active {
+    background: var(--ltc-green-dark);
+    border-color: var(--ltc-green-dark);
+    color: #fff;
+}
+
+.trz-panel {
+    display: none;
+    max-width: var(--ltc-max);
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.trz-panel.is-active {
+    display: block;
+}
+
+/* —— Mapa —— */
+.trz-mapa-wrap {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .trz-mapa-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+.trz-leyenda {
+    background: #fff;
+    border: 1px solid var(--ltc-border);
+    padding: 1rem;
+}
+
+.trz-leyenda h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ltc-green-dark);
+    margin-bottom: 0.75rem;
+}
+
+.trz-leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    margin-bottom: 0.5rem;
+    color: var(--ltc-muted);
+}
+
+.trz-leyenda-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.trz-leyenda-icon.finca { background: #e8f5e9; border: 2px solid var(--ltc-green); }
+.trz-leyenda-icon.transporte { background: #fff3e0; border: 2px solid #e65100; }
+.trz-leyenda-icon.hotel { background: #e3f2fd; border: 2px solid #1565c0; }
+
+.trz-filtros {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.trz-filtros label {
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+}
+
+.trz-map-container {
+    height: 520px;
+    border: 2px solid var(--ltc-border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #dde8dd;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+.trz-map-container .leaflet-popup-content {
+    font-family: var(--ltc-font);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin: 0.65rem 0.85rem;
+}
+
+.trz-map-container .leaflet-popup-content strong {
+    color: var(--ltc-green-dark);
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+.trz-popup-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--ltc-green);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.trz-popup-link:hover {
+    text-decoration: underline;
+}
+
+.trz-marker-finca,
+.trz-marker-transporte,
+.trz-marker-hotel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: 2px solid #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1rem;
+}
+
+.trz-marker-finca {
+    background: var(--ltc-green);
+}
+
+.trz-marker-transporte {
+    background: #e65100;
+}
+
+.trz-marker-hotel {
+    background: #1565c0;
+}
+
+.trz-marker-finca span,
+.trz-marker-transporte span,
+.trz-marker-hotel span {
+    transform: rotate(45deg);
+}
+
+/* —— Perfiles QR —— */
+.trz-qr-intro {
+    text-align: center;
+    max-width: 40rem;
+    margin: 0 auto 1.5rem;
+    color: var(--ltc-muted);
+    font-size: 0.92rem;
+}
+
+.trz-qr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.trz-qr-card {
+    background: #fff;
+    border: 2px solid var(--ltc-border);
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.trz-qr-card:hover,
+.trz-qr-card.is-selected {
+    border-color: var(--ltc-green);
+    box-shadow: 0 6px 20px rgba(45, 74, 50, 0.12);
+}
+
+.trz-qr-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: repeating-linear-gradient(
+        -45deg,
+        #f0f0f0,
+        #f0f0f0 8px,
+        #e0e0e0 8px,
+        #e0e0e0 16px
+    );
+    border: 2px dashed var(--ltc-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.65rem;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--ltc-green-dark);
+    letter-spacing: 0.05em;
+}
+
+.trz-qr-placeholder small {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--ltc-muted);
+    margin-top: 0.25rem;
+}
+
+.trz-qr-card h4 {
+    font-size: 0.82rem;
+    color: var(--ltc-green-dark);
+    margin-bottom: 0.2rem;
+}
+
+.trz-qr-card p {
+    font-size: 0.72rem;
+    color: var(--ltc-muted);
+}
+
+.trz-perfil {
+    display: none;
+    background: #fff;
+    border: 2px solid var(--ltc-green-dark);
+    padding: 1.75rem;
+    animation: trzFadeIn 0.35s ease;
+}
+
+.trz-perfil.is-visible {
+    display: block;
+}
+
+@keyframes trzFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.trz-perfil-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--ltc-border);
+}
+
+.trz-perfil-header h2 {
+    font-family: var(--ltc-serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--ltc-green-dark);
+}
+
+.trz-perfil-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--ltc-soft);
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--ltc-border);
+}
+
+.trz-btn-back {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--ltc-border);
+    background: #fff;
+    font-family: var(--ltc-font);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.trz-btn-back:hover {
+    background: var(--ltc-soft);
+}
+
+.trz-img-placeholder {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, var(--ltc-soft), #ddd);
+    border: 2px dashed var(--ltc-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.88rem;
+    color: var(--ltc-muted);
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+}
+
+.trz-historia p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: var(--ltc-text);
+    font-size: 0.95rem;
+}
+
+.trz-datos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.trz-dato-card {
+    background: var(--ltc-soft);
+    border-left: 4px solid var(--ltc-green);
+    padding: 1rem 1.1rem;
+}
+
+.trz-dato-card h4 {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ltc-muted);
+    margin-bottom: 0.4rem;
+}
+
+.trz-dato-card p {
+    font-size: 0.88rem;
+    color: var(--ltc-green-dark);
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.trz-footer-note {
+    max-width: var(--ltc-max);
+    margin: 2rem auto 0;
+    padding: 0 1.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ltc-muted);
+}
+
+.trz-footer-note a {
+    color: var(--ltc-green);
+    font-weight: 600;
+}
