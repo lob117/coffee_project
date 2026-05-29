@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/coleccion-ltc.css">
     <link rel="stylesheet" href="css/cuenta-ltc.css">
-    <link rel="stylesheet" href="css/latienda-del-cafe.css">
+    <link rel="stylesheet" href="css/monitor-promo.css">
     <script src="js/nav-ltc.js" defer></script>
     <style>
         :root {
@@ -44,133 +44,9 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* ===== NAVBAR ===== */
-        .navbar {
-            background: linear-gradient(135deg, var(--cafe-oscuro) 0%, var(--cafe-medio) 100%);
-            padding: 1rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--dorado-brillante);
-        }
-
-        .logo-icon {
-            font-size: 2.5rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-
-        .logo-subtitle {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            opacity: 0.8;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--crema);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transicion);
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--dorado-brillante);
-            transition: var(--transicion);
-        }
-
-        .nav-links a:hover {
-            color: var(--dorado-brillante);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .cart-icon {
-            position: relative;
-            background: var(--dorado-brillante);
-            color: var(--cafe-oscuro);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transicion);
-            font-size: 1.2rem;
-        }
-
-        .cart-icon:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(212, 168, 67, 0.5);
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #C1121F;
-            color: white;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .mobile-menu {
-            display: none;
-            color: var(--dorado-brillante);
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-
         /* ===== HERO SECTION ===== */
         .hero {
-            margin-top: 80px;
+            margin-top: 0;
             min-height: 90vh;
             background: linear-gradient(135deg, rgba(44, 24, 16, 0.85), rgba(74, 44, 42, 0.75)), 
                         url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=80');
@@ -661,14 +537,6 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
             .hero-stats {
                 flex-direction: column;
                 gap: 1.5rem;
@@ -710,12 +578,15 @@
                 Descubre los mejores cafés de origen, cultivados en las montañas del Magdalena con tradición centenaria, 
                 comercio justo y sostenibilidad ambiental.
             </p>
-            <div class="hero-buttons">
-                <a href="coleccion.html" class="btn btn-primary">
-                    <i class="fas fa-shopping-bag"></i> Comprar Ahora
+            <div class="hero-buttons ltc-action-bar" style="margin-top:0;padding:0">
+                <a href="coleccion.html" class="ltc-btn ltc-btn-primary">
+                    <i class="fas fa-shopping-bag"></i> Comprar ahora
                 </a>
-                <a href="#certificaciones" class="btn btn-secondary">
-                    <i class="fas fa-certificate"></i> Ver Certificaciones
+                <a href="#monitor-promo" class="ltc-btn ltc-btn-outline" style="border-color:var(--crema);color:var(--crema)">
+                    <i class="fas fa-tags"></i> Ofertas y promos
+                </a>
+                <a href="Historia.html" class="ltc-btn ltc-btn-outline" style="border-color:var(--crema);color:var(--crema)">
+                    <i class="fas fa-book-open"></i> Historia
                 </a>
             </div>
             <div class="hero-stats">
@@ -773,15 +644,83 @@
         </div>
     </section>
 
+    <div class="ltc-action-bar">
+        <a href="ventas de cafe.html" class="ltc-btn ltc-btn-primary">Inicio</a>
+        <a href="coleccion.html" class="ltc-btn ltc-btn-outline">Catálogo</a>
+        <a href="Historia.html" class="ltc-btn ltc-btn-outline">Historia</a>
+    </div>
+
+    <!-- MONITOR PROMOCIONAL -->
+    <section class="monitor-promo-section" id="monitor-promo">
+        <div class="monitor-notification" id="monitorNotification" aria-live="polite"></div>
+        <div class="monitor-promo-inner">
+            <div class="monitor-click-counter">
+                <div class="count" id="monitorClickCount">0</div>
+                <div class="label">Promos vistas</div>
+            </div>
+            <div class="section-title">
+                <h2>Monitor de ofertas</h2>
+                <p>Descuentos y promociones enlazadas al catálogo. Haz clic en el monitor o elige una oferta.</p>
+            </div>
+            <p class="monitor-instruction">Haz clic en el monitor para interactuar</p>
+            <div class="monitor-desk-scene">
+                <div class="monitor-particles" id="monitorParticles"></div>
+                <div class="monitor-unit" id="monitorScreen" role="button" tabindex="0" aria-label="Monitor de promociones">
+                    <div class="monitor-screen">
+                        <div class="monitor-logo-screen" id="monitorCoffeeLogo">
+                            <span class="logo-icon">☕</span>
+                            <div class="logo-text">Paz Magdalena</div>
+                            <div class="logo-sub">Café especial · Magdalena</div>
+                        </div>
+                        <div class="monitor-typed-content" id="monitorTypedContent"></div>
+                    </div>
+                    <div class="monitor-status-bar">
+                        <span class="monitor-status-dot"></span>
+                        <span class="monitor-status-text" id="monitorStatusText">EN LÍNEA</span>
+                        <span class="monitor-status-text">CATÁLOGO v1</span>
+                    </div>
+                </div>
+                <div class="monitor-stand-neck"></div>
+                <div class="monitor-stand-base"></div>
+                <div class="monitor-desk-surface"></div>
+                <div class="monitor-cup" id="monitorCup" role="button" tabindex="0" aria-label="Taza de café">
+                    <div class="monitor-cup-body"></div>
+                </div>
+            </div>
+            <div class="monitor-action-buttons">
+                <button type="button" class="monitor-btn" id="monitorBtnOffers">Ver ofertas</button>
+                <button type="button" class="monitor-btn" id="monitorBtnReset">Reiniciar</button>
+                <button type="button" class="monitor-btn" id="monitorBtnTyping">Escribir promo</button>
+                <button type="button" class="monitor-btn" id="monitorBtnLogo">Mostrar logo</button>
+            </div>
+            <div class="monitor-offers-panel" id="monitorOffersPanel">
+                <div class="monitor-offers-grid" id="monitorOffersGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay monitor-modal-overlay" id="monitorModalOverlay">
+        <div class="monitor-modal" id="monitorModal">
+            <span class="monitor-modal-icon" id="monitorModalIcon">☕</span>
+            <h3 id="monitorModalTitle">Promoción</h3>
+            <p id="monitorModalText"></p>
+            <a href="coleccion.html?promo=oferta&codigo=CAFE2026" class="monitor-modal-link" id="monitorModalLink">Ir al catálogo</a>
+            <button type="button" class="monitor-modal-close">Cerrar</button>
+        </div>
+    </div>
+
     <!-- CATÁLOGO -->
     <section class="products" id="productos" style="text-align:center;padding:4rem 5%">
         <div class="section-title reveal">
             <h2>Compra en el <span>catálogo</span></h2>
             <div class="section-divider"></div>
             <p style="max-width:520px;margin:1rem auto 2rem">Explora todos los orígenes con filtro por <strong>precio mínimo</strong>, <strong>máximo</strong> y <strong>rango</strong>.</p>
-            <a href="coleccion.html" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:8px">
-                <i class="fas fa-shopping-bag"></i> Ir al catálogo
-            </a>
+            <div class="ltc-action-bar" style="margin-bottom:0">
+                <a href="coleccion.html" class="ltc-btn ltc-btn-primary">
+                    <i class="fas fa-shopping-bag"></i> Ir al catálogo
+                </a>
+                <a href="coleccion.html?promo=oferta" class="ltc-btn ltc-btn-outline">Solo ofertas</a>
+            </div>
         </div>
     </section>
 
@@ -836,7 +775,8 @@
                     <li><a href="#inicio">Inicio</a></li>
                     <li><a href="#productos">Productos</a></li>
                     <li><a href="#certificaciones">Certificaciones</a></li>
-                    <li><a href="#historia">Nuestra Historia</a></li>
+                    <li><a href="Historia.html">Historia</a></li>
+                    <li><a href="coleccion.html">Catálogo</a></li>
                 </ul>
             </div>
             
@@ -864,29 +804,9 @@
         </div>
     </footer>
 
+    <script src="js/catalogo-data.js"></script>
+    <script src="js/monitor-promo.js"></script>
     <script>
-        // Cart functionality
-        let cart = [];
-        
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            updateCartCount();
-            showToast(`${name} agregado al carrito`);
-        }
-        
-        function updateCartCount() {
-            document.getElementById('cartCount').textContent = cart.length;
-        }
-        
-        function toggleCart() {
-            if (cart.length === 0) {
-                showToast('El carrito está vacío');
-            } else {
-                let total = cart.reduce((sum, item) => sum + item.price, 0);
-                showToast(`Carrito: ${cart.length} productos - Total: $${total.toFixed(2)}`);
-            }
-        }
-        
         function showToast(message) {
             const toast = document.createElement('div');
             toast.style.cssText = `
@@ -924,41 +844,13 @@
         }
         
         window.addEventListener("scroll", reveal);
-        reveal(); // Trigger once on load
-        
-        // Mobile menu
-        function toggleMobileMenu() {
-            showToast('Menú móvil - En desarrollo');
+        reveal();
+
+        if (location.hash === '#monitor-promo') {
+            setTimeout(function () {
+                document.getElementById('monitor-promo')?.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
         }
     </script>
 </body>
 </html>
-
-
-<a href="Historia.html" class="btn-historia">
-    <i class="fas fa-history"></i>
-    Descubre Nuestra Historia
-</a>
-
-<style>
-.btn-historia {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: linear-gradient(135deg, #6B4423 0%, #8B6914 100%);
-    color: #F5E6D3;
-    padding: 12px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 2px solid #D4A843;
-    box-shadow: 0 4px 15px rgba(107, 68, 35, 0.3);
-}
-
-.btn-historia:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(139, 105, 20, 0.5);
-    background: linear-gradient(135deg, #8B6914 0%, #D4A843 100%);
-    color: #2C1810;
-}
