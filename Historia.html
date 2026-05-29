@@ -3,40 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historia del café | Paz Magdalena</title>
+    <title>Historia y narrador | Paz Magdalena</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/coleccion-ltc.css">
     <link rel="stylesheet" href="css/cuenta-ltc.css">
+    <link rel="stylesheet" href="css/historia-comic.css">
     <script src="js/nav-ltc.js" defer></script>
+    <script src="js/narrador.js" defer></script>
 </head>
-<body>
+<body class="historia-comic-page">
 
 <div id="ltc-nav-global"></div>
 
-<section class="ltc-hero-historia">
-    <h2>Historia del café</h2>
-    <p>Un viaje desde las montañas de Etiopía hasta las fincas de la Sierra Nevada y el Magdalena.</p>
-    <a href="Granos de café.html" class="ltc-btn ltc-btn-primary" style="margin-top:1.5rem;width:auto;display:inline-block;padding:0.75rem 1.8rem">Escuchar con narrador</a>
+<section class="comic-hero">
+    <div class="comic-hero-inner">
+        <div class="comic-cover comic-halftone">
+            <img src="https://images.unsplash.com/photo-1447933608593-3dded0854bef?w=800&q=80" alt="Granos de café en primer plano" width="800" height="600">
+            <span class="comic-cover-label">Edición Sierra Nevada</span>
+        </div>
+        <div class="comic-intro-panel">
+            <span class="comic-section-label">Capítulo 1</span>
+            <h1>Historia del café y cacao</h1>
+            <p>Desde Etiopía hasta la Finca Porvenir: un cómic en blanco y negro que recorre el origen mundial, Colombia y la trazabilidad de hoy.</p>
+            <div class="comic-bubble">Pulsa el botón <strong>📖</strong> abajo a la derecha o <a href="#narrador" style="color:var(--ltc-green);font-weight:600">abre el narrador</a> para escuchar cada viñeta.</div>
+            <a href="#narrador" class="ltc-btn ltc-btn-primary" style="width:auto;display:inline-block;padding:0.75rem 1.6rem;margin-top:0.25rem">Escuchar historia</a>
+        </div>
+    </div>
 </section>
 
 <div class="ltc-page">
     <h2 class="ltc-section-title">Origen en el mundo</h2>
-    <div class="ltc-card">
-        <h3><i class="fas fa-globe-africa"></i> Descubrimiento del café</h3>
-        <p>Origen en <strong>Etiopía</strong>. Leyenda de <strong>Kaldi</strong>. Uso comprobado como bebida en <strong>Yemen, siglo XV</strong>.</p>
+    <p class="comic-section-label">Viñeta · El descubrimiento</p>
+
+    <div class="comic-row">
+        <figure class="comic-frame">
+            <img src="https://images.unsplash.com/photo-1559056199-641a0ac8a551?w=500&q=80" alt="Cerezas de café" width="500" height="625">
+            <figcaption class="comic-caption">Etiopía · Kaldi</figcaption>
+        </figure>
+        <div class="ltc-card">
+            <h3><i class="fas fa-globe-africa"></i> ¿Quién descubrió el café?</h3>
+            <p>El café se originó de forma natural en <strong>Etiopía</strong>. La leyenda de <strong>Kaldi</strong> (siglo IX) cuenta que un pastor vio a sus cabras activas tras comer bayas rojas.</p>
+            <p>La historia comprobada: el primer uso como bebida fue en <strong>Yemen, siglo XV</strong>.</p>
+        </div>
     </div>
-    <div class="ltc-timeline">
-        <div class="ltc-timeline-item"><strong>Etiopía</strong> — Origen</div>
-        <div class="ltc-timeline-item"><strong>Yemen</strong> — Primera bebida</div>
-        <div class="ltc-timeline-item"><strong>Europa</strong> — Cafeterías</div>
-        <div class="ltc-timeline-item"><strong>Colombia s. XVIII</strong> — Jesuitas y campesinos</div>
+
+    <div class="comic-strip" aria-label="Línea de tiempo del café">
+        <div class="comic-strip-panel">
+            <img src="https://images.unsplash.com/photo-1559056199-641a0ac8a551?w=400&q=80" alt="" width="400" height="100">
+            <strong>Etiopía</strong>
+            <span>Origen natural</span>
+        </div>
+        <div class="comic-strip-panel">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80" alt="" width="400" height="100">
+            <strong>Yemen</strong>
+            <span>Primera bebida</span>
+        </div>
+        <div class="comic-strip-panel">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac123a1f7e84?w=400&q=80" alt="" width="400" height="100">
+            <strong>Europa</strong>
+            <span>Cafeterías</span>
+        </div>
+        <div class="comic-strip-panel">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80" alt="" width="400" height="100">
+            <strong>Colombia</strong>
+            <span>Siglo XVIII</span>
+        </div>
+    </div>
+
+    <h2 class="ltc-section-title">Café en Colombia</h2>
+    <div class="comic-row">
+        <figure class="comic-frame">
+            <img src="https://images.unsplash.com/photo-1442512595331-89a98883c085?w=500&q=80" alt="Montañas y cultivo" width="500" height="625">
+            <figcaption class="comic-caption">Andes · Campesinos</figcaption>
+        </figure>
+        <div class="ltc-card">
+            <h3><i class="fas fa-map-marker-alt"></i> Llegada y expansión</h3>
+            <p>El café llegó en el <strong>siglo XVIII</strong> con sacerdotes jesuitas desde Venezuela. Primeros cultivos en Santander y Boyacá (~1730).</p>
+            <p><strong>Francisco Romero</strong> impulsó la siembra como penitencia — y el cultivo se expandió por el país.</p>
+        </div>
+    </div>
+
+    <div class="ltc-panel-grid">
+        <div class="ltc-card">
+            <h3>Jesuitas</h3>
+            <p>Introducción del cultivo en Colombia.</p>
+        </div>
+        <div class="ltc-card">
+            <h3>Campesinos</h3>
+            <p>Pequeñas fincas y tradición familiar.</p>
+        </div>
+        <div class="ltc-card">
+            <h3>Estado</h3>
+            <p>Organización y política cafetera nacional.</p>
+        </div>
     </div>
 
     <h2 class="ltc-section-title">Magdalena y Sierra Nevada</h2>
-    <div class="ltc-card">
-        <h3>Finca Porvenir · Eder Ochoa</h3>
-        <p>Café y cacao artesanal con trazabilidad, <strong>Fairtrade</strong> y <strong>Rainforest Alliance</strong>. Lote <code style="background:var(--ltc-soft);padding:0.2rem 0.4rem">TRZ-SN-2026-0842</code>.</p>
-        <a href="certificado cafe.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.6rem 1.2rem">Ver trazabilidad</a>
+    <div class="comic-row">
+        <figure class="comic-frame">
+            <img src="https://images.unsplash.com/photo-1523741543379-b32e5da3905d?w=500&q=80" alt="Cosecha en finca" width="500" height="625">
+            <figcaption class="comic-caption">Finca Porvenir</figcaption>
+        </figure>
+        <div class="ltc-card">
+            <h3>Finca Porvenir · Eder Ochoa</h3>
+            <p>En la Sierra Nevada de Santa Marta, el <strong>café y cacao artesanal</strong> se cultiva con trazabilidad digital, certificaciones <strong>Fairtrade</strong> y <strong>Rainforest Alliance</strong>, conectando al productor con compradores como <strong>Vianis Flórez</strong>.</p>
+            <p>Lote de referencia: <code style="background:var(--ltc-soft);padding:0.2rem 0.4rem">TRZ-SN-2026-0842</code></p>
+            <a href="certificado cafe.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.6rem 1.2rem">Ver trazabilidad</a>
+        </div>
+    </div>
+
+    <div class="ltc-card" style="background:var(--ltc-soft)">
+        <h3>Logros internacionales</h3>
+        <ul>
+            <li>Colombia: principal productor de café suave del mundo</li>
+            <li>Magdalena: puente entre turismo y exportación</li>
+            <li>Tecnología: blockchain y QR para confianza del comprador</li>
+        </ul>
+    </div>
+</div>
+
+<div class="comic-divider"><span>Episodio · Finca Porvenir</span></div>
+
+<div class="ltc-page" id="episodio">
+    <p style="color:var(--ltc-muted);margin-bottom:1.5rem;max-width:42rem">
+        Las viñetas siguientes se pueden <strong>escuchar con el narrador</strong>. Cada bloque se resalta mientras se lee.
+    </p>
+
+    <section class="ltc-card narrable comic-story" id="sec-inicio">
+        <div class="comic-story-grid">
+            <figure class="comic-frame">
+                <img src="https://images.unsplash.com/photo-1447933608593-3dded0854bef?w=400&q=80" alt="Bienvenida a la finca" width="400" height="500">
+                <figcaption class="comic-caption">Bienvenida</figcaption>
+            </figure>
+            <div>
+                <h3>Bienvenidos</h3>
+                <p>Bienvenidos a la Finca Porvenir. Aquí, en las montañas de la Sierra Nevada, Eder Ochoa cultiva con amor los granos de café y cacao más exquisitos de Colombia.</p>
+                <p>Esta es la historia de cómo la tradición se encuentra con la tecnología.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="ltc-card narrable comic-story" id="sec-problema">
+        <div class="comic-story-grid">
+            <figure class="comic-frame">
+                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=80" alt="El desafío" width="400" height="500">
+                <figcaption class="comic-caption">El desafío</figcaption>
+            </figure>
+            <div>
+                <h3>El desafío</h3>
+                <p>Durante años, los agricultores enfrentaron un problema: la falta de trazabilidad.</p>
+                <p>Sin registros claros, era difícil demostrar la calidad del producto y recibir un pago justo. Los intermediarios controlaban la información y el mundo no conocía el verdadero valor de este café artesanal.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="ltc-card narrable comic-story" id="sec-solucion">
+        <div class="comic-story-grid">
+            <figure class="comic-frame">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80" alt="Tecnología y datos" width="400" height="500">
+                <figcaption class="comic-caption">Trazabilidad</figcaption>
+            </figure>
+            <div>
+                <h3>La solución digital</h3>
+                <p>Implementamos un sistema de trazabilidad inteligente basado en tecnología Blockchain.</p>
+                <p>El código de ejemplo para el lote es <code>TRZ-SN-2026-0842</code> y el hash de seguridad es <code>0x8a3f...c91d</code>. Esto garantiza que cada grano sea único y verificable desde la finca hasta la taza.</p>
+                <p>La identidad visual del proyecto mantiene tonos tierra y verde bosque.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="ltc-card narrable comic-story" id="sec-personajes">
+        <div class="comic-story-grid">
+            <figure class="comic-frame">
+                <img src="https://images.unsplash.com/photo-1523741543379-b32e5da3905d?w=400&q=80" alt="Productor en finca" width="400" height="500">
+                <figcaption class="comic-caption">Protagonistas</figcaption>
+            </figure>
+            <div>
+                <h3>Los protagonistas</h3>
+                <p><strong>Eder Ochoa:</strong> El productor que cuida cada planta bajo la sombra de los árboles nativos.</p>
+                <p><strong>Vianis Flórez:</strong> La compradora de Estados Unidos que busca transparencia y calidad.</p>
+                <p>Gracias al sistema, Vianis puede contactar a Eder directamente, eliminando barreras.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="ltc-card narrable comic-story" id="sec-impacto">
+        <div class="comic-story-grid">
+            <figure class="comic-frame">
+                <img src="https://images.unsplash.com/photo-1485808192393-6f1108d0c0ef?w=400&q=80" alt="Impacto y futuro" width="400" height="500">
+                <figcaption class="comic-caption">Impacto</figcaption>
+            </figure>
+            <div>
+                <h3>El impacto</h3>
+                <p>Hoy, la Finca Porvenir exporta con certificaciones Fairtrade y Rainforest Alliance.</p>
+                <p>La tecnología no solo mejora las ventas, sino que protege la selva y asegura un futuro digno para las familias cultivadoras.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<button type="button" class="narrador-btn" id="btnAbrir" title="Abrir narrador" aria-label="Abrir narrador de voz">📖</button>
+
+<div class="panel-narrador" id="panelNarrador" role="dialog" aria-label="Panel del narrador">
+    <div class="panel-header">
+        <span>Narrador</span>
+        <button type="button" class="panel-close" id="btnCerrar" aria-label="Cerrar">×</button>
+    </div>
+    <div class="panel-body">
+        <div class="controles">
+            <button type="button" class="btn-control principal" id="btnPlay">▶ Leer todo</button>
+            <button type="button" class="btn-control" id="btnPause" disabled>⏸ Pausa</button>
+            <button type="button" class="btn-control" id="btnStop" disabled>⏹ Detener</button>
+        </div>
+        <select class="selector-voz" id="selectorVoz" aria-label="Voz del narrador">
+            <option value="">Cargando voces...</option>
+        </select>
+        <div class="lista-secciones" id="listaSecciones"></div>
+        <div class="estado" id="estado">Listo para narrar</div>
     </div>
 </div>
 

@@ -12,7 +12,7 @@
         '<a href="' + PAGINA_VENTAS + '">Inicio</a>' +
         '<a href="coleccion.html">Catálogo</a>' +
         '<a href="Historia.html">Historia</a>' +
-        '<a href="Granos de café.html">Narrador</a>' +
+        '<a href="Historia.html#narrador">Narrador</a>' +
         '<a href="certificado cafe.html">Trazabilidad</a>' +
         '<a href="Registrarse.html">Cuenta</a>' +
         '<a href="iniciar-sesion.html">Entrar</a>' +
