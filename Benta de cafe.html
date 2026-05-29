@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciera Origen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cafe-oscuro: #2C1810;
+            --cafe-medio: #4A2C2A;
+            --cafe-claro: #6B4423;
+            --cafe-dorado: #8B6914;
+            --dorado-brillante: #D4A843;
+            --crema: #F5E6D3;
+            --crema-oscuro: #E8D5C4;
+            --verde-sostenible: #2D5016;
+            --rojo-fairtrade: #006847;
+            --texto: #2C1810;
+            --blanco: #FFFFFF;
+            --sombra: 0 10px 40px rgba(44, 24, 16, 0.15);
+            --transicion: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 100%);
+            color: var(--texto);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo-text {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: linear-gradient(135deg, var(--cafe-oscuro) 0%, var(--cafe-medio) 100%);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--dorado-brillante);
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--crema);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transicion);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--dorado-brillante);
+            transition: var(--transicion);
+        }
+
+        .nav-links a:hover {
+            color: var(--dorado-brillante);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            position: relative;
+            background: var(--dorado-brillante);
+            color: var(--cafe-oscuro);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transicion);
+            font-size: 1.2rem;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.5);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #C1121F;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .mobile-menu {
+            display: none;
+            color: var(--dorado-brillante);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            background: linear-gradient(135deg, rgba(44, 24, 16, 0.85), rgba(74, 44, 42, 0.75)), 
+                        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(44, 24, 16, 0.4) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 168, 67, 0.2);
+            border: 2px solid var(--dorado-brillante);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            color: var(--dorado-brillante);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: var(--blanco);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero h1 span {
+            color: var(--dorado-brillante);
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--crema);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transicion);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--dorado-brillante), var(--cafe-dorado));
+            color: var(--cafe-oscuro);
+            box-shadow: 0 4px 15px rgba(212, 168, 67, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 168, 67, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--crema);
+            border: 2px solid var(--crema);
+        }
+
+        .btn-secondary:hover {
+            background: var(--crema);
+            color: var(--cafe-oscuro);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dorado-brillante);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--crema);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 5rem 5%;
+            background: var(--crema);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--cafe-oscuro);
+            margin-bottom: 1rem;
+        }
+
+        .section-title h2 span {
+            color: var(--cafe-dorado);
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--dorado-brillante), var(--cafe-dorado));
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--blanco);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: var(--transicion);
+            box-shadow: var(--sombra);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(44, 24, 16, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--cafe-oscuro);
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: var(--cafe-medio);
+            line-height: 1.6;
+        }
+
+        /* ===== PRODUCTS ===== */
+        .products {
+            padding: 5rem 5%;
+            background: linear-gradient(180deg, var(--crema) 0%, var(--crema-oscuro) 100%);
+        }
+
+        .products-grid {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--blanco);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transicion);
+            box-shadow: var(--sombra);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(44, 24, 16, 0.25);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, var(--dorado-brillante), var(--cafe-dorado));
+            color: var(--cafe-oscuro);
+        }
+
+        .badge-oferta {
+            background: #C1121F;
+            color: white;
+        }
+
+        .product-image {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            background: linear-gradient(135deg, var(--cafe-medio), var(--cafe-oscuro));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(transparent, var(--blanco));
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-origin {
+            font-size: 0.8rem;
+            color: var(--verde-sostenible);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.4rem;
+            color: var(--cafe-oscuro);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: var(--cafe-medio);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--cafe-dorado);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .add-to-cart {
+            background: var(--cafe-oscuro);
+            color: var(--dorado-brillante);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transicion);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-to-cart:hover {
+            background: var(--dorado-brillante);
+            color: var(--cafe-oscuro);
+            transform: scale(1.05);
+        }
+
+        /* ===== CERTIFICATIONS ===== */
+        .certifications {
+            padding: 5rem 5%;
+            background: var(--cafe-oscuro);
+            color: var(--crema);
+        }
+
+        .certifications .section-title h2 {
+            color: var(--dorado-brillante);
+        }
+
+        .cert-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .cert-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--cafe-dorado);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: var(--transicion);
+        }
+
+        .cert-card:hover {
+            background: rgba(212, 168, 67, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .cert-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-card h3 {
+            color: var(--dorado-brillante);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .cert-features {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .cert-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cert-features li::before {
+            content: '✓';
+            color: var(--dorado-brillante);
+            font-weight: 700;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--cafe-oscuro);
+            color: var(--crema);
+            padding: 3rem 5% 1.5rem;
+            border-top: 3px solid var(--cafe-dorado);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand .logo-text {
+            color: var(--dorado-brillante);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .footer-brand p {
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        .footer-col h4 {
+            color: var(--dorado-brillante);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col ul li a {
+            color: var(--crema);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: var(--transicion);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--dorado-brillante);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">☕</span>
+                <div>
+                    <span class="logo-text">Paz Magdalena</span>
+                    <span class="logo-subtitle">Café Premium Sostenible</span>
+                </div>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#certificaciones">Certificaciones</a></li>
+                <li><a href="#historia">Historia</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li>
+                    <div class="cart-icon" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                </li>
+            </ul>
+            
+            <div class="mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-award"></i> 100% Café Colombiano Premium
+            </div>
+            <h1>
+                Del Corazón de Colombia
+                <span>a Tu Taza</span>
+            </h1>
+            <p>
+                Descubre los mejores cafés de origen, cultivados en las montañas del Magdalena con tradición centenaria, 
+                comercio justo y sostenibilidad ambiental.
+            </p>
+            <div class="hero-buttons">
+                <a href="#productos" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag"></i> Comprar Ahora
+                </a>
+                <a href="#certificaciones" class="btn btn-secondary">
+                    <i class="fas fa-certificate"></i> Ver Certificaciones
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Orígenes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Clientes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">4.9</div>
+                    <div class="stat-label">Valoración</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">Países</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div class="section-title reveal">
+            <h2>¿Por Qué Elegir <span>Nuestro Café</span>?</h2>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">🌱</div>
+                <h3>Origen Certificado</h3>
+                <p>Cada grano viene directamente de fincas colombianas con denominación de origen verificada y trazabilidad completa.</p>
+            </div>
+            
+            <div class="feature-card reveal">
+                <div class="feature-icon">🤝</div>
+                <h3>Comercio Justo</h3>
+                <p>Pagamos precios justos a nuestros productores. Tu compra impacta positivamente en sus comunidades.</p>
+            </div>
+            
+            <div class="feature-card reveal">
+                <div class="feature-icon">🔥</div>
+                <h3>Tostado Artesanal</h3>
+                <p>Cada lote es tostado a la perfección por maestros tostadores para resaltar sus notas únicas de sabor.</p>
+            </div>
+            
+            <div class="feature-card reveal">
+                <div class="feature-icon">🚚</div>
+                <h3>Envío Global</h3>
+                <p>Entregamos en más de 30 países con empaque premium que preserva la frescura y aroma del café.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="products" id="productos">
+        <div class="section-title reveal">
+            <h2>Nuestros <span>Cafés Premium</span></h2>
+            <div class="section-divider"></div>
+            <p>Seleccionados a mano de las mejores regiones cafeteras de Colombia</p>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card reveal">
+                <span class="product-badge badge-premium">⭐ Premium</span>
+                <div class="product-image">☕</div>
+                <div class="product-info">
+                    <div class="product-origin"><i class="fas fa-map-marker-alt"></i> Huila, Colombia</div>
+                    <h3 class="product-name">Café Supremo Huila</h3>
+                    <p class="product-desc">Notas de chocolate negro, caramelo y frutos rojos. Tostado medio, cuerpo completo.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$18.99</span>
+                        <button class="add-to-cart" onclick="addToCart('Café Supremo Huila', 18.99)">
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card reveal">
+                <span class="product-badge badge-oferta">-20%</span>
+                <div class="product-image" style="background: linear-gradient(135deg, #6B4423, #8B6914);">🫘</div>
+                <div class="product-info">
+                    <div class="product-origin"><i class="fas fa-map-marker-alt"></i> Nariño, Colombia</div>
+                    <h3 class="product-name">Origen Volcánico</h3>
+                    <p class="product-desc">Cultivado a 2.000m. Notas cítricas, florales y miel. Acidez brillante.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$24.99</span>
+                        <button class="add-to-cart" onclick="addToCart('Origen Volcánico', 24.99)">
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card reveal">
+                <span class="product-badge badge-premium">⭐ Premium</span>
+                <div class="product-image" style="background: linear-gradient(135deg, #2D5016, #4A7C23);">🌿</div>
+                <div class="product-info">
+                    <div class="product-origin"><i class="fas fa-map-marker-alt"></i> Sierra Nevada</div>
+                    <h3 class="product-name">Edición Limitada</h3>
+                    <p class="product-desc">Notas tropicales, cacao y vainilla. Edición limitada de 500 bolsas.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$32.99</span>
+                        <button class="add-to-cart" onclick="addToCart('Edición Limitada', 32.99)">
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card reveal">
+                <div class="product-image" style="background: linear-gradient(135deg, #4A2C2A, #6B4423);">☕</div>
+                <div class="product-info">
+                    <div class="product-origin"><i class="fas fa-map-marker-alt"></i> Antioquia</div>
+                    <h3 class="product-name">Jardín Antioqueño</h3>
+                    <p class="product-desc">Clásico colombiano con cuerpo aterciopelado. Notas de nuez y chocolate.</p>
+                    <div class="product-footer">
+                        <span class="product-price">$21.99</span>
+                        <button class="add-to-cart" onclick="addToCart('Jardín Antioqueño', 21.99)">
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section class="certifications" id="certificaciones">
+        <div class="section-title reveal">
+            <h2>Nuestras <span>Certificaciones</span></h2>
+            <div class="section-divider"></div>
+            <p>Compromiso con la calidad, sostenibilidad y comercio justo</p>
+        </div>
+
+        <div class="cert-grid">
+            <div class="cert-card reveal">
+                <div class="cert-icon">🏷️</div>
+                <h3>Fairtrade Certified</h3>
+                <p>Comercio Justo para un Mundo Mejor. Precio justo garantizado para los productores.</p>
+                <ul class="cert-features">
+                    <li>Precio mínimo protegido</li>
+                    <li>Prima Fairtrade adicional</li>
+                    <li>Trabajo digno y seguro</li>
+                    <li>Prohibido trabajo infantil</li>
+                    <li>Desarrollo comunitario</li>
+                </ul>
+            </div>
+
+            <div class="cert-card reveal">
+                <div class="cert-icon">🐸</div>
+                <h3>Rainforest Alliance</h3>
+                <p>Agricultura Sostenible y Responsable. Respeto por la naturaleza y las personas.</p>
+                <ul class="cert-features">
+                    <li>Conservación de bosques</li>
+                    <li>Protección de biodiversidad</li>
+                    <li>Uso responsable del agua</li>
+                    <li>Reducción de químicos</li>
+                    <li>Bienestar de comunidades</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-text">☕ Paz Magdalena</span>
+                <p>Café Premium Sostenible desde el corazón de Colombia. Llevamos tradición, calidad y compromiso social en cada taza.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#certificaciones">Certificaciones</a></li>
+                    <li><a href="#historia">Nuestra Historia</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> info@pazmagdalena.com</li>
+                    <li><i class="fas fa-phone"></i> +57 300 502 1291</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Magdalena, Colombia</li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <a href="#" style="color: var(--dorado-brillante); font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="color: var(--dorado-brillante); font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="color: var(--dorado-brillante); font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Paz Magdalena - Café Premium Sostenible. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        let cart = [];
+        
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartCount();
+            showToast(`${name} agregado al carrito`);
+        }
+        
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+        
+        function toggleCart() {
+            if (cart.length === 0) {
+                showToast('El carrito está vacío');
+            } else {
+                let total = cart.reduce((sum, item) => sum + item.price, 0);
+                showToast(`Carrito: ${cart.length} productos - Total: $${total.toFixed(2)}`);
+            }
+        }
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: var(--cafe-oscuro);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                border-left: 4px solid var(--dorado-brillante);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // Scroll reveal
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger once on load
+        
+        // Mobile menu
+        function toggleMobileMenu() {
+            showToast('Menú móvil - En desarrollo');
+        }
+    </script>
+</body>
+</html>
+
+
+<a href="Historia.html" class="btn-historia">
+    <i class="fas fa-history"></i>
+    Descubre Nuestra Historia
+</a>
+
+<style>
+.btn-historia {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #6B4423 0%, #8B6914 100%);
+    color: #F5E6D3;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid #D4A843;
+    box-shadow: 0 4px 15px rgba(107, 68, 35, 0.3);
+}
+
+.btn-historia:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(139, 105, 20, 0.5);
+    background: linear-gradient(135deg, #8B6914 0%, #D4A843 100%);
+    color: #2C1810;
+}
+
+.btn-historia i {
+    font-size: 1.2rem;
+}
+</style>
+
+********
+<div class="cafe-interactive-banner">
+    <h3>¿Listo para vivir la experiencia completa?</h3>
+    <p>Interactúa con nuestro asistente experto, descubre procesos y personaliza tu pedido en tiempo real.</p>
+    
+    <a href="pagina 2 cafe.html" class="btn-experiencia-ia">
+        <span class="btn-icon">🤖</span>
+        <span class="btn-content">
+            <span class="btn-title">Iniciar Experiencia Interactiva</span>
+            <span class="btn-desc">Asistente IA • Catálogo Dinámico • Pedidos en Vivo</span>
+        </span>
+        <span class="btn-arrow">→</span>
+    </a>
+</div>
+
+<style>
+.cafe-interactive-banner {
+    background: linear-gradient(135deg, rgba(44, 24, 16, 0.95), rgba(107, 68, 35, 0.9));
+    padding: 3rem 2rem;
+    text-align: center;
+    border-radius: 20px;
+    border: 2px solid #D4A843;
+    max-width: 800px;
+    margin: 3rem auto;
+    color: #F5E6D3;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.cafe-interactive-banner h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #D4A843;
+    margin-bottom: 0.8rem;
+}
+
+.cafe-interactive-banner p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.btn-experiencia-ia {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: linear-gradient(135deg, #D4A843, #8B6914);
+    color: #2C1810;
+    padding: 16px 28px;
+    border-radius: 60px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(212, 168, 67, 0.4);
+}
+
+.btn-experiencia-ia:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(212, 168, 67, 0.6);
+}
+
+.btn-icon {
+    font-size: 1.8rem;
+    animation: pulse 2s infinite;
+}
+
+.btn-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.btn-title {
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
+.btn-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+.btn-arrow {
+    font-size: 1.4rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-experiencia-ia:hover .btn-arrow {
+    transform: translateX(6px);
+}
+
+.btn-experiencia-ia::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.6s;
+}
+
+.btn-experiencia-ia:hover::before {
+    left: 100%;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+</style>
+
+********
+
+<div class="auth-cta-section">
+  <a href="Registrarse.html" class="btn-registro-premium">
+    <span class="btn-icon">🔐</span>
+    <span class="btn-text">
+      <span class="btn-title">Crea tu Cuenta o Inicia Sesión</span>
+      <span class="btn-subtitle">Pedidos rápidos • Beneficios exclusivos • Trazabilidad personal</span>
+    </span>
+    <span class="btn-arrow">→</span>
+  </a>
+</div>
+
+<style>
+.auth-cta-section { text-align: center; margin: 3rem 0; }
+
+.btn-registro-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  background: linear-gradient(135deg, #2C1810, #4A2C2A);
+  color: #F5E6D3;
+  padding: 16px 28px;
+  border-radius: 60px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #D4A843;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(44, 24, 16, 0.25);
+}
+
+.btn-registro-premium:hover {
+  background: linear-gradient(135deg, #D4A843, #8B6914);
+  color: #2C1810;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(212, 168, 67, 0.45);
+}
+
+.btn-title { font-size: 1.1rem; display: block; line-height: 1.2; }
+.btn-subtitle { font-size: 0.8rem; opacity: 0.85; font-weight: 400; margin-top: 4px; display: block; }
+.btn-arrow { transition: transform 0.3s ease; font-size: 1.3rem; }
+.btn-registro-premium:hover .btn-arrow { transform: translateX(6px); }
+</style>
+********
+<!-- BOTÓN FLOTANTE DE PERSONALIZACIÓN -->
+<button class="btn-personalizar" onclick="togglePersonalizacion()" title="Personalizar Página">
+    <span class="btn-icon">🎨</span>
+    <span class="btn-text">Decorar</span>
+</button>
+
+<!-- PANEL DE PERSONALIZACIÓN -->
+<div class="panel-personalizar" id="panelPersonalizar">
+    <div class="panel-header">
+        <h3>🎨 Personaliza tu Experiencia</h3>
+        <button class="btn-cerrar" onclick="togglePersonalizacion()">×</button>
+    </div>
+    
+    <div class="panel-content">
+        <!-- TEMAS DE FONDO -->
+        <div class="seccion-personalizacion">
+            <h4>🌟 Temas de Fondo</h4>
+            <div class="grid-opciones">
+                <button class="opcion-tema active" onclick="cambiarTema('default')" data-tema="default">
+                    <div class="preview" style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 100%);"></div>
+                    <span>Clásico</span>
+                </button>
+                <button class="opcion-tema" onclick="cambiarTema('cafeteria')" data-tema="cafeteria">
+                    <div class="preview" style="background: linear-gradient(135deg, #2C1810 0%, #4A2C2A 100%);"></div>
+                    <span>Cafetería</span>
+                </button>
+                <button class="opcion-tema" onclick="cambiarTema('granos')" data-tema="granos">
+                    <div class="preview" style="background: linear-gradient(135deg, #6B4423 0%, #8B6914 100%);"></div>
+                    <span>Granos</span>
+                </button>
+                <button class="opcion-tema" onclick="cambiarTema('montana')" data-tema="montana">
+                    <div class="preview" style="background: linear-gradient(135deg, #2D5016 0%, #4A7C23 100%);"></div>
+                    <span>Montaña</span>
+                </button>
+                <button class="opcion-tema" onclick="cambiarTema('aurora')" data-tema="aurora">
+                    <div class="preview" style="background: linear-gradient(135deg, #D4A843 0%, #F5E6D3 100%);"></div>
+                    <span>Aurora</span>
+                </button>
+                <button class="opcion-tema" onclick="cambiarTema('noche')" data-tema="noche">
+                    <div class="preview" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);"></div>
+                    <span>Noche</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ELEMENTOS DECORATIVOS -->
+        <div class="seccion-personalizacion">
+            <h4>☕ Elementos Decorativos</h4>
+            <div class="lista-elementos">
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkTazas" onchange="toggleElemento('tazas')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">🫖 Tazas Flotantes</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkGranos" onchange="toggleElemento('granos')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">🫘 Granos Cayendo</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkVapor" onchange="toggleElemento('vapor')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">💨 Vapor de Café</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkEspuma" onchange="toggleElemento('espuma')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">☕ Espuma Animada</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkBolsas" onchange="toggleElemento('bolsas')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">🛍️ Bolsas de Café</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkCorazon" onchange="toggleElemento('corazon')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">❤️ Latte Art</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- EFECTOS ESPECIALES -->
+        <div class="seccion-personalizacion">
+            <h4>✨ Efectos Especiales</h4>
+            <div class="lista-elementos">
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkParticulas" onchange="toggleElemento('particulas')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">🌟 Partículas Doradas</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkBrillo" onchange="toggleElemento('brillo')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">💫 Brillo Intenso</span>
+                </label>
+                <label class="checkbox-personalizacion">
+                    <input type="checkbox" id="chkNieve" onchange="toggleElemento('nieve')">
+                    <span class="checkmark"></span>
+                    <span class="label-text">❄️ Nieve de Leche</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- INTENSIDAD ANIMACIÓN -->
+        <div class="seccion-personalizacion">
+            <h4>🎬 Intensidad de Animación</h4>
+            <input type="range" id="intensidadAnimacion" min="0" max="100" value="50" 
+                   onchange="cambiarIntensidad(this.value)" class="slider-personalizacion">
+            <div class="slider-labels">
+                <span>Lenta</span>
+                <span>Normal</span>
+                <span>Rápida</span>
+            </div>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="acciones-personalizacion">
+            <button class="btn-accion btn-reset" onclick="resetearPersonalizacion()">
+                🔄 Restaurar
+            </button>
+            <button class="btn-accion btn-guardar" onclick="guardarPreferencias()">
+                💾 Guardar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ELEMENTOS DECORATIVOS ANIMADOS -->
+<div class="elementos-decorativos" id="elementosDecorativos">
+    <!-- Tazas -->
+    <div class="taza-flotante taza-1" id="dec-tazas">☕</div>
+    <div class="taza-flotante taza-2" id="dec-tazas">🫖</div>
+    <div class="taza-flotante taza-3" id="dec-tazas">☕</div>
+    
+    <!-- Granos -->
+    <div class="grano-cayendo" id="dec-granos">🫘</div>
+    <div class="grano-cayendo" id="dec-granos">🫘</div>
+    <div class="grano-cayendo" id="dec-granos">🫘</div>
+    
+    <!-- Vapor -->
+    <div class="vapor-cafe" id="dec-vapor"></div>
+    
+    <!-- Bolsas -->
+    <div class="bolsa-cafe" id="dec-bolsas">🛍️</div>
+    <div class="bolsa-cafe" id="dec-bolsas">📦</div>
+    
+    <!-- Corazones (Latte Art) -->
+    <div class="latte-art" id="dec-corazon">❤️</div>
+    
+    <!-- Partículas -->
+    <div class="particula-dorada" id="dec-particulas"></div>
+    
+    <!-- Nieve de Leche -->
+    <div class="nieve-leche" id="dec-nieve"></div>
+</div>
+
+<style>
+/* BOTÓN FLOTANTE */
+.btn-personalizar {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #D4A843, #8B6914);
+    color: #2C1810;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(212, 168, 67, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-personalizar:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(212, 168, 67, 0.6);
+}
+
+.btn-icon {
+    font-size: 1.4rem;
+    animation: rotateIcon 3s linear infinite;
+}
+
+@keyframes rotateIcon {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(20deg); }
+}
+
+/* PANEL DE PERSONALIZACIÓN */
+.panel-personalizar {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 420px;
+    max-width: 90vw;
+    height: 100vh;
+    background: linear-gradient(180deg, #F5E6D3 0%, #E8D5C4 100%);
+    z-index: 999;
+    box-shadow: -10px 0 50px rgba(0,0,0,0.3);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.panel-personalizar.active {
+    right: 0;
+}
+
+.panel-header {
+    background: linear-gradient(135deg, #2C1810, #4A2C2A);
+    color: #F5E6D3;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #D4A843;
+}
+
+.panel-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.btn-cerrar {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #D4A843;
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cerrar:hover {
+    background: #D4A843;
+    color: #2C1810;
+    transform: rotate(90deg);
+}
+
+.panel-content {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.seccion-personalizacion {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(139, 105, 20, 0.2);
+}
+
+.seccion-personalizacion h4 {
+    color: #2C1810;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+/* GRID DE TEMAS */
+.grid-opciones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.opcion-tema {
+    border: 3px solid transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    padding: 0.5rem;
+}
+
+.opcion-tema:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.opcion-tema.active {
+    border-color: #D4A843;
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.3);
+}
+
+.opcion-tema .preview {
+    width: 100%;
+    height: 60px;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.opcion-tema span {
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #2C1810;
+}
+
+/* CHECKBOX PERSONALIZADO */
+.lista-elementos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.checkbox-personalizacion {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.6rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.5);
+}
+
+.checkbox-personalizacion:hover {
+    background: rgba(212, 168, 67, 0.1);
+}
+
+.checkbox-personalizacion input {
+    display: none;
+}
+
+.checkmark {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #6B4423;
+    border-radius: 6px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.checkbox-personalizacion input:checked + .checkmark {
+    background: linear-gradient(135deg, #D4A843, #8B6914);
+    border-color: #D4A843;
+}
+
+.checkbox-personalizacion input:checked + .checkmark::after {
+    content: '✓';
+    color: #2C1810;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.label-text {
+    font-weight: 500;
+    color: #2C1810;
+}
+
+/* SLIDER */
+.slider-personalizacion {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #D4A843, #8B6914);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider-personalizacion::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #2C1810;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #6B4423;
+    font-weight: 500;
+}
+
+/* BOTONES DE ACCIÓN */
+.acciones-personalizacion {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-accion {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+}
+
+.btn-reset {
+    background: #E8D5C4;
+    color: #2C1810;
+}
+
+.btn-reset:hover {
+    background: #D4A843;
+}
+
+.btn-guardar {
+    background: linear-gradient(135deg, #D4A843, #8B6914);
+    color: #2C1810;
+}
+
+.btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 168, 67, 0.4);
+}
+
+/* ELEMENTOS DECORATIVOS ANIMADOS */
+.elementos-decorativos {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Tazas Flotantes */
+.taza-flotante {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 0.3;
+    animation: flotar 6s ease-in-out infinite;
+    display: none;
+}
+
+.taza-flotante.visible {
+    display: block;
+}
+
+.taza-1 { top: 10%; left: 5%; animation-delay: 0s; }
+.taza-2 { top: 60%; right: 5%; animation-delay: 2s; }
+.taza-3 { bottom: 10%; left: 10%; animation-delay: 4s; }
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* Granos Cayendo */
+.grano-cayendo {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.4;
+    animation: caer 8s linear infinite;
+    display: none;
+}
+
+.grano-cayendo.visible {
+    display: block;
+}
+
+.grano-cayendo:nth-child(1) { left: 10%; animation-delay: 0s; }
+.grano-cayendo:nth-child(2) { left: 50%; animation-delay: 3s; }
+.grano-cayendo:nth-child(3) { left: 80%; animation-delay: 6s; }
+
+@keyframes caer {
+    0% { top: -10%; transform: rotate(0deg); }
+    100% { top: 110%; transform: rotate(360deg); }
+}
+
+/* Vapor */
+.vapor-cafe {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    animation: vapor 4s ease-in-out infinite;
+    display: none;
+}
+
+.vapor-cafe.visible {
+    display: block;
+}
+
+@keyframes vapor {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+    50% { transform: translateY(-30px) scale(1.2); opacity: 0.6; }
+}
+
+/* Bolsas de Café */
+.bolsa-cafe {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.2;
+    animation: balancear 5s ease-in-out infinite;
+    display: none;
+}
+
+.bolsa-cafe.visible {
+    display: block;
+}
+
+.bolsa-cafe:nth-child(1) { top: 20%; right: 15%; animation-delay: 0s; }
+.bolsa-cafe:nth-child(2) { bottom: 30%; right: 5%; animation-delay: 2.5s; }
+
+@keyframes balancear {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+/* Latte Art (Corazones) */
+.latte-art {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.4;
+    animation: latir 3s ease-in-out infinite;
+    display: none;
+}
+
+.latte-art.visible {
+    display: block;
+}
+
+.latte-art:nth-child(1) { top: 30%; left: 20%; }
+.latte-art:nth-child(2) { top: 70%; left: 60%; animation-delay: 1s; }
+
+@keyframes latir {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Partículas Doradas */
+.particula-dorada {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #D4A843;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #D4A843;
+    animation: brillar 2s ease-in-out infinite;
+    display: none;
+}
+
+.particula-dorada.visible {
+    display: block;
+}
+
+.particula-dorada::before,
+.particula-dorada::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: inherit;
+    animation: inherit;
+}
+
+.particula-dorada::before { animation-delay: 0.5s; }
+.particula-dorada::after { animation-delay: 1s; }
+
+@keyframes brillar {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+/* Nieve de Leche */
+.nieve-leche {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(white 2px, transparent 2px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    animation: nevar 10s linear infinite;
+    display: none;
+}
+
+.nieve-leche.visible {
+    display: block;
+}
+
+@keyframes nevar {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 500px; }
+}
+
+/* TEMAS DE FONDO */
+body.tema-cafeteria {
+    background: linear-gradient(135deg, #2C1810 0%, #4A2C2A 50%, #6B4423 100%);
+}
+
+body.tema-granos {
+    background: linear-gradient(135deg, #6B4423 0%, #8B6914 50%, #D4A843 100%);
+}
+
+body.tema-montana {
+    background: linear-gradient(135deg, #2D5016 0%, #4A7C23 50%, #6B9B3F 100%);
+}
+
+body.tema-aurora {
+    background: linear-gradient(135deg, #D4A843 0%, #F5E6D3 50%, #FFF8F0 100%);
+}
+
+body.tema-noche {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+/* Overlay para temas oscuros */
+body.tema-cafeteria::before,
+body.tema-noche::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="50" opacity="0.05">☕</text></svg>');
+    background-size: 100px 100px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .btn-personalizar .btn-text {
+        display: none;
+    }
+    
+    .btn-personalizar {
+        padding: 14px;
+        bottom: 1.5rem;
+        left: 1.5rem;
+    }
+    
+    .grid-opciones {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+
+<script>
+// Toggle Panel
+function togglePersonalizacion() {
+    const panel = document.getElementById('panelPersonalizar');
+    panel.classList.toggle('active');
+}
+
+// Cambiar Tema
+function cambiarTema(tema) {
+    // Remover todos los temas
+    document.body.classList.remove('tema-cafeteria', 'tema-granos', 'tema-montana', 'tema-aurora', 'tema-noche');
+    
+    // Agregar tema seleccionado
+    if (tema !== 'default') {
+        document.body.classList.add('tema-' + tema);
+    }
+    
+    // Actualizar UI
+    document.querySelectorAll('.opcion-tema').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tema === tema) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Guardar preferencia
+    localStorage.setItem('cafe_tema', tema);
+}
+
+// Toggle Elementos Decorativos
+function toggleElemento(elemento) {
+    const checkbox = document.getElementById('chk' + elemento.charAt(0).toUpperCase() + elemento.slice(1));
+    const elementos = document.querySelectorAll('[id="dec-' + elemento + '"]');
+    
+    elementos.forEach(el => {
+        if (checkbox.checked) {
+            el.classList.add('visible');
+        } else {
+            el.classList.remove('visible');
+        }
+    });
+    
+    // Guardar preferencia
+    localStorage.setItem('cafe_' + elemento, checkbox.checked);
+}
+
+// Cambiar Intensidad de Animación
+function cambiarIntensidad(valor) {
+    const elementos = document.querySelectorAll('.taza-flotante, .grano-cayendo, .vapor-cafe, .bolsa-cafe, .latte-art');
+    const duracion = 10 - (valor / 10); // 10s a 0s
+    
+    elementos.forEach(el => {
+        el.style.animationDuration = duracion + 's';
+    });
+    
+    localStorage.setItem('cafe_intensidad', valor);
+}
+
+// Resetear Personalización
+function resetearPersonalizacion() {
+    document.body.classList.remove('tema-cafeteria', 'tema-granos', 'tema-montana', 'tema-aurora', 'tema-noche');
+    document.querySelectorAll('.opcion-tema').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('[data-tema="default"]').classList.add('active');
+    
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+        const elemento = cb.id.replace('chk', '').toLowerCase();
+        toggleElemento(elemento);
+    });
+    
+    document.getElementById('intensidadAnimacion').value = 50;
+    localStorage.clear();
+    
+    showToast('🎨 Configuración restaurada');
+}
+
+// Guardar Preferencias
+function guardarPreferencias() {
+    showToast('💾 Preferencias guardadas correctamente');
+}
+
+// Toast Notification
+function showToast(mensaje) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 6rem;
+        left: 2rem;
+        background: #2C1810;
+        color: #F5E6D3;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        border-left: 4px solid #D4A843;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        z-index: 1000;
+        font-weight: 600;
+        animation: slideIn 0.3s ease;
+    `;
+    toast.textContent = mensaje;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Cargar Preferencias Guardadas
+window.addEventListener('load', () => {
+    // Cargar tema
+    const temaGuardado = localStorage.getItem('cafe_tema');
+    if (temaGuardado) {
+        cambiarTema(temaGuardado);
+    }
+    
+    // Cargar elementos
+    const elementos = ['tazas', 'granos', 'vapor', 'espuma', 'bolsas', 'corazon', 'particulas', 'brillo', 'nieve'];
+    elementos.forEach(elem => {
+        const guardado = localStorage.getItem('cafe_' + elem);
+        if (guardado === 'true') {
+            document.getElementById('chk' + elem.charAt(0).toUpperCase() + elem.slice(1)).checked = true;
+            toggleElemento(elem);
+        }
+    });
+    
+    // Cargar intensidad
+    const intensidad = localStorage.getItem('cafe_intensidad');
+    if (intensidad) {
+        document.getElementById('intensidadAnimacion').value = intensidad;
+        cambiarIntensidad(intensidad);
+    }
+});
+</script>
+
+******
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>✅ Certificado Verificado - Paz Magdalena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            color: #2C1810;
+        }
+        .verify-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(44,24,16,0.15);
+            border: 2px solid #D4A843;
+        }
+        .verify-header {
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed #D4A843;
+            margin-bottom: 1.5rem;
+        }
+        .verify-badge {
+            width: 80px;
+            height: 80px;
+            background: #006847;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,104,71,0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(0,104,71,0); }
+        }
+        .verify-badge svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+        .verify-status {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #006847;
+            margin-bottom: 0.3rem;
+        }
+        .verify-subtitle {
+            color: #6B4423;
+            font-size: 0.9rem;
+        }
+        .cert-card {
+            background: #F8F3EB;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #D4A843;
+        }
+        .cert-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(212,168,67,0.2);
+        }
+        .cert-row:last-child { border-bottom: none; }
+        .cert-label {
+            font-size: 0.8rem;
+            color: #6B4423;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cert-value {
+            font-weight: 700;
+            color: #2C1810;
+            text-align: right;
+            max-width: 60%;
+            word-wrap: break-word;
+        }
+        .legal-section {
+            font-size: 0.8rem;
+            color: #4A2C2A;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #FEF3C7;
+            border-radius: 8px;
+            border-left: 3px solid #D4A843;
+        }
+        .legal-section strong { color: #2C1810; }
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .btn {
+            padding: 0.9rem 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2C1810, #4A2C2A);
+            color: #D4A843;
+            border: 2px solid #D4A843;
+        }
+        .btn-primary:hover {
+            background: #D4A843;
+            color: #2C1810;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #fff;
+            color: #2C1810;
+            border: 2px solid #2C1810;
+        }
+        .btn-secondary:hover {
+            background: #2C1810;
+            color: #D4A843;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(44,24,16,0.1);
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        .footer a {
+            color: #D4A843;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #F3F4F6;
+            border-top: 4px solid #D4A843;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Error state */
+        .error-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #DC2626;
+        }
+        .error-state svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+            fill: #DC2626;
+        }
+        
+        @media (max-width: 480px) {
+            .verify-container { padding: 1rem; }
+            .action-buttons { grid-template-columns: 1fr; }
+            .cert-row { flex-direction: column; gap: 0.3rem; }
+            .cert-value { text-align: left; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container" id="app">
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Verificando certificado...</p>
+        </div>
+        
+        <!-- Error -->
+        <div class="error-state" id="error" style="display:none;">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <h3>Certificado No Encontrado</h3>
+            <p>El código escaneado no corresponde a un certificado válido de Paz Magdalena.</p>
+            <button class="btn btn-primary" onclick="location.reload()" style="margin-top:1rem;">🔄 Reintentar</button>
+        </div>
+        
+        <!-- Success Content -->
+        <div id="success" style="display:none;">
+            <div class="verify-header">
+                <div class="verify-badge">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <div class="verify-status">✅ CERTIFICADO VÁLIDO</div>
+                <div class="verify-subtitle">Sistema de Verificación Integral Paz Magdalena</div>
+            </div>
+            
+            <div class="cert-card">
+                <div class="cert-row">
+                    <span class="cert-label">ID Certificado</span>
+                    <span class="cert-value" id="vId">PM-COL-2026-48714</span>
+                </div>
+                <div class="cert-row">
+                    <span class="cert-label">Fecha de Emisión</span>
+                    <span class="cert-value" id="vDate">28 de mayo de 2026</span>
+                </div>
+                <div class="cert-row">
+                    <span class="cert-label">Vigencia</span>
+                    <span class="cert-value">29 de mayo de 2027</span>
+                </div>
+                <div class="cert-row">
+                    <span class="cert-label">Estado</span>
+                    <span class="cert-value" style="color:#006847;">● ACTIVO</span>
+                </div>
+                <div class="cert-row">
+                    <span class="cert-label">Entidad Emisora</span>
+                    <span class="cert-value">Paz Magdalena Tech & Compliance<br><small>Santa Marta, Colombia</small></span>
+                </div>
+                <div class="cert-row">
+                    <span class="cert-label">Alcance</span>
+                    <span class="cert-value">Cafés especiales, productos agrícolas certificados, trazabilidad digital</span>
+                </div>
+            </div>
+            
+            <div class="legal-section">
+                <strong>📜 Marco Legal:</strong><br>
+                • Ley 1562 de 2012 (Bienestar laboral)<br>
+                • NTC 6292:2018 (Trazabilidad agrícola)<br>
+                • Decreto 1500 de 2007 (Control de alimentos)<br>
+                • Estándares Fairtrade & Rainforest Alliance<br><br>
+                <em>Validación externa: INVIMA Colombia o entidades acreditadas.</em>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="descargarPDF()">📄 Descargar PDF</button>
+                <button class="btn btn-secondary" onclick="compartirCertificado()">🔗 Compartir</button>
+            </div>
+            
+            <div class="footer">
+                <p>🌿 Compromiso con calidad, transparencia e innovación</p>
+                <p>📧 <a href="mailto:compliance@pazmagdalena.com">compliance@pazmagdalena.com</a></p>
+                <p>🌐 <a href="https://www.pazmagdalena.com" target="_blank">www.pazmagdalena.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.7rem; color:#9CA3AF;">
+                    Hash de verificación: <span id="hashValue" style="font-family:monospace;">cargando...</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos simulada de certificados válidos
+        const certificadosValidos = {
+            "PM-COL-2026-48714": {
+                id: "PM-COL-2026-48714",
+                fechaEmision: "28 de mayo de 2026",
+                vigencia: "29 de mayo de 2027",
+                estado: "ACTIVO",
+                entidad: "Paz Magdalena Tech & Compliance",
+                ubicacion: "Santa Marta, Colombia",
+                alcance: "Cafés especiales y de exportación, Productos agrícolas certificados, Trazabilidad digital de lotes",
+                marcoLegal: [
+                    "Ley 1562 de 2012",
+                    "NTC 6292:2018", 
+                    "Decreto 1500 de 2007",
+                    "Estándares Fairtrade y Rainforest Alliance"
+                ],
+                contacto: {
+                    email: "compliance@pazmagdalena.com",
+                    web: "www.pazmagdalena.com"
+                }
+            }
+            // Puedes agregar más certificados aquí
+        };
+
+        // Generar hash único para verificación
+        function generarHash(id) {
+            let hash = 0;
+            for (let i = 0; i < id.length; i++) {
+                const char = id.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(36).toUpperCase().padStart(8, '0');
+        }
+
+        // Inicializar verificación
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Obtener ID del QR desde URL (?id=PM-COL-2026-48714)
+            const urlParams = new URLSearchParams(window.location.search);
+            const certId = urlParams.get('id') || "PM-COL-2026-48714"; // Valor por defecto para pruebas
+            
+            // Simular tiempo de verificación
+            setTimeout(() => {
+                const cert = certificadosValidos[certId];
+                
+                if (cert && cert.estado === "ACTIVO") {
+                    // Mostrar certificado válido
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('success').style.display = 'block';
+                    
+                    // Llenar datos
+                    document.getElementById('vId').textContent = cert.id;
+                    document.getElementById('vDate').textContent = cert.fechaEmision;
+                    document.getElementById('hashValue').textContent = generarHash(cert.id) + "..." + generarHash(cert.id + cert.fechaEmision).slice(0,4);
+                    
+                    // Guardar datos para PDF
+                    window.certData = cert;
+                } else {
+                    // Mostrar error
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('error').style.display = 'block';
+                }
+            }, 1200);
+        });
+
+        // Función para descargar PDF
+        async function descargarPDF() {
+            if (!window.certData) return;
+            
+            const { jsPDF } = window.jspdf;
+            const cert = window.certData;
+            
+            // Crear PDF
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            
+            // Fondo y encabezado
+            pdf.setFillColor(245, 230, 211);
+            pdf.rect(0, 0, 210, 297, 'F');
+            
+            // Título
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(18);
+            pdf.setTextColor(44, 24, 16);
+            pdf.text('CERTIFICACIÓN DE CALIDAD, ORIGEN Y TRAZABILIDAD', 105, 25, { align: 'center' });
+            
+            pdf.setFontSize(14);
+            pdf.setTextColor(212, 168, 67);
+            pdf.text('Paz Magdalena – Sistema de Verificación Integral', 105, 35, { align: 'center' });
+            
+            // Sello de verificado
+            pdf.setFillColor(0, 104, 71);
+            pdf.circle(180, 25, 12, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontSize(16);
+            pdf.text('✓', 180, 29, { align: 'center' });
+            
+            // Línea separadora
+            pdf.setDrawColor(212, 168, 67);
+            pdf.setLineWidth(0.5);
+            pdf.line(20, 45, 190, 45);
+            
+            // Contenido principal
+            pdf.setTextColor(44, 24, 16);
+            pdf.setFontSize(11);
+            pdf.setFont('helvetica', 'normal');
+            
+            let y = 60;
+            const lineHeight = 8;
+            
+            pdf.text('El presente documento certifica que los productos comercializados bajo la marca', 20, y);
+            y += lineHeight;
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('Paz Magdalena', 20, y);
+            pdf.setFont('helvetica', 'normal');
+            y += lineHeight;
+            pdf.text('cumplen con altos estándares de calidad, trazabilidad completa, comercio justo', 20, y);
+            y += lineHeight;
+            pdf.text('y sostenibilidad ambiental.', 20, y);
+            y += lineHeight * 1.5;
+            
+            // Datos del certificado
+            pdf.setFillColor(248, 243, 235);
+            pdf.roundedRect(20, y, 170, 55, 3, 3, 'F');
+            pdf.setDrawColor(212, 168, 67);
+            pdf.roundedRect(20, y, 170, 55, 3, 3, 'FD');
+            
+            let dataY = y + 10;
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(`ID Certificado: ${cert.id}`, 30, dataY); dataY += 7;
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(`Fecha de Emisión: ${cert.fechaEmision}`, 30, dataY); dataY += 7;
+            pdf.text(`Vigencia: ${cert.vigencia}`, 30, dataY); dataY += 7;
+            pdf.text(`Estado: ${cert.estado}`, 30, dataY); dataY += 7;
+            pdf.text(`Entidad Emisora: ${cert.entidad} - ${cert.ubicacion}`, 30, dataY);
+            
+            y += 65;
+            
+            // Marco legal
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('📜 Marco Legal y Cumplimiento:', 20, y); y += 7;
+            pdf.setFont('helvetica', 'normal');
+            cert.marcoLegal.forEach(item => {
+                pdf.text(`• ${item}`, 25, y); y += 6;
+            });
+            
+            y += 5;
+            pdf.setFontSize(9);
+            pdf.setTextColor(107, 114, 128);
+            pdf.text('Certificación de carácter interno. Validación externa mediante INVIMA u organismos acreditados.', 20, y);
+            
+            // Footer
+            pdf.setTextColor(44, 24, 16);
+            pdf.setFontSize(10);
+            pdf.text(`Generado electrónicamente el ${new Date().toLocaleDateString('es-CO')}`, 105, 275, { align: 'center' });
+            pdf.setFontSize(9);
+            pdf.setTextColor(107, 114, 128);
+            pdf.text(`Hash de verificación: ${generarHash(cert.id)}...`, 105, 282, { align: 'center' });
+            pdf.text('www.pazmagdalena.com | compliance@pazmagdalena.com', 105, 289, { align: 'center' });
+            
+            // Descargar
+            pdf.save(`Certificado_Paz_Magdalena_${cert.id}.pdf`);
+            
+            // Feedback visual
+            alert('✅ Certificado descargado exitosamente');
+        }
+
+        // Función para compartir
+        function compartirCertificado() {
+            const certId = document.getElementById('vId').textContent;
+            const url = window.location.href;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Certificado Paz Magdalena',
+                    text: `Verifica el certificado ${certId} de Paz Magdalena`,
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('🔗 Enlace copiado al portapapeles');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+-------------------------------------------------------------------------<img src="QR.jpeg" alt="Código QR" width="200" height="200">------------------------------------------------------
+
+
