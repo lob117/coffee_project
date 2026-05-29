@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☕ Narrador de Historias - Café y Cacao Artesanal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+    --espresso: #2C1810;
+    --cafe-oscuro: #6B3E2B;
+    --caramelo: #B5723C;
+    --dorado: #D4A056;
+    --crema: #E8D5B0;
+    --fondo: #FAF3EB;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--fondo);
+    color: var(--espresso);
+    line-height: 1.7;
+    padding-bottom: 120px;
+}
+
+header {
+    background: linear-gradient(135deg, var(--espresso), var(--cafe-oscuro));
+    color: white;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    border-bottom: 4px solid var(--dorado);
+}
+
+header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--dorado);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    gap: 1.8rem;
+}
+
+.card {
+    background: white;
+    padding: 1.8rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(44,24,16,0.1);
+    border: 1px solid var(--crema);
+}
+
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--cafe-oscuro);
+    border-bottom: 2px solid var(--crema);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.card p { margin-bottom: 0.8rem; }
+
+/* ===== NARRADOR - ESTILO SIMPLE Y ROBUSTO ===== */
+.narrador-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--dorado), var(--caramelo));
+    border: 3px solid var(--espresso);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(181,114,60,0.4);
+    z-index: 1000;
+    transition: transform 0.2s;
+}
+
+.narrador-btn:hover { transform: scale(1.1); }
+
+.panel-narrador {
+    position: fixed;
+    bottom: 95px;
+    right: 25px;
+    width: 320px;
+    max-width: calc(100% - 50px);
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(44,24,16,0.2);
+    border: 2px solid var(--dorado);
+    z-index: 999;
+    display: none;
+    overflow: hidden;
+}
+
+.panel-narrador.visible { display: block; }
+
+.panel-header {
+    background: var(--espresso);
+    color: var(--dorado);
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+}
+
+.panel-close {
+    background: none;
+    border: none;
+    color: var(--dorado);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    border-radius: 50%;
+}
+
+.panel-close:hover { background: rgba(255,255,255,0.15); }
+
+.panel-body { padding: 1.2rem; }
+
+.controles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.btn-control {
+    padding: 0.8rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    background: var(--crema);
+    color: var(--espresso);
+    transition: background 0.2s;
+}
+
+.btn-control:hover { background: var(--dorado); }
+.btn-control:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-control.principal { grid-column: span 2; background: var(--caramelo); color: white; }
+
+.selector-voz {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--crema);
+    border-radius: 8px;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.lista-secciones {
+    max-height: 160px;
+    overflow-y: auto;
+    border: 1px solid var(--crema);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.btn-seccion {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--crema);
+    text-align: left;
+    cursor: pointer;
+    color: var(--cafe-oscuro);
+    font-size: 0.9rem;
+}
+
+.btn-seccion:last-child { border-bottom: none; }
+.btn-seccion:hover { background: var(--fondo); }
+.btn-seccion.activa { background: var(--dorado); color: white; font-weight: 600; }
+
+.estado {
+    text-align: center;
+    padding: 0.7rem;
+    background: var(--fondo);
+    border-radius: 8px;
+    font-style: italic;
+    color: var(--cafe-oscuro);
+    font-size: 0.85rem;
+    min-height: 36px;
+}
+
+.highlight {
+    background: rgba(212,160,86,0.2) !important;
+    border-left: 4px solid var(--dorado) !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .panel-narrador {
+        bottom: 90px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+    }
+    .narrador-btn {
+        bottom: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+    }
+    .controles { grid-template-columns: 1fr 1fr; }
+    .btn-control.principal { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>☕ Historia del Café y Cacao Artesanal</h1>
+    <p>Sierra Nevada de Santa Marta, Magdalena</p>
+</header>
+
+<div class="container">
+
+    <section class="card narrable" id="sec-inicio">
+        <h2>👋 Bienvenidos</h2>
+        <p>Bienvenidos a la Finca Porvenir. Aquí, en las montañas de la Sierra Nevada, Eder Ochoa cultiva con amor los granos de café y cacao más exquisitos de Colombia.</p>
+        <p>Esta es la historia de cómo la tradición se encuentra con la tecnología.</p>
+    </section>
+
+    <section class="card narrable" id="sec-problema">
+        <h2>🤔 El Desafío</h2>
+        <p>Durante años, los agricultores enfrentaron un problema: la falta de trazabilidad.</p>
+        <p>Sin registros claros, era difícil demostrar la calidad del producto y recibir un pago justo. Los intermediarios controlaban la información y el mundo no conocía el verdadero valor de este café artesanal.</p>
+    </section>
+
+    <section class="card narrable" id="sec-solucion">
+        <h2>💡 La Solución Digital</h2>
+        <p>Implementamos un sistema de trazabilidad inteligente basado en tecnología Blockchain.</p>
+        <p>El código de ejemplo para el lote es <code>TRZ-SN-2026-0842</code> y el hash de seguridad es <code>0x8a3f...c91d</code>. Esto garantiza que cada grano sea único y verificable desde la finca hasta la taza.</p>
+        <p>Se utilizan colores corporativos como #2C1810 y #B5723C para mantener la identidad visual.</p>
+    </section>
+
+    <section class="card narrable" id="sec-personajes">
+        <h2>👥 Los Protagonistas</h2>
+        <p><strong>Eder Ochoa:</strong> El productor que cuida cada planta bajo la sombra de los árboles nativos.</p>
+        <p><strong>Vianis Flórez:</strong> La compradora de Estados Unidos que busca transparencia y calidad.</p>
+        <p>Gracias al sistema, Vianis puede contactar a Eder directamente, eliminando barreras.</p>
+    </section>
+
+    <section class="card narrable" id="sec-impacto">
+        <h2>🌍 El Impacto</h2>
+        <p>Hoy, la Finca Porvenir exporta con certificaciones Fairtrade y Rainforest Alliance.</p>
+        <p>La tecnología no solo mejora las ventas, sino que protege la selva y asegura un futuro digno para las familias cultivadoras.</p>
+    </section>
+
+</div>
+
+<!-- Botón flotante -->
+<button class="narrador-btn" id="btnAbrir" title="Escuchar historia">📖</button>
+
+<!-- Panel del narrador -->
+<div class="panel-narrador" id="panelNarrador">
+    <div class="panel-header">
+        <span>🎙️ Narrador</span>
+        <button class="panel-close" id="btnCerrar">×</button>
+    </div>
+    <div class="panel-body">
+        
+        <div class="controles">
+            <button class="btn-control principal" id="btnPlay">▶️ Leer Todo</button>
+            <button class="btn-control" id="btnPause" disabled>⏸️</button>
+            <button class="btn-control" id="btnStop" disabled>⏹️</button>
+        </div>
+        
+        <select class="selector-voz" id="selectorVoz">
+            <option value="">Cargando voces...</option>
+        </select>
+        
+        <div class="lista-secciones" id="listaSecciones"></div>
+        
+        <div class="estado" id="estado">Listo para narrar ☕</div>
+        
+    </div>
+</div>
+
+<script>
+/**
+ * ============================================
+ * NARRADOR DE HISTORIAS - VERSIÓN ROBUSTA v2.0
+ * ============================================
+ * - Solo lee texto visible y significativo
+ * - Manejo robusto de errores de voz
+ * - Filtro agresivo de símbolos y códigos
+ * - Compatible con Chrome, Edge, Safari
+ */
+
+class NarradorRobusto {
+    constructor() {
+        this.synth = window.speechSynthesis;
+        this.voces = [];
+        this.hablando = false;
+        this.pausado = false;
+        this.actual = 0;
+        this.secciones = [];
+        this.utterance = null;
+    }
+
+    // === INICIALIZACIÓN ===
+    init() {
+        this.prepararSecciones();
+        this.cargarVoces();
+        this.bindEvents();
+        console.log('✅ Narrador listo');
+    }
+
+    // === CARGA DE VOCES (MANEJO SEGURO) ===
+    cargarVoces() {
+        const selector = document.getElementById('selectorVoz');
+        
+        const llenarSelector = () => {
+            this.voces = this.synth.getVoices() || [];
+            
+            if (this.voces.length === 0) {
+                selector.innerHTML = '<option value="">⚠️ Sin voces disponibles</option>';
+                return;
+            }
+            
+            // Filtrar voces en español primero
+            const esp = this.voces.filter(v => v.lang && v.lang.includes('es'));
+            const otras = this.voces.filter(v => !esp.includes(v));
+            const todas = [...esp, ...otras].slice(0, 10); // Máximo 10 para rendimiento
+            
+            selector.innerHTML = '';
+            todas.forEach((voz, i) => {
+                const opt = document.createElement('option');
+                opt.value = this.voces.indexOf(voz);
+                opt.textContent = `${voz.name.replace('Google ', '').replace('Microsoft ', '')} - ${voz.lang}`;
+                if (i === 0) opt.selected = true; // Seleccionar primera por defecto
+                selector.appendChild(opt);
+            });
+            
+            console.log(`🎙️ ${this.voces.length} voces cargadas`);
+        };
+        
+        // Intentar cargar inmediatamente
+        llenarSelector();
+        
+        // Escuchar evento de carga (algunos navegadores)
+        if (this.synth.onvoiceschanged !== undefined) {
+            this.synth.onvoiceschanged = llenarSelector;
+        }
+        
+        // Reintentar después de 500ms por si acaso
+        setTimeout(llenarSelector, 500);
+    }
+
+    // === PREPARAR SECCIONES PARA NARRAR ===
+    prepararSecciones() {
+        const cards = document.querySelectorAll('.card.narrable');
+        const lista = document.getElementById('listaSecciones');
+        
+        cards.forEach((card, idx) => {
+            const titulo = card.querySelector('h2')?.textContent?.replace(/[👋🤔💡👥🌍]/g, '').trim() || `Sección ${idx + 1}`;
+            const texto = this.extraerTextoLimpio(card);
+            
+            this.secciones.push({ idx, titulo, texto, card });
+            
+            // Botón en la lista
+            const btn = document.createElement('button');
+            btn.className = 'btn-seccion';
+            btn.textContent = titulo;
+            btn.onclick = () => this.narrarSeccion(idx);
+            lista.appendChild(btn);
+        });
+    }
+
+    // === EXTRACCIÓN DE TEXTO LIMPIO (CLAVE) ===
+    extraerTextoLimpio(elemento) {
+        // Clonar para no modificar el DOM original
+        const clone = elemento.cloneNode(true);
+        
+        // 1. Eliminar elementos que NUNCA deben leerse
+        const prohibidos = clone.querySelectorAll(`
+            code, script, style, noscript, 
+            input, select, textarea, button,
+            .narrador-btn, .panel-narrador,
+            [aria-hidden="true"], [hidden]
+        `);
+        prohibidos.forEach(el => el.remove());
+        
+        // 2. Obtener solo texto visible (ignorar elementos ocultos por CSS)
+        let texto = '';
+        const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT, {
+            acceptNode: (node) => {
+                const parent = node.parentElement;
+                // Ignorar si el padre está oculto
+                if (parent && (parent.style.display === 'none' || parent.style.visibility === 'hidden')) {
+                    return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        });
+        
+        let node;
+        while ((node = walker.nextNode())) {
+            texto += node.textContent + ' ';
+        }
+        
+        // 3. Limpieza avanzada de texto
+        texto = texto
+            // Eliminar códigos hex (#2C1810)
+            .replace(/#[0-9a-fA-F]{6}\b/g, '')
+            // Eliminar hashes técnicos (0x...)
+            .replace(/0x[a-fA-F0-9]{4,}/gi, '')
+            // Eliminar códigos de lote (TRZ-SN-2026-0842)
+            .replace(/\b[A-Z]{3}-[A-Z]{2}-\d{4}-\d{4}\b/g, '')
+            // Reemplazar símbolos por palabras naturales
+            .replace(/\s*\/\s*/g, ' de ')      // 527/1999 → 527 de 1999
+            .replace(/\s*&\s*/g, ' y ')         // Café & Cacao → Café y Cacao
+            .replace(/@/g, ' arroba ')
+            .replace(/[<>{}\[\]()*+?|^$]/g, '') // Símbolos de código
+            // Limpieza de espacios
+            .replace(/\s+/g, ' ')
+            .replace(/\s+\./g, '.')
+            .replace(/\.\s*\./g, '.')
+            .trim();
+        
+        // 4. Agregar pausas naturales para mejor entonación
+        texto = texto
+            .replace(/\.\s+/g, '. ')
+            .replace(/,\s+/g, ', ')
+            .replace(/\s+/g, ' ');
+        
+        return texto;
+    }
+
+    // === EVENTOS ===
+    bindEvents() {
+        // Abrir/cerrar panel
+        document.getElementById('btnAbrir').onclick = () => {
+            document.getElementById('panelNarrador').classList.add('visible');
+        };
+        document.getElementById('btnCerrar').onclick = () => {
+            this.detener();
+            document.getElementById('panelNarrador').classList.remove('visible');
+        };
+        
+        // Controles
+        document.getElementById('btnPlay').onclick = () => this.narrarTodo();
+        document.getElementById('btnPause').onclick = () => this.togglePausa();
+        document.getElementById('btnStop').onclick = () => this.detener();
+        
+        // Cerrar con Escape
+        document.onkeydown = (e) => {
+            if (e.key === 'Escape') {
+                this.detener();
+                document.getElementById('panelNarrador').classList.remove('visible');
+            }
+        };
+    }
+
+    // === FUNCIÓN PRINCIPAL: HABLAR ===
+    hablar(texto, onFin) {
+        if (!texto || !texto.trim()) {
+            if (onFin) onFin();
+            return;
+        }
+        
+        // Cancelar cualquier narración previa
+        if (this.synth.speaking) {
+            this.synth.cancel();
+        }
+        
+        // Crear nueva utterance
+        this.utterance = new SpeechSynthesisUtterance(texto);
+        
+        // Configurar voz
+        const idxVoz = document.getElementById('selectorVoz')?.value;
+        if (idxVoz !== '' && this.voces[idxVoz]) {
+            this.utterance.voice = this.voces[idxVoz];
+        }
+        
+        // Configuración de voz natural
+        this.utterance.rate = 0.95;   // Velocidad natural
+        this.utterance.pitch = 1.0;   // Tono normal
+        this.utterance.volume = 1.0;
+        
+        // Eventos
+        this.utterance.onstart = () => {
+            this.hablando = true;
+            this.pausado = false;
+            this.actualizarUI();
+        };
+        
+        this.utterance.onend = () => {
+            this.hablando = false;
+            this.pausado = false;
+            this.utterance = null;
+            this.actualizarUI();
+            if (onFin) onFin();
+        };
+        
+        this.utterance.onerror = (e) => {
+            console.error('❌ Error de voz:', e.error);
+            this.hablando = false;
+            this.pausado = false;
+            this.utterance = null;
+            this.actualizarUI();
+            this.setEstado('⚠️ Error de voz. Intenta otra voz o navegador.');
+            if (onFin) onFin();
+        };
+        
+        // Intentar hablar
+        try {
+            this.synth.speak(this.utterance);
+        } catch (err) {
+            console.error('❌ Excepción al hablar:', err);
+            this.setEstado('❌ No se pudo iniciar la narración');
+            if (onFin) onFin();
+        }
+    }
+
+    // === NARRAR SECCIÓN ESPECÍFICA ===
+    narrarSeccion(idx) {
+        this.detener();
+        this.actual = idx;
+        const sec = this.secciones[idx];
+        
+        if (!sec) return;
+        
+        // Resaltar visualmente
+        this.resaltar(idx);
+        this.setEstado(`🎙️ ${sec.titulo}`);
+        
+        this.hablar(sec.texto, () => {
+            this.setEstado('✅ Completado');
+        });
+    }
+
+    // === NARRAR TODA LA HISTORIA ===
+    async narrarTodo() {
+        this.detener();
+        this.actual = 0;
+        
+        // Introducción breve
+        const intro = "Bienvenidos. Les contaré la historia del café y cacao artesanal de la Sierra Nevada.";
+        
+        this.setEstado('🎬 Iniciando...');
+        
+        // Narrar introducción
+        await new Promise(resolve => this.hablar(intro, resolve));
+        await this.esperar(600);
+        
+        // Narrar secciones en secuencia
+        await this.narrarSecuencial();
+    }
+
+    async narrarSecuencial() {
+        if (this.actual >= this.secciones.length) {
+            // Cierre
+            const outro = "Y así, desde las montañas hasta tu taza, viaja una historia de tradición y tecnología. Gracias por escuchar.";
+            await new Promise(resolve => this.hablar(outro, resolve));
+            this.setEstado('✨ Historia finalizada ☕');
+            return;
+        }
+        
+        const sec = this.secciones[this.actual];
+        this.resaltar(this.actual);
+        this.setEstado(`📖 ${sec.titulo} (${this.actual + 1}/${this.secciones.length})`);
+        
+        await new Promise(resolve => this.hablar(sec.texto, resolve));
+        
+        this.actual++;
+        await this.esperar(700); // Pausa entre secciones
+        
+        // Continuar si no se detuvo
+        if (!this.pausado && this.hablando === false) {
+            await this.narrarSecuencial();
+        }
+    }
+
+    // === PAUSAR/REANUDAR ===
+    togglePausa() {
+        if (!this.synth) return;
+        
+        if (this.hablando && !this.pausado) {
+            this.synth.pause();
+            this.pausado = true;
+            this.setEstado('⏸️ Pausado');
+        } else if (this.pausado) {
+            this.synth.resume();
+            this.pausado = false;
+            this.setEstado('▶️ Reanudando...');
+        }
+        this.actualizarUI();
+    }
+
+    // === DETENER ===
+    detener() {
+        if (this.synth) {
+            this.synth.cancel();
+        }
+        this.hablando = false;
+        this.pausado = false;
+        this.utterance = null;
+        this.quitarResaltado();
+        this.setEstado('⏹️ Detenido');
+        this.actualizarUI();
+    }
+
+    // === UTILIDADES ===
+    resaltar(idx) {
+        this.quitarResaltado();
+        const sec = this.secciones[idx];
+        if (sec?.card) {
+            sec.card.classList.add('highlight');
+            sec.card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        // Activar botón
+        document.querySelectorAll('.btn-seccion').forEach((btn, i) => {
+            btn.classList.toggle('activa', i === idx);
+        });
+    }
+    
+    quitarResaltado() {
+        document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+        document.querySelectorAll('.btn-seccion.activa').forEach(btn => btn.classList.remove('activa'));
+    }
+    
+    setEstado(msg) {
+        document.getElementById('estado').textContent = msg;
+    }
+    
+    actualizarUI() {
+        document.getElementById('btnPause').disabled = !this.hablando || this.pausado;
+        document.getElementById('btnStop').disabled = !this.hablando && !this.pausado;
+        document.getElementById('btnPlay').disabled = this.hablando && !this.pausado;
+    }
+    
+    esperar(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// === INICIALIZAR AL CARGAR ===
+let narrador;
+
+window.addEventListener('DOMContentLoaded', () => {
+    if ('speechSynthesis' in window) {
+        narrador = new NarradorRobusto();
+        narrador.init();
+    } else {
+        console.warn('⚠️ Web Speech API no disponible');
+        const btn = document.getElementById('btnAbrir');
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+        btn.title = 'Narración no disponible';
+        btn.onclick = (e) => {
+            e.preventDefault();
+            alert('Tu navegador no soporta narración de voz.\n\nPrueba con Chrome, Edge o Safari.');
+        };
+    }
+});
+</script>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Colombia - Sistema Publicitario</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #faf6f0; color: #2c1810; }
+
+        header {
+            background: #1a0e0a; color: #f5e6d3; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 3px solid #d4a574;
+        }
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; }
+        .logo span { color: #d4a574; }
+        .logo small { display: block; font-size: .65rem; font-weight: 400; opacity: .6; letter-spacing: 3px; text-transform: uppercase; }
+        nav { display: flex; gap: 1.5rem; }
+        nav a { color: #c8a27b; text-decoration: none; font-weight: 600; font-size: .9rem; text-transform: uppercase; letter-spacing: 1px; transition: .3s; }
+        nav a:hover { color: #f5e6d3; }
+        .hdr-cta { background: #d4a574; color: #1a0e0a; padding: .5rem 1.5rem; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: .9rem; transition: .3s; }
+        .hdr-cta:hover { background: #e8c49c; }
+
+        .hero {
+            position: relative; min-height: 90vh; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(160deg, #1a0e0a 0%, #2c1810 30%, #3d2317 60%, #1a0e0a 100%);
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 20% 70%, rgba(212,165,116,.08) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 80% 30%, rgba(200,162,123,.06) 0%, transparent 70%);
+        }
+        .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .particle {
+            position: absolute; width: 6px; height: 6px; background: #d4a574; border-radius: 50%;
+            animation: floatUp linear infinite; opacity: .4;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: .5; }
+            90% { opacity: .5; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        .hero-content {
+            position: relative; z-index: 2; text-align: center; color: #f5e6d3; padding: 2rem;
+            max-width: 900px;
+        }
+        .hero-badge {
+            display: inline-block; background: rgba(212,165,116,.15); border: 1px solid rgba(212,165,116,.3);
+            padding: .4rem 1.5rem; border-radius: 50px; font-size: .8rem; text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 1.5rem; color: #d4a574;
+        }
+        .hero-content h2 {
+            font-size: clamp(2.8rem, 8vw, 5.5rem); font-weight: 900; line-height: 1.05;
+            background: linear-gradient(135deg, #f5e6d3 0%, #d4a574 50%, #e8c49c 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-content h2 .highlight { color: #d4a574; }
+        .hero-content p {
+            font-size: 1.3rem; margin: 1.5rem auto 2.5rem; max-width: 650px; opacity: .85; line-height: 1.7;
+        }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn { display: inline-block; padding: 1rem 2.8rem; font-size: 1.1rem; font-weight: 700; text-decoration: none; border-radius: 50px; transition: all .3s; border: none; cursor: pointer; }
+        .btn-primary { background: #d4a574; color: #1a0e0a; }
+        .btn-primary:hover { background: #e8c49c; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212,165,116,.35); }
+        .btn-outline { background: transparent; color: #d4a574; border: 2px solid #d4a574; }
+        .btn-outline:hover { background: #d4a574; color: #1a0e0a; transform: translateY(-3px); }
+        .hero-strip {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(90deg, #d4a57433, #d4a57466, #d4a57433);
+            padding: .8rem 0; overflow: hidden; white-space: nowrap;
+        }
+        .hero-strip span {
+            display: inline-block; animation: scrollText 25s linear infinite;
+            color: #f5e6d3; font-size: .9rem; letter-spacing: 2px; text-transform: uppercase;
+        }
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
+
+        .section-title {
+            font-size: 2.5rem; font-weight: 900; text-align: center; color: #2c1810; margin-bottom: .5rem;
+        }
+        .section-title span { color: #8b6b50; }
+        .section-sub { text-align: center; color: #7a5a42; margin-bottom: 3rem; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
+        .card {
+            background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,.06); transition: all .4s;
+            position: relative; cursor: pointer;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,.12); }
+        .card-img {
+            height: 220px; display: flex; align-items: center; justify-content: center;
+            font-size: 4.5rem; position: relative; overflow: hidden;
+        }
+        .card-img::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+            background: linear-gradient(transparent, rgba(0,0,0,.15));
+        }
+        .card-tag {
+            position: absolute; top: 1rem; right: 1rem; z-index: 2;
+            background: #2c1810; color: #d4a574; padding: .3rem 1rem; border-radius: 20px;
+            font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .card-body { padding: 1.8rem; }
+        .card-body h3 { font-size: 1.5rem; margin-bottom: .5rem; color: #2c1810; }
+        .card-body p { color: #5a3a28; margin-bottom: 1.2rem; line-height: 1.6; font-size: .95rem; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #f0e8e0; }
+        .price { font-size: 1.8rem; font-weight: 800; color: #3d2317; }
+        .price small { font-size: .8rem; font-weight: 400; color: #8b6b50; }
+        .card-btn { background: #2c1810; color: #d4a574; border: none; padding: .6rem 1.5rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: .3s; font-size: .85rem; }
+        .card-btn:hover { background: #3d2317; color: #f5e6d3; }
+
+        .banner-ad {
+            border-radius: 20px; overflow: hidden; position: relative;
+            background: linear-gradient(135deg, #2c1810, #4d2e1e, #3d2317);
+            margin: 3rem 0; display: flex; align-items: center; justify-content: space-between;
+            padding: 3rem; flex-wrap: wrap; gap: 2rem;
+        }
+        .banner-ad::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 100% 0%, rgba(212,165,116,.15) 0%, transparent 60%);
+        }
+        .banner-text { position: relative; z-index: 1; }
+        .banner-text h3 { font-size: 2rem; color: #f5e6d3; margin-bottom: .5rem; }
+        .banner-text p { color: #c8a27b; font-size: 1.05rem; max-width: 500px; }
+        .banner-text .banner-highlight { color: #e8c49c; font-weight: 700; }
+        .banner-cta { position: relative; z-index: 1; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .stat-card {
+            background: white; padding: 2.5rem 1.5rem; border-radius: 16px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,.05); transition: .3s; border-bottom: 4px solid #d4a574;
+        }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,.1); }
+        .stat-icon { font-size: 2.5rem; margin-bottom: .5rem; }
+        .stat-num { font-size: 2.8rem; font-weight: 900; color: #2c1810; }
+        .stat-label { color: #7a5a42; font-size: .95rem; margin-top: .3rem; }
+
+        .form-wrapper {
+            max-width: 700px; margin: 0 auto; background: white; padding: 3rem;
+            border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,.06);
+            border: 1px solid #f0e8e0;
+        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-grid .full { grid-column: 1 / -1; }
+        .form-wrapper label { display: block; font-weight: 600; margin-bottom: .4rem; color: #3d2317; font-size: .9rem; }
+        .form-wrapper input, .form-wrapper select, .form-wrapper textarea {
+            width: 100%; padding: .9rem 1rem; border: 2px solid #e8ddd0; border-radius: 10px;
+            font-size: 1rem; transition: .3s; background: #faf6f0;
+        }
+        .form-wrapper input:focus, .form-wrapper select:focus, .form-wrapper textarea:focus {
+            outline: none; border-color: #d4a574; box-shadow: 0 0 0 3px rgba(212,165,116,.15);
+        }
+        .form-wrapper textarea { resize: vertical; min-height: 90px; }
+        .form-wrapper .btn { width: 100%; margin-top: .5rem; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center;
+            animation: fadeIn .3s;
+        }
+        .modal-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal {
+            background: #faf6f0; max-width: 500px; width: 90%; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,.3); animation: slideUp .4s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header {
+            background: linear-gradient(135deg, #2c1810, #5a3a28); color: #f5e6d3;
+            padding: 2rem; text-align: center; position: relative;
+        }
+        .modal-header h3 { font-size: 1.6rem; }
+        .modal-header p { opacity: .8; margin-top: .3rem; }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,.1); border: none;
+            color: #f5e6d3; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem;
+            cursor: pointer; transition: .3s;
+        }
+        .modal-close:hover { background: rgba(255,255,255,.2); }
+        .modal-body { padding: 2rem; }
+        .modal-body .offer-timer {
+            background: #2c1810; color: #e8c49c; padding: 1rem; border-radius: 12px; text-align: center; margin-bottom: 1.5rem;
+        }
+        .modal-body .offer-timer .timer { font-size: 2rem; font-weight: 900; letter-spacing: 3px; }
+        .modal-body label { display: block; font-weight: 600; margin-bottom: .3rem; color: #3d2317; font-size: .85rem; }
+        .modal-body input { width: 100%; padding: .8rem; margin-bottom: 1rem; border: 2px solid #e8ddd0; border-radius: 8px; font-size: 1rem; }
+        .modal-body .btn { width: 100%; }
+
+        footer {
+            background: #1a0e0a; color: #8b6b50; text-align: center; padding: 2.5rem 1rem;
+        }
+        footer .social { margin: 1.2rem 0; display: flex; justify-content: center; gap: 1.5rem; }
+        footer .social a { color: #c8a27b; text-decoration: none; font-weight: 600; }
+        footer .social a:hover { color: #d4a574; }
+
+        @media (max-width: 700px) {
+            header { flex-direction: column; gap: .8rem; text-align: center; }
+            nav { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .banner-ad { padding: 2rem; text-align: center; justify-content: center; }
+            .hero-content h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">&#9749; CAFÉ <span>CO</span><small>Publicidad &amp; Ventas</small></div>
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Catálogo</a>
+        <a href="#">Publicidad</a>
+        <a href="#">Afiliados</a>
+        <a href="#">Contacto</a>
+    </nav>
+    <a href="#" class="hdr-cta" onclick="openModal(); return false;">&#128222; Cotizar</a>
+</header>
+
+<section class="hero">
+    <div class="particles" id="particles"></div>
+    <div class="hero-content">
+        <div class="hero-badge">&#127758; Hecho en Colombia — Envíos a todo el país</div>
+        <h2>El café<br>que <span class="highlight">mueve</span> a Colombia</h2>
+        <p>Campaña publicitaria oficial de caficultores colombianos. Calidad de exportación, precio justo, entrega directa.</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-primary" onclick="openModal(); return false;">&#128640; Quiero mi café</a>
+            <a href="#" class="btn btn-outline">&#128065; Ver campaña</a>
+        </div>
+    </div>
+    <div class="hero-strip">
+        <span>&#9733; Envío gratis por tiempo limitado &nbsp;&bull;&nbsp; 100% café colombiano &nbsp;&bull;&nbsp; Pago contraentrega &nbsp;&bull;&nbsp; &#9733; Envío gratis por tiempo limitado &nbsp;&bull;&nbsp; 100% café colombiano &nbsp;&bull;&nbsp; Pago contraentrega &nbsp;&bull;&nbsp;</span>
+    </div>
+</section>
+
+<section class="container">
+    <h2 class="section-title">Catálogo <span>publicitario</span></h2>
+    <p class="section-sub">Nuestros productos estrella en la campaña actual</p>
+    <div class="grid">
+        <div class="card">
+            <div class="card-img" style="background: linear-gradient(135deg,#3d2317,#6d4c3a);">🌋</div>
+            <span class="card-tag">&#128293; Más vendido</span>
+            <div class="card-body">
+                <h3>Café Volcánico Huila</h3>
+                <p>Notas a chocolate oscuro y caramelo. Cuerpo completo, acidez brillante. Altura: 1700 m.</p>
+                <div class="card-footer">
+                    <div class="price">$38.900 <small>/500g</small></div>
+                    <button class="card-btn" onclick="openModal()">Cotizar</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-img" style="background: linear-gradient(135deg,#4d2e1e,#8b6b50);">🏔️</div>
+            <span class="card-tag">&#11088; Premium</span>
+            <div class="card-body">
+                <h3>Supremo Sierra Nevada</h3>
+                <p>Perfume floral, cítricos suaves y final dulce. Café de altura (1800 msnm). Puntuación 87+.</p>
+                <div class="card-footer">
+                    <div class="price">$52.500 <small>/500g</small></div>
+                    <button class="card-btn" onclick="openModal()">Cotizar</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-img" style="background: linear-gradient(135deg,#5a3a28,#a08068);">🌸</div>
+            <span class="card-tag">&#128142; Limitada</span>
+            <div class="card-body">
+                <h3>Geisha Tarqui</h3>
+                <p>Notas a jazmín, frutas tropicales y miel. Puntuación SCAA 90+. Edición especial.</p>
+                <div class="card-footer">
+                    <div class="price">$89.900 <small>/250g</small></div>
+                    <button class="card-btn" onclick="openModal()">Cotizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="banner-ad">
+        <div class="banner-text">
+            <h3>&#127881; Campaña: <span class="banner-highlight">Envío gratis</span></h3>
+            <p>En pedidos superiores a <strong>$80.000</strong> — Válido en toda Colombia. Aprovecha esta oferta publicitaria por tiempo limitado.</p>
+        </div>
+        <div class="banner-cta">
+            <a href="#" class="btn btn-primary" onclick="openModal(); return false;">Aprovechar oferta</a>
+        </div>
+    </div>
+</div>
+
+<section class="container">
+    <h2 class="section-title">Impacto <span>publicitario</span></h2>
+    <p class="section-sub">Resultados de nuestra campaña nacional</p>
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">🌱</div><div class="stat-num">120+</div><div class="stat-label">Fincas afiliadas</div></div>
+        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-num">4.8</div><div class="stat-label">Calificación campaña</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-num">15k+</div><div class="stat-label">Pedidos realizados</div></div>
+        <div class="stat-card"><div class="stat-icon">📢</div><div class="stat-num">98%</div><div class="stat-label">Satisfacción</div></div>
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-num">#1</div><div class="stat-label">Café en Colombia</div></div>
+    </div>
+</section>
+
+<section class="container">
+    <h2 class="section-title">Solicitud de <span>cotización</span></h2>
+    <p class="section-sub">Completa el formulario y te enviaremos una propuesta personalizada</p>
+    <div class="form-wrapper">
+        <form onsubmit="event.preventDefault(); document.getElementById('successMsg').style.display='block'; this.reset();">
+            <div class="form-grid">
+                <div><label>Nombre completo</label><input type="text" required placeholder="Tu nombre"></div>
+                <div><label>Correo electrónico</label><input type="email" required placeholder="correo@ejemplo.com"></div>
+                <div><label>Teléfono</label><input type="tel" placeholder="300 123 4567"></div>
+                <div>
+                    <label>Ciudad</label>
+                    <select>
+                        <option>Bogotá</option><option>Medellín</option><option>Cali</option>
+                        <option>Barranquilla</option><option>Cartagena</option><option>Bucaramanga</option>
+                        <option>Pereira</option><option>Manizales</option><option>Otra</option>
+                    </select>
+                </div>
+                <div class="full">
+                    <label>Producto de interés</label>
+                    <select>
+                        <option>Café Volcánico Huila</option>
+                        <option>Supremo Sierra Nevada</option>
+                        <option>Geisha Tarqui</option>
+                        <option>Variedad de productos</option>
+                        <option>Publicidad / Afiliados</option>
+                    </select>
+                </div>
+                <div class="full"><label>Mensaje</label><textarea placeholder="Cuéntanos qué necesitas..."></textarea></div>
+                <div class="full">
+                    <button type="submit" class="btn btn-primary">&#128229; Enviar cotización</button>
+                </div>
+                <div class="full"
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Colombia - Sistema Publicitario Completo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #faf6f0; color: #2c1810; }
+
+        header {
+            background: #1a0e0a; color: #f5e6d3; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 3px solid #d4a574; position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; cursor: pointer; }
+        .logo span { color: #d4a574; }
+        .logo small { display: block; font-size: .65rem; font-weight: 400; opacity: .6; letter-spacing: 3px; text-transform: uppercase; }
+        nav { display: flex; gap: 1.5rem; align-items: center; }
+        nav a { color: #c8a27b; text-decoration: none; font-weight: 600; font-size: .85rem; text-transform: uppercase; letter-spacing: 1px; transition: .3s; }
+        nav a:hover { color: #f5e6d3; }
+        .hdr-cta { background: #d4a574; color: #1a0e0a; padding: .5rem 1.2rem; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: .85rem; transition: .3s; border: none; cursor: pointer; }
+        .hdr-cta:hover { background: #e8c49c; }
+        .cart-btn { background: none; border: none; color: #d4a574; font-size: 1.5rem; cursor: pointer; position: relative; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: #c0392b; color: white; font-size: .7rem; padding: 2px 6px; border-radius: 50%; font-weight: 700; }
+
+        .hero {
+            position: relative; min-height: 85vh; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(160deg, #1a0e0a 0%, #2c1810 30%, #3d2317 60%, #1a0e0a 100%);
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 20% 70%, rgba(212,165,116,.08) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 80% 30%, rgba(200,162,123,.06) 0%, transparent 70%);
+        }
+        .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .particle {
+            position: absolute; width: 6px; height: 6px; background: #d4a574; border-radius: 50%;
+            animation: floatUp linear infinite; opacity: .4;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: .5; }
+            90% { opacity: .5; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: #f5e6d3; padding: 2rem; max-width: 900px; }
+        .hero-badge {
+            display: inline-block; background: rgba(212,165,116,.15); border: 1px solid rgba(212,165,116,.3);
+            padding: .4rem 1.5rem; border-radius: 50px; font-size: .8rem; text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 1.5rem; color: #d4a574;
+        }
+        .hero-content h2 {
+            font-size: clamp(2.8rem, 8vw, 5.5rem); font-weight: 900; line-height: 1.05;
+            background: linear-gradient(135deg, #f5e6d3 0%, #d4a574 50%, #e8c49c 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-content p { font-size: 1.2rem; margin: 1.2rem auto 2rem; max-width: 600px; opacity: .85; line-height: 1.7; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn { display: inline-block; padding: 1rem 2.8rem; font-size: 1.1rem; font-weight: 700; text-decoration: none; border-radius: 50px; transition: all .3s; border: none; cursor: pointer; font-family: inherit; }
+        .btn-primary { background: #d4a574; color: #1a0e0a; }
+        .btn-primary:hover { background: #e8c49c; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212,165,116,.35); }
+        .btn-outline { background: transparent; color: #d4a574; border: 2px solid #d4a574; }
+        .btn-outline:hover { background: #d4a574; color: #1a0e0a; transform: translateY(-3px); }
+        .btn-small { padding: .5rem 1.2rem; font-size: .85rem; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-success:hover { background: #2ecc71; }
+        .btn-danger { background: #c0392b; color: white; }
+        .btn-danger:hover { background: #e74c3c; }
+        .hero-strip {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(90deg, #d4a57433, #d4a57466, #d4a57433);
+            padding: .8rem 0; overflow: hidden; white-space: nowrap;
+        }
+        .hero-strip span { display: inline-block; animation: scrollText 25s linear infinite; color: #f5e6d3; font-size: .9rem; letter-spacing: 2px; text-transform: uppercase; }
+        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
+        .section-title { font-size: 2.5rem; font-weight: 900; text-align: center; color: #2c1810; margin-bottom: .5rem; }
+        .section-title span { color: #8b6b50; }
+        .section-sub { text-align: center; color: #7a5a42; margin-bottom: 3rem; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.8rem; }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+        .card {
+            background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,.06); transition: all .4s; position: relative;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,.12); }
+        .card-img {
+            height: 200px; display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; position: relative; overflow: hidden;
+        }
+        .card-img::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(0,0,0,.15)); }
+        .card-tag {
+            position: absolute; top: .8rem; right: .8rem; z-index: 2;
+            background: #2c1810; color: #d4a574; padding: .25rem .8rem; border-radius: 20px;
+            font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .card-body { padding: 1.5rem; }
+        .card-body h3 { font-size: 1.3rem; margin-bottom: .4rem; color: #2c1810; }
+        .card-body p { color: #5a3a28; margin-bottom: .8rem; line-height: 1.5; font-size: .9rem; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: .8rem; border-top: 1px solid #f0e8e0; }
+        .price { font-size: 1.6rem; font-weight: 800; color: #3d2317; }
+        .price small { font-size: .75rem; font-weight: 400; color: #8b6b50; }
+        .card-btn { background: #2c1810; color: #d4a574; border: none; padding: .5rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: .3s; font-size: .8rem; font-family: inherit; }
+        .card-btn:hover { background: #3d2317; color: #f5e6d3; }
+
+        .banner-ad {
+            border-radius: 20px; overflow: hidden; position: relative;
+            background: linear-gradient(135deg, #2c1810, #4d2e1e, #3d2317); margin: 3rem 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 3rem; flex-wrap: wrap; gap: 2rem;
+        }
+        .banner-ad::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 100% 0%, rgba(212,165,116,.15) 0%, transparent 60%); }
+        .banner-text { position: relative; z-index: 1; }
+        .banner-text h3 { font-size: 2rem; color: #f5e6d3; margin-bottom: .5rem; }
+        .banner-text p { color: #c8a27b; font-size: 1.05rem; max-width: 500px; }
+        .banner-highlight { color: #e8c49c; font-weight: 700; }
+        .banner-cta { position: relative; z-index: 1; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .stat-card { background: white; padding: 2rem 1rem; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,.05); transition: .3s; border-bottom: 4px solid #d4a574; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,.1); }
+        .stat-icon { font-size: 2rem; margin-bottom: .5rem; }
+        .stat-num { font-size: 2.5rem; font-weight: 900; color: #2c1810; }
+        .stat-label { color: #7a5a42; font-size: .9rem; margin-top: .3rem; }
+
+        .form-wrapper { max-width: 700px; margin: 0 auto; background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,.06); border: 1px solid #f0e8e0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-grid .full { grid-column: 1 / -1; }
+        .form-wrapper label { display: block; font-weight: 600; margin-bottom: .3rem; color: #3d2317; font-size: .85rem; }
+        .form-wrapper input, .form-wrapper select, .form-wrapper textarea {
+            width: 100%; padding: .8rem 1rem; border: 2px solid #e8ddd0; border-radius: 10px;
+            font-size: 1rem; transition: .3s; background: #faf6f0; font-family: inherit;
+        }
+        .form-wrapper input:focus, .form-wrapper select:focus, .form-wrapper textarea:focus { outline: none; border-color: #d4a574; box-shadow: 0 0 0 3px rgba(212,165,116,.15); }
+        .form-wrapper textarea { resize: vertical; min-height: 80px; }
+        .form-wrapper .btn { width: 100%; margin-top: .5rem; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #faf6f0; max-width: 520px; width: 92%; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,.3); animation: slideUp .4s ease; max-height: 90vh; overflow-y: auto;
+        }
+        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header {
+            background: linear-gradient(135deg, #2c1810, #5a3a28); color: #f5e6d3;
+            padding: 1.5rem; text-align: center; position: relative;
+        }
+        .modal-header h3 { font-size: 1.4rem; }
+        .modal-header p { opacity: .8; margin-top: .3rem; font-size: .9rem; }
+        .modal-close {
+            position: absolute; top: .8rem; right: .8rem; background: rgba(255,255,255,.1); border: none;
+            color: #f5e6d3; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem;
+            cursor: pointer; transition: .3s; line-height: 32px; text-align: center;
+        }
+        .modal-close:hover { background: rgba(255,255,255,.2); }
+        .modal-body { padding: 1.5rem; }
+        .modal-body .offer-timer { background: #2c1810; color: #e8c49c; padding: .8rem; border-radius: 12px; text-align: center; margin-bottom: 1rem; }
+        .modal-body .offer-timer .timer { font-size: 1.8rem; font-weight: 900; letter-spacing: 3px; }
+        .modal-body label { display: block; font-weight: 600; margin-bottom: .3rem; color: #3d2317; font-size: .85rem; }
+        .modal-body input, .modal-body select { width: 100%; padding: .8rem; margin-bottom: .8rem; border: 2px solid #e8ddd0; border-radius: 8px; font-size: 1rem; font-family: inherit; }
+        .modal-body .btn { width: 100%; }
+
+        footer { background: #1a0e0a; color: #8b6b50; text-align: center; padding: 2.5rem 1rem; }
+        footer .social { margin: 1.2rem 0; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        footer .social a { color: #c8a27b; text-decoration: none; font-weight: 600; }
+        footer .social a:hover { color: #d4a574; }
+
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; z-index: 9998;
+            background: white; box-shadow: -10px 0 40px rgba(0,0,0,.15);
+            transition: right .4s ease; display: flex; flex-direction: column;
+        }
+        .cart-sidebar.open { right: 0; }
+        .cart-sidebar .cart-header { background: #2c1810; color: #f5e6d3; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+        .cart-sidebar .cart-header h3 { font-size: 1.2rem; }
+        .cart-sidebar .cart-header button { background: none; border: none; color: #d4a574; font-size: 1.5rem; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 1rem; }
+        .cart-item { display: flex; align-items: center; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid #f0e8e0; }
+        .cart-item .ci-emoji { font-size: 2rem; }
+        .cart-item .ci-info { flex: 1; }
+        .cart-item .ci-info h4 { font-size: .95rem; color: #2c1810; }
+        .cart-item .ci-info p { font-size: .8rem; color: #7a5a42; }
+        .cart-item .ci-qty { display: flex; align-items: center; gap: .5rem; }
+        .cart-item .ci-qty button { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #d4a574; background: none; cursor: pointer; font-weight: 700; color: #3d2317; }
+        .cart-item .ci-qty span { font-weight: 700; min-width: 20px; text-align: center; }
+        .cart-item .ci-remove { background: none; border: none; color: #c0392b; cursor: pointer; font-size: 1.2rem; }
+        .cart-footer { border-top: 2px solid #2c1810; padding: 1.2rem; background: #faf6f0; }
+        .cart-footer .cart-total { display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 800; color: #2c1810; margin-bottom: 1rem; }
+        .cart-footer .btn { width: 100%; }
+
+        .overlay-bg { position: fixed; inset: 0; z-index: 9997; background: rgba(0,0,0,.5); display: none; }
+        .overlay-bg.show { display: block; }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        .gallery-item {
+            border-radius: 16px; overflow: hidden; position: relative; height: 240px;
+            display: flex; align-items: flex-end; cursor: pointer; transition: .4s;
+        }
+        .gallery-item:hover { transform: scale(1.03); }
+        .gallery-item .gi-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+        .gallery-item .gi-overlay { position: relative; z-index: 1; padding: 1.5rem; color: white; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,.8)); }
+        .gallery-item .gi-overlay h4 { font-size: 1.2rem; }
+        .gallery-item .gi-overlay p { font-size: .85rem; opacity: .85; }
+
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .blog-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,.06); transition: .4s; }
+        .blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,.1); }
+        .blog-card .bc-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+        .blog-card .bc-body { padding: 1.5rem; }
+        .blog-card .bc-body .bc-date { font-size: .8rem; color: #8b6b50; margin-bottom: .3rem; }
+        .blog-card .bc-body h3 { font-size: 1.2rem; margin-bottom: .5rem; color: #2c1810; }
+        .blog-card .bc-body p { color: #5a3a28; font-size: .9rem; line-height: 1.5; }
+        .blog-card .bc-body .bc-link { color: #d4a574; font-weight: 700; text-decoration: none; display: inline-block; margin-top: .8rem; }
+
+        .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .payment-card { background: white; border-radius: 12px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.05); border: 2px solid transparent; transition: .3s; }
+        .payment-card:hover { border-color: #d4a574; }
+        .payment-card .pc-icon { font-size: 2.5rem; margin-bottom: .5rem; }
+        .payment-card h4 { font-size: 1rem; color: #2c1810; }
+
+        .shipping-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .shipping-card { background: white; border-radius: 12px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.05); }
+        .shipping-card .sc-icon { font-size: 2.5rem; margin-bottom: .5rem; }
+        .shipping-card h4 { font-size: 1.1rem; color: #2c1810; }
+        .shipping-card p { font-size: .85rem; color: #5a3a28; margin-top: .3rem; }
+
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 99999;
+            background: #2c1810; color: #f5e6d3; padding: 1rem 1.5rem; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.2); display: none; animation: slideIn .4s ease;
+            border-left: 4px solid #d4a574;
+        }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        .scroll-top {
+            position: fixed; bottom: 2rem; left: 2rem; z-index: 50;
+            width: 50px; height: 50px; border-radius: 50%; background: #2c1810; color: #d4a574;
+            border: none; font-size: 1.5rem; cursor: pointer; display: none; box-shadow: 0 4px 15px rgba(0,0,0,.2);
+            transition: .3s;
+        }
+        .scroll-top:hover { background: #3d2317; transform: translateY(-3px); }
+
+        @media (max-width: 700px) {
+            header { flex-direction: column; gap: .8rem; text-align: center; }
+            nav { flex-wrap: wrap; justify-content: center; gap: .8rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .banner-ad { padding: 2rem; text-align: center; justify-content: center; }
+            .hero-content h2 { font-size: 2.2rem; }
+            .cart-sidebar { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay-bg" id="overlayBg" onclick="closeCart()"></div>
+
+<header>
+    <div class="logo" onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})">
+        &#9749; CAFÉ <span>CO</span><small>Publicidad &amp; Ventas</small>
+    </div>
+    <nav>
+        <a href="#" onclick="scrollToSection('catalogo')">Catálogo</a>
+        <a href="#" onclick="scrollToSection('galeria')">Galería</a>
+        <a href="#" onclick="scrollToSection('blog')">Blog</a>
+        <a href="#" onclick="scrollToSection('pagos')">Pagos</a>
+        <a href="#" onclick="scrollToSection('envios')">Envíos</a>
+        <a href="#" onclick="scrollToSection('cotizacion')">Contacto</a>
+        <button class="cart-btn" onclick="openCart()">&#128722; <span class="cart-count" id="cartCount">0</span></button>
+    </nav>
+</header>
+
+<section class="hero" id="hero">
+    <div class="particles" id="particles"></div>
+    <div class="hero-content">
+        <div class="hero-badge">&#127758; Hecho en Colombia — Envíos a todo el país</div>
+        <h2>El café que <span class="highlight">mueve</span> a Colombia</h2>
+        <p>Campaña publicitaria oficial de caficultores colombianos. Calidad de exportación, precio justo, entrega directa desde la finca a tu taza.</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-primary" onclick="scrollToSection('catalogo'); return false;">&#128640; Ver catálogo</a>
+            <a href="#" class="btn btn-outline" onclick="openModal(); return false;">&#127873; Oferta especial</a>
+        </div>
+    </div>
+    <div class="hero-strip">
+        <span>&#9733; Envío gratis por tiempo limitado &nbsp;&bull;&nbsp; 100% café colombiano &nbsp;&bull;&nbsp; Pago contraentrega &nbsp;&bull;&nbsp; &#9733; Envío gratis por tiempo limitado &nbsp;&bull;&nbsp; 100% café colombiano &nbsp;&bull;&nbsp; Pago contraentrega &nbsp;&bull;&nbsp;</span>
+    </div>
+</section>
+
+<section class="container" id="catalogo">
+    <h2 class="section-title">Catálogo <span>publicitario</span></h2>
+    <p class="section-sub">Nuestros productos estrella — calidad directa del caficultor colombiano</p>
+    <div class="grid" id="productGrid"></div>
+</section>
+
+<div class="container">
+    <div class="banner-ad">
+        <div class="banner-text">
+            <h3>&#127881; Campaña: <span class="banner-highlight">Envío gratis</span></h3>
+            <p>En pedidos superiores a <strong>$80.000</strong> — Válido en toda Colombia. Aprovecha esta oferta publicitaria por tiempo limitado.</p>
+        </div>
+        <div class="banner-cta">
+            <a href="#" class="btn btn-primary" onclick="scrollToSection('catalogo'); return false;">Aprovechar oferta</a>
+        </div>
+    </div>
+</div>
+
+<section class="container" id="stats">
+    <h2 class="section-title">Impacto <span>publicitario</span></h2>
+    <p class="section-sub">Resultados de nuestra campaña nacional</p>
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">🌱</div><div class="stat-num">120+</div><div class="stat-label">Fincas afiliadas</div></div>
+        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-num">4.8</div><div class="stat-label">Calificación</div></div>
+        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-num">15k+</div><div class="stat-label">Pedidos</div></div>
+        <div class="stat-card"><div class="stat-icon">📢</div><div class="stat-num">98%</div><div class="stat-label">Satisfacción</div></div>
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-num">#1</div><div class="stat-label">Café en Colombia</div></div>
+    </div>
+</section>
+
+<section class="container" id="galeria">
+    <h2 class="section-title">Galería de <span>Colombia</span></h2>
+    <p class="section-sub">Regiones cafeteras de Colombia — la cuna del mejor café del mundo</p>
+    <div class="gallery-grid">
+        <div class="gallery-item"><div class="gi-bg" style="background:linear-gradient(135deg,#2d5a27,#4a8c3f)">🌄</div><div class="gi-overlay"><h4>Eje Cafetero</h4><p>Quindío, Risaralda, Caldas</p></div></div>
+        <div class="gallery-item"><div class="gi-bg" style="background:linear-gradient(135deg,#5a3a28,#8b6b50)">🏔️</div><div class="gi-overlay"><h4>Sierra Nevada</h4><p>Café de altura, sabor floral</p></div></div>
+        <div class="gallery-item"><div class="gi-bg" style="background:linear-gradient(135deg,#1a3a2a,#2d6b4a)">🌋</div><div class="gi-overlay"><h4>Huila Volcánico</h4><p>Suelos volcánicos, cuerpo completo</p></div></div>
+        <div class="gallery-item"><div class="gi-bg" style="background:linear-gradient(135deg,#3a2a1a,#6b4a2d)">🌸</div><div class="gi-overlay"><h4>Tarqui Geisha</h4><p>Jazmín y frutas tropicales</p></div></div>
+        <div class="gallery-item"><div class="gi-bg" style="background:linear-gradient(135deg,#1a2a3a,#2a4a6b)">🏞️</div><div class="gi-overlay"><h4>Nariño</h4><p>Orgánico de altura, perfil dulce</p></div></div>
+        <div class="gallery-item"><div class="gi-bg" style="background:linear-gradient(135deg,#4a2a1a,#6b4a2a)">☕</div><div class="gi-overlay"><h4>Antioquia</h4><p>Tradición de 100+ años</p></div></div>
+    </div>
+</section>
+
+<section class="container" id="blog">
+    <h2 class="section-title">Blog del <span>café</span></h2>
+    <p class="section-sub">Noticias, guías y el mundo del café colombiano</p>
+    <div class="blog-grid">
+        <div class="blog-card"><div class="bc-img" style="background:linear-gradient(135deg,#2c1810,#5a3a28)">📖</div><div class="bc-body"><div class="bc-date">15 May 2026</div><h3>Guía completa del café colombiano</h3><p>Descubre las 5 regiones cafeteras y sus perfiles de sabor.</p><a href="#" class="bc-link">Leer más →</a></div></div>
+        <div class="blog-card"><div class="bc-img" style="background:linear-gradient(135deg,#3d2317,#6d4c3a)">☕</div><div class="bc-body"><div class="bc-date">8 May 2026</div><h3>Métodos de preparación</h3><p>Prensa francesa, pour-over, espresso y más.</p><a href="#" class="bc-link">Leer más →</a></div></div>
+        <div class="blog-card"><div class="bc-img" style="background:linear-gradient(135deg,#4d2e1e,#8b6b50)">🌱</div><div class="bc-body"><div class="bc-date">30 Abr 2026</div><h3>Detrás de la taza: caficultores</h3><p>Conoce a los productores del mejor café del mundo.</p><a href="#" class="bc-link">Leer más →</a></div></div>
+    </div>
+</section>
+
+<section class="container" id="pagos">
+    <h2 class="section-title">Métodos de <span>pago</span></h2>
+    <p class="section-sub">Paga de forma segura</p>
+    <div class="payment-grid">
+        <div class="payment-card"><div class="pc-icon">💳</div><h4>Tarjeta</h4><p style="font-size:.8rem;color:#7a5a42;">Visa, Mastercard, Amex</p></div>
+        <div class="payment-card"><div class="pc-icon">🏦</div><h4>Transferencia</h4><p style="font-size:.8rem;color:#7a5a42;">Bancolombia, Nequi</p></div>
+        <div class="payment-card"><div class="pc-icon">📱</div><h4>Nequi/Daviplata</h4><p style="font-size:.8rem;color:#7a5a42;">Pago al instante</p></div>
+        <div class="payment-card"><div class="pc-icon">📦</div><h4>Contraentrega</h4><p style="font-size:.8rem;color:#7a5a42;">Paga al recibir</p></div>
+        <div class="payment-card"><div class="pc-icon">🪙</div><h4>Cripto</h4><p style="font-size:.8rem;color:#7a5a42;">BTC, ETH, USDT</p></div>
+        <div class="payment-card"><div class="pc-icon">🎁</div><h4>Tarjeta regalo</h4><p style="font-size:.8rem;color:#7a5a42;">Canjea tu código</p></div>
+    </div>
+</section>
+
+<section class="container" id="envios">
+    <h2 class="section-title">Información de <span>envíos</span></h2>
+    <p class="section-sub">Llevamos el café colombiano a tu puerta</p>
+    <div class="shipping-grid">
+        <div class="shipping-card"><div class="sc-icon">🚚</div><h4>Estándar</h4><p>3-5 días • $8.900<br><strong>Gratis</strong> +$80.000</p></div>
+        <div class="shipping-card"><div class="sc-icon">⚡</div><h4>Exprés</h4><p>1-2 días • $15.900</p></div>
+        <div class="shipping-card"><div class="sc-icon">📬</div><h4>Punto aliado</h4><p>$5.900 • Recoge cerca</p></div>
+        <div class="shipping-card"><div class="sc-icon">🌎</div><h4>Internacional</h4><p>Consultar destino</p></div>
+    </div>
+    <div style="background:#2c1810;border-radius:12px;padding:1.5rem;margin-top:2rem;color:#f5e6d3;">
+        <h4 style="color:#d4a574;margin-bottom:.5rem;">&#128205; Cobertura nacional</h4>
+        <p style="opacity:.85;font-size:.9rem;">Bogotá, Medellín, Cali, Barranquilla, Cartagena, Bucaramanga, Pereira, Manizales, Ibagué, Cúcuta, Santa Marta, Villavicencio, Pasto, Neiva y +200 municipios.</p>
+    </div>
+</section>
+
+<section class="container" id="cotizacion">
+    <h2 class="section-title">Solicitud de <span>cotización</span></h2>
+    <p class="section-sub">Te enviaremos una propuesta personalizada</p>
+    <div class="form-wrapper">
+        <form onsubmit="event.preventDefault(); document.getElementById('successMsg').style.display='block'; this.reset();">
+            <div class="form-grid">
+                <div><label>Nombre</label><input type="text" required placeholder="Tu nombre"></div>
+                <div><label>Email</label><input type="email" required placeholder="correo@ejemplo.com"></div>
+                <div><label>Teléfono</label><input type="tel" placeholder="300 123 4567"></div>
+                <div><label>Ciudad</label><select><option>Bogotá</option><option>Medellín</option><option>Cali</option><option>Barranquilla</option><option>Cartagena</option><option>Bucaramanga</option><option>Pereira</option><option>Manizales</option><option>Otra</option></select></div>
+                <div class="full"><label>Tipo</label><select><option>Cotización productos</option><option>Venta al por mayor</option><option>Publicidad/Afiliados</option><option>Distribución</option><option>Otro</option></select></div>
+                <div class="full"><label>Mensaje</label><textarea placeholder="¿Qué necesitas?" rows="3"></textarea></div>
+                <div class="full"><button type="submit" class="btn btn-primary">&#128229; Enviar</button></div>
+                <div class="full" id="successMsg" style="display:none;text-align:center;color:#2c1810;font-weight:600;padding:.8rem;background:#e8f5e0;border-radius:8px;">&#10004; ¡Cotización enviada! Te contactamos en 24h.</div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="modal-overlay" id="modalOferta">
+    <div class="modal">
+        <div class="modal-header">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3>&#127881; ¡Oferta especial!</h3>
+            <p>Descuento exclusivo por tiempo limitado</p>
+        </div>
+        <div class="modal-body">
+            <div class="offer-timer">&#9202; Expira en:<br><span class="timer" id="countdown">10:00</span></div>
+            <p style="margin-bottom:1.2rem;color:#5a3a28;font-size:.95rem;"><strong>&#128071; 15% descuento</strong> + envío gratis</p>
+            <form onsubmit="event.preventDefault();alert('&#10004; ¡Registrado! Revisa tu correo.');closeModal();">
+                <label>Nombre</label><input type="text" required placeholder="Nombre">
+                <label>Email</label><input type="email" required placeholder="correo@ejemplo.com">
+                <label>¿Qué café te interesa?</label>
+                <select><option>Café Volcánico Huila</option><option>Supremo Sierra Nevada</option><option>Geisha Tarqui</option><option>Aún no sé</option></select>
+                <button type="submit" class="btn btn-primary">&#127873; Recibir descuento</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header"><h3>&#128722; Carrito</h3><button onclick="closeCart()">&times;</button></div>
+    <div class="cart-items" id="cartItems"><p style="text-align:center;color:#7a5a42;padding:2rem 0;">Vacío</p></div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+        <div class="cart-total"><span>Total:</span><span id="cartTotal">$0</span></div>
+        <button class="btn btn-primary" onclick="checkout()">&#128640; Ir al pago</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<footer>
+    <p>&copy; 2026 Café CO Publicidad</p>
+    <div class="social"><a href="#">Facebook</a><a href="#">Instagram</a><a href="#">Twitter</a><a href="#">WhatsApp</a><a href="#">TikTok</a></div>
+    <p style="font-size:.85rem;">&#10084; Caficultores colombianos</p>
+</footer>
+
+<script>
+    var productos = [
+        {id:1,emoji:'🌋',name:'Café Volcánico Huila',desc:'Chocolate oscuro y caramelo. Cuerpo completo.',price:38900,tag:'🔥 Más vendido',bg:'linear-gradient(135deg,#3d2317,#6d4c3a)'},
+        {id:2,emoji:'🏔️',name:'Supremo Sierra Nevada',desc:'Perfume floral, cítricos, final dulce. 87+ pts.',price:52500,tag:'⭐ Premium',bg:'linear-gradient(135deg,#4d2e1e,#8b6b50)'},
+        {id:3,emoji:'🌸',name:'Geisha Tarqui',desc:'Jazmín, frutas tropicales, miel. SCAA 90+.',price:89900,tag:'💎 Limitada',bg:'linear-gradient(135deg,#5a3a28,#a08068)'},
+        {id:4,emoji:'🌿',name:'Café Orgánico Nariño',desc:'Orgánico certificado. Perfil limpio y dulce.',price:42000,tag:'🌱 Orgánico',bg:'linear-gradient(135deg,#1a3a2a,#2d6b4a)'},
+        {id:5,emoji:'🟤',name:'Tostión Media Antioquia',desc:'Nuez, caramelo suave, chocolate con leche.',price:35500,tag:'⚖️ Clásico',bg:'linear-gradient(135deg,#4a2a1a,#6b4a2a)'},
+        {id:6,emoji:'🔄',name:'Descafeinado Premium',desc:'Mismo sabor, cero cafeína. Proceso natural.',price:45000,tag:'🌙 Sin cafeína',bg:'linear-gradient(135deg,#2a2a2a,#5a4a3a)'},
+        {id:7,emoji:'📦',name:'Pack Ahorro 3x Huila',desc:'3x500g Huila. Ahorras $16.700.',price:105000,tag:'💰 Ahorro',bg:'linear-gradient(135deg,#2c1810,#7a4a2a)'},
+        {id:8,emoji:'🎁',name:'Pack Degustación 4 Var.',desc:'Huila, Nevada, Nariño, Geisha (250g c/u).',price:120000,tag:'🎯 Regalo',bg:'linear-gradient(135deg,#1a0e0a,#8b6b50)'}
+    ];
+    var carrito = [];
+
+    function renderProductos() {
+        document.getElementById('productGrid').innerHTML = productos.map(function(p){
+            var u = p.id <= 6 ? '500g' : (p.id === 7 ? '3x500g' : '4x250g');
+            return '<div class="card"><div class="card-img" style="background:'+p.bg+';">'+p.emoji+'</div><span class="card-tag">'+p.tag+'</span><div class="card-body"><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="card-footer"><div class="price">$'+p.price.toLocaleString('es-CO')+' <small>/'+u+'</small></div><button class="card-btn" onclick="addToCart('+p.id+')">&#128722;</button></div></div></div>';
+        }).join('');
+    }
+
+    function addToCart(id) {
+        var p = productos.find(function(x){return x.id===id});
+        var e = carrito.find(function(x){return x.id===id});
+        e ? e.cant++ : carrito.push({id:id,cant:1,name:p.name,price:p.price,emoji:p.emoji});
+        actualizarCarrito();
+        showToast('&#10004; '+p.name+' agregado');
+    }
+
+    function actualizarCarrito() {
+        var c = 0; carrito.forEach(function(x){c+=x.cant});
+        document.getElementById('cartCount').textContent = c;
+        var d = document.getElementById('cartItems'), f = document.getElementById('cartFooter');
+        if (!carrito.length) { d.innerHTML = '<p style="text-align:center;color:#7a5a42;padding:2rem 0;">Vacío</p>'; f.style.display='none'; return; }
+        var h = '', t = 0;
+        carrito.forEach(function(x){
+            t += x.price * x.cant;
+            h += '<div class="cart-item"><div class="ci-emoji">'+x.emoji+'</div><div class="ci-info"><h4>'+x.name+'</h4><p>$'+x.price.toLocaleString('es-CO')+'</p></div><div class="ci-qty"><button onclick="cambiarCant('+x.id+',-1)">−</button><span>'+x.cant+'</span><button onclick="cambiarCant('+x.id+',1)">+</button></div><button class="ci-remove" onclick="cambiarCant('+x.id+',-999)">&times;</button></div>';
+        });
+        d.innerHTML = h; f.style.display='block'; document.getElementById('cartTotal').textContent = '$'+t.toLocaleString('es-CO');
+    }
+
+    function cambiarCant(id,d) {
+        var i = carrito.find(function(x){return x.id===id});
+        if (!i) return; i.cant += d;
+        if (i.cant <= 0) { carrito = carrito.filter(function(x){return x.id!==id}); showToast('🗑️ Eliminado'); }
+        actualizarCarrito();
+    }
+
+    function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('overlayBg').classList.add('show'); }
+    function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlayBg').classList.remove('show'); }
+
+    function checkout() {
+        if (!carrito.length) { showToast('⚠️ Carrito vacío'); return; }
+        closeCart(); showToast('&#128640; Total: '+document.getElementById('cartTotal').textContent);
+        setTimeout(function(){scrollToSection('cotizacion')},800);
+    }
+
+    function showToast(m) { var t = document.getElementById('toast'); t.innerHTML = m; t.style.display='block'; clearTimeout(t._t); t._t = setTimeout(function(){t.style.display='none'},3000); }
+    function openModal() { document.getElementById('modalOferta').classList.add('active'); }
+    function closeModal() { document.getElementById('modalOferta').classList.remove('active'); }
+    document.getElementById('modalOferta').addEventListener('click',function(e){if(e.target===this)closeModal()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal();closeCart()}});
+
+    var totalSec = 600;
+    setInterval(function(){
+        if (!document.getElementById('modalOferta').classList.contains('active')) return;
+        if (totalSec<=0) totalSec=600;
+        document.getElementById('countdown').textContent = String(Math.floor(totalSec/60)).padStart(2,'0')+':'+String(totalSec%60).padStart(2,'0');
+        totalSec--;
+    },1000);
+    setTimeout(openModal,5000);
+
+    (function(){
+        var c = document.getElementById('particles');
+        for (var i=0;i<50;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.width=p.style.height=(2+Math.random()*6)+'px';p.style.animationDuration=(6+Math.random()*12)+'s';p.style.animationDelay=(Math.random()*12)+'s';c.appendChild(p);}
+    })();
+
+    function scrollToSection(id){var e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth'});}
+    window.onscroll = function(){document.getElementById('scrollTop').style.display = window.scrollY>500?'block':'none';};
+    renderProductos();
+</script>
+</body>
+</html>

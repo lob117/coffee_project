@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> ☕ Registrarse ☕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cafe-oscuro: #1a0e0a; --cafe-medio: #3c1e10; --cafe-claro: #6f4e37;
+      --crema: #f5e6d3; --dorado: #c8a45e; --dorado-claro: #e8d5a3;
+      --error: #e74c3c; --success: #27ae60;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cafe-oscuro);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    /* ===== FONDO ANIMADO ===== */
+    .animated-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(60,30,16,0.8) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(111,78,55,0.4) 0%, transparent 50%),
+        linear-gradient(180deg, #1a0e0a 0%, #2a1810 50%, #1a0e0a 100%);
+      z-index: 0;
+    }
+
+    .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .coffee-bean {
+      position: absolute; font-size: 18px; opacity: 0.12; color: var(--cafe-claro);
+      animation: fallBean linear infinite;
+    }
+    @keyframes fallBean {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+      10%, 90% { opacity: 0.12; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    .ambient-light {
+      position: fixed; width: 300px; height: 300px; border-radius: 50%;
+      filter: blur(80px); z-index: 1; pointer-events: none;
+    }
+    .light-1 { top: -80px; left: -80px; background: radial-gradient(circle, rgba(200,164,94,0.12), transparent); animation: floatLight 8s ease-in-out infinite; }
+    .light-2 { bottom: -80px; right: -80px; background: radial-gradient(circle, rgba(111,78,55,0.1), transparent); animation: floatLight 10s ease-in-out infinite reverse; }
+    @keyframes floatLight { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px,-15px) scale(1.05); } }
+
+    .floating-decor { position: fixed; pointer-events: none; z-index: 2; opacity: 0.2; }
+    .floating-cup { font-size: 35px; animation: gentleFloat 6s ease-in-out infinite; }
+    .floating-bean { font-size: 28px; animation: beanFloat 8s ease-in-out infinite; }
+    @keyframes gentleFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-15px) rotate(3deg); } }
+    @keyframes beanFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(180deg); } }
+
+    /* ===== TARJETA COMPACTA ===== */
+    .container { position: relative; z-index: 10; width: 100%; max-width: 420px; }
+    
+    .login-card {
+      background: linear-gradient(145deg, rgba(60,30,16,0.92), rgba(42,24,16,0.96));
+      border-radius: 20px; padding: 30px 25px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(200,164,94,0.2);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 60px rgba(200,164,94,0.08);
+      animation: fadeInUp 0.6s ease-out;
+    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+    .login-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--dorado), transparent);
+    }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 20px; }
+    .logo { font-size: 45px; margin-bottom: 5px; animation: pulse 2s infinite; display: inline-block; }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    .brand-name {
+      font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700;
+      background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+    .tagline {
+      font-family: 'Dancing Script', cursive; font-size: 16px; color: var(--dorado-claro);
+      opacity: 0.7; margin-top: 3px;
+    }
+    .divider {
+      display: flex; align-items: center; justify-content: center;
+      margin: 15px 0; color: var(--dorado); font-size: 14px; letter-spacing: 8px;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, var(--dorado), transparent);
+      margin: 0 15px;
+    }
+
+    /* Formulario */
+    .section-title {
+      font-family: 'Playfair Display', serif; font-size: 18px; color: var(--crema);
+      text-align: center; margin-bottom: 5px;
+    }
+    .section-subtitle {
+      text-align: center; color: var(--dorado-claro); font-size: 12px;
+      opacity: 0.6; margin-bottom: 20px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    label {
+      display: flex; align-items: center; gap: 6px; font-size: 12px;
+      font-weight: 500; color: var(--dorado); margin-bottom: 6px;
+    }
+    .icon { font-size: 14px; }
+
+    input, select {
+      width: 100%; padding: 12px 15px;
+      background: rgba(26,14,10,0.5); border: 1.5px solid rgba(200,164,94,0.2);
+      border-radius: 10px; color: var(--crema); font-size: 13px;
+      font-family: 'Poppins', sans-serif; transition: all 0.3s;
+    }
+    input::placeholder, select { color: rgba(245,230,211,0.3); }
+    input:focus, select:focus {
+      outline: none; border-color: var(--dorado);
+      background: rgba(26,14,10,0.7);
+      box-shadow: 0 0 0 3px rgba(200,164,94,0.15);
+    }
+
+    .checkbox-group {
+      display: flex; align-items: flex-start; gap: 8px; margin: 18px 0;
+      padding: 12px; background: rgba(200,164,94,0.08);
+      border-radius: 8px; border: 1px dashed rgba(200,164,94,0.3);
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 16px; height: 16px; margin-top: 2px; accent-color: var(--dorado);
+    }
+    .checkbox-group label {
+      margin: 0; font-size: 11px; color: var(--crema); opacity: 0.6; cursor: pointer;
+    }
+    .checkbox-group a { color: var(--dorado); text-decoration: none; }
+
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--dorado), #b8943e);
+      color: var(--cafe-oscuro); border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif;
+      cursor: pointer; transition: all 0.3s; letter-spacing: 1px;
+      position: relative; overflow: hidden;
+    }
+    .btn-submit::before {
+      content: '☕'; position: absolute; left: 15px; top: 50%;
+      transform: translateY(-50%); font-size: 16px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(200,164,94,0.3);
+    }
+
+    .form-footer {
+      text-align: center; margin-top: 18px; padding-top: 15px;
+      border-top: 1px solid rgba(200,164,94,0.15);
+    }
+    .form-footer a {
+      color: var(--dorado); text-decoration: none; font-size: 12px; font-weight: 500;
+    }
+
+    /* Mensaje éxito */
+    .success-message {
+      display: none; text-align: center; padding: 20px;
+      background: rgba(46,125,50,0.15); border: 2px solid var(--success);
+      border-radius: 10px; margin-top: 15px; animation: slideIn 0.4s ease;
+    }
+    .success-message.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .success-icon { font-size: 35px; margin-bottom: 8px; animation: bounce 1s infinite; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    .success-message h3 {
+      font-family: 'Playfair Display', serif; color: #81c784; font-size: 16px; margin-bottom: 5px;
+    }
+    .success-message p { color: #a5d6a7; font-size: 12px; opacity: 0.9; }
+
+    /* Loading */
+    .loading {
+      display: none; text-align: center; padding: 15px; color: var(--dorado); font-size: 13px;
+    }
+    .loading.show { display: block; }
+    .loading-cup { font-size: 28px; animation: pour 1.5s infinite ease-in-out; }
+    @keyframes pour { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+
+    /* Botones */
+    .btn-view-users {
+      display: block; width: 100%; margin-top: 15px; padding: 12px;
+      background: linear-gradient(135deg, #4a7c59, #5a8c69);
+      color: white; border: none; border-radius: 8px; font-size: 12px;
+      font-weight: 500; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-view-users:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(74,124,89,0.4); }
+
+    .btn-delete-all {
+      display: block; width: 100%; margin-top: 8px; padding: 10px;
+      background: linear-gradient(135deg, var(--error), #c0392b);
+      color: white; border: none; border-radius: 8px; font-size: 11px;
+      font-weight: 500; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-delete-all:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(231,76,60,0.4); }
+
+    /* Panel usuarios */
+    .users-panel {
+      display: none; margin-top: 15px;
+      background: rgba(26,14,10,0.85); border: 2px solid rgba(200,164,94,0.3);
+      border-radius: 10px; padding: 15px; max-height: 280px; overflow-y: auto;
+    }
+    .users-panel.show { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .users-panel h3 {
+      font-family: 'Playfair Display', serif; color: var(--crema);
+      margin-bottom: 12px; text-align: center; font-size: 14px;
+      padding-bottom: 10px; border-bottom: 2px double var(--dorado);
+    }
+    
+    .users-table-wrapper { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 280px; }
+    th {
+      background: linear-gradient(135deg, var(--cafe-medio), var(--dorado));
+      color: white; padding: 8px 6px; text-align: left; font-weight: 500;
+      position: sticky; top: 0;
+    }
+    td { padding: 8px 6px; border-bottom: 1px solid rgba(200,164,94,0.1); color: var(--crema); }
+    tr:hover td { background: rgba(200,164,94,0.08); }
+    
+    .btn-delete-row {
+      background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid var(--error);
+      padding: 4px 8px; border-radius: 5px; font-size: 10px; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-delete-row:hover { background: var(--error); color: white; }
+
+    /* Modal contraseña */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); z-index: 100; justify-content: center; align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-overlay.show { display: flex; }
+    
+    .modal {
+      background: linear-gradient(145deg, rgba(60,30,16,0.95), rgba(42,24,16,0.98));
+      border: 2px solid var(--dorado); border-radius: 15px; padding: 25px;
+      width: 90%; max-width: 320px; text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px rgba(200,164,94,0.15);
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .modal-title {
+      font-family: 'Playfair Display', serif; color: var(--crema); font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .modal-icon { font-size: 40px; margin-bottom: 10px; display: block; }
+    
+    .modal-input {
+      width: 100%; padding: 10px 12px; margin: 10px 0;
+      background: rgba(26,14,10,0.6); border: 1.5px solid rgba(200,164,94,0.3);
+      border-radius: 8px; color: var(--crema); font-size: 13px; text-align: center;
+    }
+    .modal-input:focus { outline: none; border-color: var(--dorado); }
+    
+    .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
+    .modal-btn {
+      flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 12px;
+      font-weight: 500; cursor: pointer; transition: all 0.2s;
+    }
+    .modal-btn.confirm {
+      background: linear-gradient(135deg, var(--success), #219a52); color: white;
+    }
+    .modal-btn.cancel {
+      background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid var(--error);
+    }
+    .modal-btn:hover { transform: translateY(-2px); }
+    
+    .modal-error {
+      color: var(--error); font-size: 11px; margin-top: 8px; display: none;
+    }
+    .modal-error.show { display: block; animation: shake 0.4s ease; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+    /* Footer */
+    .decorative-footer {
+      margin-top: 20px; text-align: center; padding: 15px;
+      border-top: 1px solid rgba(200,164,94,0.15);
+    }
+    .footer-coffee { font-size: 18px; margin-bottom: 5px; opacity: 0.5; }
+    .copyright { color: var(--crema); font-size: 10px; opacity: 0.4; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(200,164,94,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--dorado); border-radius: 3px; }
+
+    @media (max-width: 480px) {
+      .login-card { padding: 25px 20px; }
+      .brand-name { font-size: 22px; }
+      .logo { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo animado -->
+  <div class="animated-bg"></div>
+  <div class="bg-particles" id="particles"></div>
+  <div class="ambient-light light-1"></div>
+  <div class="ambient-light light-2"></div>
+
+  <!-- Decoraciones flotantes -->
+  <div class="floating-decor" style="top:10%;left:5%"><div class="floating-cup">☕</div></div>
+  <div class="floating-decor" style="top:60%;right:5%"><div class="floating-bean">🫘</div></div>
+  <div class="floating-decor" style="bottom:15%;left:8%"><div class="floating-cup">☕</div></div>
+  <div class="floating-decor" style="top:30%;right:10%"><div class="floating-bean">🫘</div></div>
+
+  <div class="container">
+    <div class="login-card">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">☕</div>
+        <h1 class="brand-name">Aroma Dorado</h1>
+        <p class="tagline">Café Premium desde 1985</p>
+        <div class="divider">✦ ✦</div>
+      </div>
+
+      <!-- Formulario -->
+      <h2 class="section-title">Bienvenido</h2>
+      <p class="section-subtitle">Disfruta del mejor café</p>
+
+      <form id="formRegistro">
+        <div class="form-group">
+          <label><span class="icon">🪪</span> Cédula de Ciudadanía</label>
+          <input type="text" id="cedula" placeholder="Ej: 1023456789" maxlength="10" required>
+        </div>
+
+        <div class="form-group">
+          <label><span class="icon">📱</span> Número de Celular</label>
+          <input type="tel" id="celular" placeholder="Ej: 3001234567" maxlength="10" required>
+        </div>
+
+        <div class="form-group">
+          <label><span class="icon">🌍</span> Nacionalidad</label>
+          <select id="nacionalidad" required>
+            <option value="">Selecciona tu nacionalidad</option>
+            <option value="Colombia">🇨🇴 Colombia</option>
+            <option value="México">🇲🇽 México</option>
+            <option value="Argentina">🇦🇷 Argentina</option>
+            <option value="Perú">🇵🇪 Perú</option>
+            <option value="Chile">🇨🇱 Chile</option>
+            <option value="Ecuador">🇪🇨 Ecuador</option>
+            <option value="Venezuela">🇻🇪 Venezuela</option>
+            <option value="Brasil">🇧🇷 Brasil</option>
+            <option value="España">🇪🇸 España</option>
+            <option value="Estados Unidos">🇺🇸 Estados Unidos</option>
+            <option value="Otro">🌐 Otro</option>
+          </select>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="terminos" required>
+          <label for="terminos">Acepto los <a href="#">términos</a> y <a href="#">privacidad</a></label>
+        </div>
+
+        <button type="submit" class="btn-submit">Iniciar Sesión</button>
+      </form>
+
+      <!-- Mensaje éxito -->
+      <div id="mensajeExito" class="success-message">
+        <div class="success-icon">☕✨</div>
+        <h3>¡Bienvenido!</h3>
+        <p>Tu sesión ha sido iniciada ☕</p>
+      </div>
+
+      <!-- Loading -->
+      <div id="loading" class="loading">
+        <div class="loading-cup">☕</div>
+        <p>Preparando...</p>
+      </div>
+
+      <div class="form-footer">
+        <p>¿Nuevo? <a href="#">Regístrate aquí</a></p>
+      </div>
+
+      <button id="verUsuariosBtn" class="btn-view-users" type="button">👤 Ver registros</button>
+
+      <div id="panelUsuarios" class="users-panel">
+        <h3>📋 Usuarios Registrados</h3>
+        <div class="users-table-wrapper">
+          <table>
+            <thead><tr><th>Cédula</th><th>Celular</th><th>Nacionalidad</th><th>Acción</th></tr></thead>
+            <tbody id="listaUsuarios"></tbody>
+          </table>
+        </div>
+        <button id="borrarTodosBtn" class="btn-delete-all" type="button">🗑️ Borrar todos los registros</button>
+      </div>
+
+      <!-- Footer -->
+      <div class="decorative-footer">
+        <div class="footer-coffee">☕ 🫘 ☕</div>
+        <p class="copyright">© 2026 Aroma Dorado - Todos los derechos reservados</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de contraseña -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <span class="modal-icon">🔐</span>
+      <h4 class="modal-title">Clave de Acceso Requerida</h4>
+      <p style="color:var(--crema);opacity:0.6;font-size:12px;margin-bottom:10px">
+        Ingresa la clave para <span id="modalAccion">esta acción</span>
+      </p>
+      <input type="password" class="modal-input" id="claveInput" placeholder="••••••" maxlength="20">
+      <p class="modal-error" id="modalError">❌ Clave incorrecta</p>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" id="modalCancel">Cancelar</button>
+        <button class="modal-btn confirm" id="modalConfirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'aromaDorado_usuarios';
+    const CLAVE_ACCESO = 'Bendy'; // 🔐 Clave maestra
+    let accionPendiente = null; // 'borrarUno' o 'borrarTodos'
+    let cedulaParaBorrar = null;
+
+    // Generar partículas
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const beans = ['🫘', '☕', '✦', '•'];
+      for (let i = 0; i < 15; i++) {
+        const bean = document.createElement('div');
+        bean.className = 'coffee-bean';
+        bean.textContent = beans[Math.floor(Math.random() * beans.length)];
+        bean.style.left = Math.random() * 100 + '%';
+        bean.style.animationDuration = (10 + Math.random() * 15) + 's';
+        bean.style.animationDelay = Math.random() * 10 + 's';
+        container.appendChild(bean);
+      }
+    }
+    createParticles();
+
+    document.addEventListener('DOMContentLoaded', () => cargarUsuarios());
+
+    // ===== FORMULARIO =====
+    document.getElementById('formRegistro').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const cedula = document.getElementById('cedula').value.trim();
+      const celular = document.getElementById('celular').value.trim();
+      const nacionalidad = document.getElementById('nacionalidad').value;
+      const terminos = document.getElementById('terminos').checked;
+
+      if (!/^\d{6,10}$/.test(cedula)) { alert('❌ Cédula inválida (6-10 dígitos)'); return; }
+      if (!/^\d{10}$/.test(celular)) { alert('❌ Celular inválido (10 dígitos)'); return; }
+      if (!terminos) { alert('❌ Acepta los términos'); return; }
+
+      const usuarios = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      if (usuarios.some(u => u.cedula === cedula)) { alert('⚠️ Cédula ya registrada'); return; }
+
+      document.getElementById('loading').classList.add('show');
+      
+      setTimeout(() => {
+        usuarios.push({ cedula, celular, nacionalidad, fecha: new Date().toLocaleString('es-ES') });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(usuarios));
+        document.getElementById('loading').classList.remove('show');
+        document.getElementById('mensajeExito').classList.add('show');
+        this.reset();
+        setTimeout(() => document.getElementById('mensajeExito').classList.remove('show'), 3000);
+        cargarUsuarios();
+      }, 1200);
+    });
+
+    // ===== CARGAR USUARIOS =====
+    function cargarUsuarios() {
+      const usuarios = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const tbody = document.getElementById('listaUsuarios');
+      
+      if (usuarios.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--dorado);padding:15px">Sin registros ☕</td></tr>';
+        document.getElementById('borrarTodosBtn').style.display = 'none';
+        return;
+      }
+      
+      document.getElementById('borrarTodosBtn').style.display = 'block';
+      
+      tbody.innerHTML = [...usuarios].reverse().map(u => `
+        <tr>
+          <td>${u.cedula}</td>
+          <td>${u.celular}</td>
+          <td>${u.nacionalidad}</td>
+          <td><button class="btn-delete-row" onclick="solicitarBorrar('${u.cedula}')">🗑️</button></td>
+        </tr>
+      `).join('');
+    }
+
+    // ===== MODAL DE CONTRASEÑA =====
+    function abrirModal(accion, cedula = null) {
+      accionPendiente = accion;
+      cedulaParaBorrar = cedula;
+      document.getElementById('modalAccion').textContent = 
+        accion === 'borrarUno' ? 'eliminar este registro' : 'eliminar TODOS los registros';
+      document.getElementById('claveInput').value = '';
+      document.getElementById('modalError').classList.remove('show');
+      document.getElementById('modalOverlay').classList.add('show');
+      document.getElementById('claveInput').focus();
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+      accionPendiente = null;
+      cedulaParaBorrar = null;
+    }
+
+    function verificarClave() {
+      const clave = document.getElementById('claveInput').value;
+      if (clave === CLAVE_ACCESO) {
+        // Clave correcta - ejecutar acción
+        if (accionPendiente === 'borrarUno' && cedulaParaBorrar) {
+          borrarUsuario(cedulaParaBorrar);
+        } else if (accionPendiente === 'borrarTodos') {
+          borrarTodosUsuarios();
+        }
+        cerrarModal();
+      } else {
+        // Clave incorrecta
+        document.getElementById('modalError').classList.add('show');
+        document.getElementById('claveInput').value = '';
+        document.getElementById('claveInput').focus();
+      }
+    }
+
+    // ===== FUNCIONES DE ELIMINACIÓN =====
+    function solicitarBorrar(cedula) {
+      if (confirm(`¿Borrar registro de cédula ${cedula}?\n\n🔐 Se requerirá la clave de acceso.`)) {
+        abrirModal('borrarUno', cedula);
+      }
+    }
+
+    function borrarUsuario(cedula) {
+      let usuarios = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      usuarios = usuarios.filter(u => u.cedula !== cedula);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(usuarios));
+      cargarUsuarios();
+      mostrarNotificacion('✅ Registro eliminado', 'success');
+    }
+
+    function borrarTodosUsuarios() {
+      if (confirm('⚠️ ¿Estás seguro de BORRAR TODOS los registros?\n\nEsta acción no se puede deshacer.')) {
+        localStorage.removeItem(STORAGE_KEY);
+        cargarUsuarios();
+        mostrarNotificacion('✅ Todos los registros eliminados', 'success');
+      }
+    }
+
+    function mostrarNotificacion(mensaje, tipo) {
+      // Notificación simple en consola o podrías agregar un toast
+      console.log(`${tipo === 'success' ? '✅' : '❌'} ${mensaje}`);
+    }
+
+    // ===== EVENTOS =====
+    document.getElementById('verUsuariosBtn').addEventListener('click', () => {
+      const panel = document.getElementById('panelUsuarios');
+      panel.classList.toggle('show');
+      if (panel.classList.contains('show')) cargarUsuarios();
+    });
+
+    document.getElementById('borrarTodosBtn').addEventListener('click', () => {
+      const usuarios = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      if (usuarios.length === 0) {
+        alert('☕ No hay registros para borrar');
+        return;
+      }
+      abrirModal('borrarTodos');
+    });
+
+    // Modal events
+    document.getElementById('modalConfirm').addEventListener('click', verificarClave);
+    document.getElementById('modalCancel').addEventListener('click', cerrarModal);
+    document.getElementById('claveInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') verificarClave();
+    });
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modalOverlay')) cerrarModal();
+    });
+
+    // Enter en inputs del formulario
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !document.getElementById('modalOverlay').classList.contains('show')) {
+        const form = document.getElementById('formRegistro');
+        if (form.contains(document.activeElement)) {
+          e.preventDefault();
+          form.requestSubmit();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+-----------------------------------------
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cafetería - Campesinos Cafeteros</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #1a1a2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { width: 100%; max-width: 520px; padding: 20px; }
+        .card { background: #16213e; border-radius: 16px; padding: 40px 32px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 1px solid #0f3460; }
+        .card h1 { color: #e94560; font-size: 24px; text-align: center; margin-bottom: 8px; }
+        .card p { color: #a0a0b8; text-align: center; font-size: 14px; margin-bottom: 24px; }
+        .logo { text-align: center; margin-bottom: 20px; }
+        .logo span { font-size: 48px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; color: #c0c0d0; font-size: 13px; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px 14px; background: #0f3460; border: 1px solid #1a4a7a; border-radius: 8px;
+            color: #fff; font-size: 14px; transition: border-color 0.3s; outline: none;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #e94560; }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-group select option { background: #16213e; }
+        .btn {
+            width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-primary { background: #e94560; color: #fff; }
+        .btn-primary:hover { background: #d63851; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(233,69,96,0.4); }
+        .btn-success { background: #2d6a4f; color: #fff; }
+        .btn-success:hover { background: #40916c; }
+        .btn-danger { background: #c0392b; color: #fff; }
+        .btn-danger:hover { background: #e74c3c; }
+        .hidden { display: none; }
+        .alert { padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; text-align: center; }
+        .alert-error { background: rgba(233,69,96,0.2); border: 1px solid #e94560; color: #e94560; }
+        .alert-success { background: rgba(45,106,79,0.2); border: 1px solid #2d6a4f; color: #52b788; }
+        .alert-info { background: rgba(15,52,96,0.4); border: 1px solid #0f3460; color: #88c0f0; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .badge-active { background: #2d6a4f; color: #fff; }
+        .badge-inactive { background: #c0392b; color: #fff; }
+        .badge-vip { background: #B8860B; color: #fff; }
+        table { width: 100%; border-collapse: collapse; }
+        table th, table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #1a4a7a; font-size: 13px; }
+        table th { background: #0f3460; color: #e94560; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        table td { color: #c0c0d0; }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; background: #0a0a1a; padding: 10px 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #0f3460; }
+        .status-bar .security { color: #52b788; font-size: 12px; }
+        .status-bar .security .dot { display: inline-block; width: 8px; height: 8px; background: #52b788; border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .status-bar .time { color: #a0a0b8; font-size: 12px; }
+        .nav-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .nav-bar button { flex: 1; padding: 10px; border: 1px solid #0f3460; background: transparent; color: #a0a0b8; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s; min-width: 80px; }
+        .nav-bar button:hover, .nav-bar button.active { background: #0f3460; color: #fff; border-color: #e94560; }
+        .security-log { background: #0a0a1a; border-radius: 8px; padding: 12px; max-height: 200px; overflow-y: auto; }
+        .security-log .entry { padding: 6px 0; border-bottom: 1px solid #1a1a2e; font-size: 12px; color: #a0a0b8; }
+        .security-log .entry .time { color: #e94560; font-weight: 600; }
+        .vip-star { color: #FFD700; font-size: 16px; margin-right: 4px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a1a; }
+        ::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div id="screen-login" class="card">
+        <div class="logo"><span>&#9749;</span></div>
+        <h1>Acceso Campesino Cafetero</h1>
+        <p>Área exclusiva para vendedores de café autorizados</p>
+        <div class="alert alert-info">Ingrese la clave de seguridad para acceder al sistema</div>
+        <div class="form-group">
+            <label>Clave de Seguridad</label>
+            <input type="password" id="masterPassword" placeholder="Ingrese la clave..." autocomplete="off">
+        </div>
+        <button class="btn btn-primary" onclick="checkMasterPassword()">Ingresar</button>
+        <p style="margin-top:16px;font-size:11px;color:#555;text-align:center;">Sistema monitoreado 24/7 &bull; Acceso restringido</p>
+    </div>
+
+    <div id="screen-main" class="card hidden">
+        <div class="status-bar">
+            <div class="security"><span class="dot"></span>MONITOREO ACTIVO</div>
+            <div class="time" id="clock"></div>
+        </div>
+        <div class="nav-bar">
+            <button class="active" onclick="showSection('registro',this)">Registro</button>
+            <button onclick="showSection('lista',this)">Clientes Valerosos</button>
+            <button onclick="showSection('seguridad',this)">Seguridad</button>
+            <button onclick="logout()">Salir</button>
+        </div>
+
+        <div id="section-registro">
+            <h1 style="color:#e94560;font-size:18px;margin-bottom:16px;">Registro de Campesino Cafetero</h1>
+            <div id="registerAlert" class="hidden"></div>
+            <form id="registerForm" onsubmit="registerVendor(event)">
+                <div class="form-group">
+                    <label>Número de Cédula (CC)</label>
+                    <input type="text" id="cc" placeholder="Ej: 1234567890" required pattern="[0-9]+">
+                </div>
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono de Contacto</label>
+                    <input type="tel" id="telefono" placeholder="Ej: 3101234567" required pattern="[0-9]{7,15}">
+                </div>
+                <div class="form-group">
+                    <label>Ubicación (Finca / Vereda / Municipio)</label>
+                    <textarea id="ubicacion" placeholder="Ej: Vereda El Rosario, Municipio de Chinchiná, Caldas" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Departamento</label>
+                    <select id="departamento" required>
+                        <option value="">Seleccione...</option>
+                        <option>Caldas</option><option>Quindío</option><option>Risaralda</option>
+                        <option>Antioquia</option><option>Tolima</option><option>Huila</option>
+                        <option>Cauca</option><option>Nariño</option><option>Cundinamarca</option>
+                        <option>Santander</option><option>Norte de Santander</option><option>Magdalena</option>
+                        <option>Boyacá</option><option>Valle del Cauca</option><option>Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Café que Vende</label>
+                    <select id="tipoCafe" required>
+                        <option value="">Seleccione...</option>
+                        <option>Café Arábigo</option><option>Café Robusta</option>
+                        <option>Café Especial</option><option>Café Orgánico</option>
+                        <option>Café de Altura</option><option>Varios tipos</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Kilos de Café que Vende por Semana</label>
+                    <select id="kilos" required>
+                        <option value="">Seleccione...</option>
+                        <option value="1-10">1 - 10 kg</option>
+                        <option value="11-50">11 - 50 kg</option>
+                        <option value="51-100">51 - 100 kg</option>
+                        <option value="101-500">101 - 500 kg</option>
+                        <option value="500+">Más de 500 kg</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" type="submit">Registrar Campesino</button>
+            </form>
+        </div>
+
+        <div id="section-lista" class="hidden">
+            <h1 style="color:#e94560;font-size:18px;margin-bottom:4px;">Clientes Valerosos</h1>
+            <p style="color:#B8860B;font-size:13px;margin-bottom:16px;text-align:center;">
+                <span style="font-size:18px;">&#9733;</span> Lista de campesinos cafeteros registrados <span style="font-size:18px;">&#9733;</span>
+            </p>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr><th>Código</th><th>Nombre</th><th>CC</th><th>Teléfono</th><th>Ubicación</th><th>Kilos</th><th>Valor</th></tr>
+                    </thead>
+                    <tbody id="vendorTableBody"></tbody>
+                </table>
+            </div>
+            <p id="noVendors" style="color:#555;text-align:center;padding:20px;font-size:14px;">No hay clientes valerosos registrados aún.</p>
+        </div>
+
+        <div id="section-seguridad" class="hidden">
+            <h1 style="color:#e94560;font-size:18px;margin-bottom:16px;">Panel de Seguridad y Monitoreo</h1>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+                <div style="background:#0f3460;padding:14px;border-radius:8px;text-align:center;">
+                    <div style="font-size:28px;color:#e94560;font-weight:700;" id="totalVendors">0</div>
+                    <div style="color:#a0a0b8;font-size:11px;">REGISTRADOS</div>
+                </div>
+                <div style="background:#0f3460;padding:14px;border-radius:8px;text-align:center;">
+                    <div style="font-size:28px;color:#52b788;font-weight:700;" id="activeSessions">0</div>
+                    <div style="color:#a0a0b8;font-size:11px;">ACTIVOS</div>
+                </div>
+                <div style="background:#0f3460;padding:14px;border-radius:8px;text-align:center;">
+                    <div style="font-size:28px;color:#FFD700;font-weight:700;" id="vipCount">0</div>
+                    <div style="color:#a0a0b8;font-size:11px;">VALEROSOS</div>
+                </div>
+            </div>
+            <div style="background:#0f3460;padding:14px;border-radius:8px;margin-bottom:16px;">
+                <div style="color:#e94560;font-size:13px;font-weight:600;margin-bottom:8px;">REGISTRO DE ACCESOS</div>
+                <div class="security-log" id="accessLog"></div>
+            </div>
+            <button class="btn btn-danger" onclick="clearAllData()" style="margin-top:8px;">Limpiar Todos los Datos</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CAFETERIA_STORAGE_KEY = 'cafeteria_campesinos';
+    var LOG_KEY = 'cafeteria_access_log';
+    var MASTER_PASSWORD = 'Aliz';
+
+    var vendors = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    var accessLog = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+
+    function escapeHTML(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+    }
+
+    function checkMasterPassword() {
+        var input = document.getElementById('masterPassword').value;
+        if (input === MASTER_PASSWORD) {
+            logAccess('Ingreso exitoso al sistema');
+            document.getElementById('screen-login').classList.add('hidden');
+            document.getElementById('screen-main').classList.remove('hidden');
+            updateClock();
+            setInterval(updateClock, 1000);
+            renderVendorList();
+            updateSecurityPanel();
+            document.getElementById('masterPassword').value = '';
+        } else {
+            logAccess('INTENTO FALLIDO de acceso');
+            var alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-error';
+            alertDiv.textContent = 'Clave incorrecta. Acceso denegado.';
+            var existing = document.querySelector('.alert-error');
+            if (existing) existing.remove();
+            document.querySelector('.alert-info').after(alertDiv);
+            setTimeout(function () { alertDiv.remove(); }, 3000);
+        }
+    }
+
+    function registerVendor(e) {
+        e.preventDefault();
+        var cc = document.getElementById('cc').value.trim();
+        var nombre = document.getElementById('nombre').value.trim();
+        var telefono = document.getElementById('telefono').value.trim();
+        var ubicacion = document.getElementById('ubicacion').value.trim();
+        var departamento = document.getElementById('departamento').value;
+        var tipoCafe = document.getElementById('tipoCafe').value;
+        var kilos = document.getElementById('kilos').value;
+
+        if (!cc || !nombre || !telefono || !ubicacion || !departamento || !tipoCafe || !kilos) {
+            showAlert('registerAlert', 'Todos los campos son obligatorios.', 'alert-error');
+            return;
+        }
+        if (vendors.some(function (v) { return v.cc === cc; })) {
+            showAlert('registerAlert', 'Ya existe un campesino registrado con esa cedula.', 'alert-error');
+            return;
+        }
+
+        var esValeroso = (kilos === '101-500' || kilos === '500+');
+        var codigo = generateCode();
+        vendors.push({
+            codigo: codigo, cc: cc, nombre: nombre, telefono: telefono,
+            ubicacion: ubicacion, departamento: departamento, tipoCafe: tipoCafe,
+            kilos: kilos, valeroso: esValeroso, fecha: new Date().toISOString(), activo: true
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(vendors));
+        document.getElementById('registerForm').reset();
+
+        if (esValeroso) {
+            showAlert('registerAlert', 'Cliente Valeroso registrado exitosamente. Codigo unico: <b>' + codigo + '</b> <span style="font-size:20px;">&#9733;</span>', 'alert-success');
+        } else {
+            showAlert('registerAlert', 'Campesino registrado exitosamente. Codigo unico: <b>' + codigo + '</b>', 'alert-success');
+        }
+        renderVendorList();
+        updateSecurityPanel();
+        logAccess('Nuevo registro: ' + nombre + ' (CC: ' + cc + ', Codigo: ' + codigo + ')');
+    }
+
+    function generateCode() {
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        var code = 'CC-';
+        for (var i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+        if (vendors.some(function (v) { return v.codigo === code; })) return generateCode();
+        return code;
+    }
+
+    function renderVendorList() {
+        var tbody = document.getElementById('vendorTableBody');
+        var noMsg = document.getElementById('noVendors');
+        tbody.innerHTML = '';
+        if (vendors.length === 0) { noMsg.classList.remove('hidden'); return; }
+        noMsg.classList.add('hidden');
+
+        var sorted = vendors.slice().sort(function (a, b) {
+            if (a.valeroso && !b.valeroso) return -1;
+            if (!a.valeroso && b.valeroso) return 1;
+            return 0;
+        });
+
+        sorted.forEach(function (v) {
+            var tr = document.createElement('tr');
+            var badge = v.valeroso
+                ? '<span class="badge badge-vip"><span class="vip-star">&#9733;</span>VALEROSO</span>'
+                : '<span class="badge ' + (v.activo ? 'badge-active' : 'badge-inactive') + '">' + (v.activo ? 'ACTIVO' : 'INACTIVO') + '</span>';
+            tr.innerHTML = '<td style="font-family:monospace;color:#e94560;">' + escapeHTML(v.codigo) + '</td>'
+                + '<td>' + escapeHTML(v.nombre) + '</td><td>' + escapeHTML(v.cc) + '</td>'
+                + '<td>' + escapeHTML(v.telefono) + '</td><td>' + escapeHTML(v.ubicacion) + '</td>'
+                + '<td>' + escapeHTML(v.kilos || 'N/A') + '</td><td>' + badge + '</td>';
+            tbody.appendChild(tr);
+        });
+    }
+
+    function updateSecurityPanel() {
+        document.getElementById('totalVendors').textContent = vendors.length;
+        document.getElementById('activeSessions').textContent = vendors.filter(function (v) { return v.activo; }).length;
+        document.getElementById('vipCount').textContent = vendors.filter(function (v) { return v.valeroso; }).length;
+        var logDiv = document.getElementById('accessLog');
+        logDiv.innerHTML = accessLog.slice().reverse().map(function (e) {
+            return '<div class="entry"><span class="time">[' + escapeHTML(e.timestamp) + ']</span> ' + escapeHTML(e.message) + '</div>';
+        }).join('');
+    }
+
+    function logAccess(message) {
+        var entry = { timestamp: new Date().toLocaleString('es-CO'), message: message };
+        accessLog.push(entry);
+        localStorage.setItem(LOG_KEY, JSON.stringify(accessLog));
+        var logDiv = document.getElementById('accessLog');
+        if (logDiv) {
+            var el = document.createElement('div');
+            el.className = 'entry';
+            el.innerHTML = '<span class="time">[' + escapeHTML(entry.timestamp) + ']</span> ' + escapeHTML(entry.message);
+            logDiv.insertBefore(el, logDiv.firstChild);
+        }
+    }
+
+    function showSection(section, btn) {
+        document.querySelectorAll('.nav-bar button').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.querySelectorAll('[id^="section-"]').forEach(function (s) { s.classList.add('hidden'); });
+        document.getElementById('section-' + section).classList.remove('hidden');
+        if (section === 'lista') renderVendorList();
+    }
+
+    function showAlert(id, msg, type) {
+        var el = document.getElementById(id);
+        el.className = 'alert ' + type;
+        el.innerHTML = msg;
+        el.classList.remove('hidden');
+        setTimeout(function () { el.classList.add('hidden'); }, 5000);
+    }
+
+    function logout() {
+        logAccess('Cierre de sesion');
+        document.getElementById('screen-main').classList.add('hidden');
+        document.getElementById('screen-login').classList.remove('hidden');
+    }
+
+    function clearAllData() {
+        if (confirm('Esta seguro de limpiar todos los datos? Esta accion no se puede deshacer.')) {
+            vendors = []; accessLog = [];
+            localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LOG_KEY);
+            renderVendorList(); updateSecurityPanel();
+            logAccess('Todos los datos fueron eliminados');
+        }
+    }
+
+    function updateClock() {
+        document.getElementById('clock').textContent = new Date().toLocaleString('es-CO', {
+            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('masterPassword').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') checkMasterPassword();
+        });
+    });
+</script>
+</body>
+</html>
+
+

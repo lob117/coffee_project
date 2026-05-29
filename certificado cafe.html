@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasaporte Digital | Sierra Origen Café</title>
+    <!-- Fuentes e Iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --dark-brown: #4e342e;
+            --light-bg: #f5f5f5;
+            --white: #ffffff;
+            --alert-red: #d32f2f;
+            --verified-green: #388e3c;
+            --hash-bg: #263238;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Marca de agua obligatoria para el Jurado */
+        .mock-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 60px;
+            color: rgba(211, 47, 47, 0.06);
+            font-weight: 900;
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            border: 6px solid rgba(211, 47, 47, 0.06);
+            padding: 10px 30px;
+            text-transform: uppercase;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--dark-brown);
+            margin: 0;
+            font-size: 26px;
+        }
+
+        header .subtitle {
+            color: var(--primary-green);
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .badge-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: #e8f5e9;
+            color: var(--primary-green);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .passport-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-section h3 {
+            color: var(--dark-brown);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 6px;
+        }
+
+        .data-label { font-weight: bold; color: #666; font-size: 14px; }
+        .data-value { font-weight: 600; color: #333; text-align: right; }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .qr-code img {
+            width: 160px;
+            height: 160px;
+        }
+
+        .qr-caption {
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .hash-box {
+            background: var(--hash-bg);
+            color: #69f0ae;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            word-break: break-all;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hash-label {
+            font-size: 10px;
+            color: #b0bec5;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .validation-panel {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 25px;
+            border-top: 2px dashed #ccc;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-validate {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-validate:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        .status-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-valid {
+            background: #e8f5e9;
+            color: var(--verified-green);
+            border: 1px solid var(--verified-green);
+        }
+
+        .status-invalid {
+            background: #ffebee;
+            color: var(--alert-red);
+            border: 1px solid var(--alert-red);
+        }
+
+        .legal-note {
+            margin-top: 50px;
+            padding: 15px;
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            font-size: 11px;
+            color: #e65100;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 650px) {
+            .passport-grid { grid-template-columns: 1fr; }
+            .container { padding: 20px; }
+            .mock-watermark { font-size: 40px; opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Marca de agua para evidenciar al jurado que es demo -->
+        <div class="mock-watermark">MOCK EDUCATIVO</div>
+
+        <header>
+            <div class="subtitle">Sistema de Trazabilidad & Turismo</div>
+            <h1>Pasaporte Digital del Lote</h1>
+            <div class="badge-group">
+                <span class="badge"><i class="fas fa-leaf"></i> Fairtrade Certified</span>
+                <span class="badge"><i class="fas fa-frog"></i> Rainforest Alliance</span>
+            </div>
+        </header>
+
+        <div class="passport-grid">
+            <div class="info-section">
+                <h3><i class="fas fa-map-marker-alt" style="color:var(--primary-green)"></i> Información del Origen</h3>
+                <div class="data-row">
+                    <span class="data-label">Agricultor:</span>
+                    <span class="data-value">María Elena Martínez</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">ID Lote:</span>
+                    <span class="data-value">SN2025_0047</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Origen (GPS):</span>
+                    <span class="data-value">Minca, Sierra Nevada (11.04°N, 74.03°W)</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Variedad:</span>
+                    <span class="data-value">Caturra / Castillo</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Cosecha:</span>
+                    <span class="data-value">Mayo 2025</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Sello Fairtrade:</span>
+                    <span class="data-value" style="color: green;">CO-FAI-2024-088 (VIGENTE)</span>
+                </div>
+            </div>
+
+            <div class="qr-section">
+                <!-- QR Code dinámico que lleva a esta misma página -->
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=SierraOrigenCafeMock_SN2025_0047&bgcolor=ffffff" alt="QR Código de Trazabilidad">
+                </div>
+                <div class="qr-caption">Escanea para verificar integridad <br>en la base de datos</div>
+            </div>
+        </div>
+
+        <div class="hash-box">
+            <span class="hash-label">Hash de Integridad (SHA-256)</span>
+            <span id="hash-value">b7e3c1a9f82d4e5c6b0a1d9f82e3c4a5...7789 (Esperando validación)</span>
+        </div>
+
+        <div class="validation-panel">
+            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Para el Jurado / Exportador: Verifique que los datos no han sido alterados desde la captura del agricultor.</p>
+            <button class="btn-validate" onclick="validateHash()">
+                <i class="fas fa-shield-alt"></i> Validar Integridad del Lote
+            </button>
+            <div id="result-box" class="status-result"></div>
+        </div>
+
+        <div class="legal-note">
+            <strong>⚠️ Nota de Transparencia:</strong> El certificado mostrado es un mock educativo para evidenciar la funcionalidad del QR y la arquitectura de validación en el contexto académico/startup. La solución <em>Sierra Origen Café</em> no emite certificaciones propias; integra, referencia y valida los certificados oficiales reales de Fairtrade International y Rainforest Alliance mediante APIs o registros públicos autorizados. Este documento no tiene validez legal ni comercial fuera de este prototipo.
+        </div>
+    </div>
+
+    <script>
+        function validateHash() {
+            const btn = document.querySelector('.btn-validate');
+            const resultBox = document.getElementById('result-box');
+            const hashSpan = document.getElementById('hash-value');
+            
+            // Efecto de carga
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando con nodo central...';
+            btn.style.backgroundColor = '#555';
+            resultBox.style.display = 'none';
+
+            // Simular petición de red (1.5 segundos)
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Verificado';
+                btn.style.backgroundColor = '#388e3c';
+                
+                resultBox.className = 'status-result status-valid';
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = `
+                    <i class="fas fa-lock"></i> <strong>DATOS COINCIDENTES</strong><br>
+                    Hash verificado contra el registro original del agricultor.<br>
+                    <small>Última verificación: ${new Date().toLocaleTimeString()}</small>
+                `;
+
+                // Actualizar visualmente el hash
+                hashSpan.innerHTML = "b7e3c1a9f82d4e5c6b0a1d9f82e3c4a5...7789 <span style='color:#69f0ae'>✅</span>";
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
