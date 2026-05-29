@@ -1,0 +1,261 @@
+/* Cuenta, auth e historia — extiende coleccion-ltc */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=DM+Sans:opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap');
+
+:root {
+    --ltc-bg: #fff;
+    --ltc-soft: #f7f5f2;
+    --ltc-text: #1a1a1a;
+    --ltc-muted: #6d6d6d;
+    --ltc-border: #e5e0d8;
+    --ltc-green: #2d4a32;
+    --ltc-green-dark: #1e3322;
+    --ltc-sale: #c0392b;
+    --ltc-font: 'DM Sans', system-ui, sans-serif;
+    --ltc-serif: 'Cormorant Garamond', Georgia, serif;
+    --ltc-max: 1100px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--ltc-font); background: var(--ltc-bg); color: var(--ltc-text); line-height: 1.6; }
+
+.ltc-top-promo {
+    background: var(--ltc-green-dark);
+    color: #fff;
+    text-align: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.78rem;
+}
+.ltc-header {
+    border-bottom: 1px solid var(--ltc-border);
+    padding: 1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 100;
+}
+.ltc-header-inner {
+    max-width: var(--ltc-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.ltc-brand { text-decoration: none; color: var(--ltc-text); }
+.ltc-brand h1 { font-family: var(--ltc-serif); font-size: 1.45rem; font-style: italic; font-weight: 700; }
+.ltc-brand span { display: block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ltc-muted); font-family: var(--ltc-font); font-style: normal; }
+.ltc-nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+.ltc-nav a { color: var(--ltc-text); text-decoration: none; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.ltc-nav a:hover { color: var(--ltc-green); }
+
+.ltc-page { max-width: var(--ltc-max); margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.ltc-page-narrow { max-width: 480px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+.ltc-hero-historia {
+    background: var(--ltc-soft);
+    padding: 4rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--ltc-border);
+}
+.ltc-hero-historia h2 {
+    font-family: var(--ltc-serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+.ltc-hero-historia p { max-width: 620px; margin: 0 auto; color: var(--ltc-muted); font-size: 1.05rem; }
+
+.ltc-card {
+    background: #fff;
+    border: 1px solid var(--ltc-border);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+}
+.ltc-card h3 {
+    font-family: var(--ltc-serif);
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    color: var(--ltc-green-dark);
+}
+.ltc-card p, .ltc-card li { color: var(--ltc-muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+.ltc-card ul { padding-left: 1.25rem; }
+
+.ltc-section-title {
+    font-family: var(--ltc-serif);
+    font-size: 1.75rem;
+    font-style: italic;
+    text-align: center;
+    margin: 2.5rem 0 1.5rem;
+}
+
+/* Hub cuenta */
+.ltc-role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+.ltc-role-card {
+    border: 2px solid var(--ltc-border);
+    padding: 2rem 1.25rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ltc-text);
+    transition: all 0.2s;
+    background: #fff;
+}
+.ltc-role-card:hover {
+    border-color: var(--ltc-green);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.ltc-role-card .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.ltc-role-card h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; }
+.ltc-role-card p { font-size: 0.82rem; color: var(--ltc-muted); }
+
+.ltc-auth-box {
+    border: 1px solid var(--ltc-border);
+    padding: 2rem;
+    background: #fff;
+}
+.ltc-auth-box h2 {
+    font-family: var(--ltc-serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 0.35rem;
+}
+.ltc-auth-sub { text-align: center; font-size: 0.85rem; color: var(--ltc-muted); margin-bottom: 1.5rem; }
+
+.ltc-form-group { margin-bottom: 1rem; }
+.ltc-form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+    color: var(--ltc-text);
+}
+.ltc-form-group input, .ltc-form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ltc-border);
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: var(--ltc-soft);
+}
+.ltc-form-group input:focus, .ltc-form-group select:focus {
+    outline: none;
+    border-color: var(--ltc-green);
+    box-shadow: 0 0 0 3px rgba(45,74,50,0.12);
+}
+
+.ltc-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.85rem;
+    border: none;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.ltc-btn-primary { background: var(--ltc-green-dark); color: #fff; }
+.ltc-btn-primary:hover { background: var(--ltc-green); }
+.ltc-btn-outline {
+    background: transparent;
+    color: var(--ltc-text);
+    border: 1px solid var(--ltc-text);
+    margin-top: 0.5rem;
+}
+.ltc-btn-outline:hover { background: var(--ltc-text); color: #fff; }
+
+.ltc-alert {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    border: 1px solid;
+}
+.ltc-alert-error { background: #fdf2f2; border-color: var(--ltc-sale); color: var(--ltc-sale); }
+.ltc-alert-success { background: #f0f7f1; border-color: var(--ltc-green); color: var(--ltc-green-dark); }
+.ltc-alert.hidden { display: none; }
+
+.ltc-divider-text {
+    text-align: center;
+    margin: 1.5rem 0;
+    font-size: 0.8rem;
+    color: var(--ltc-muted);
+}
+.ltc-divider-text a { color: var(--ltc-green-dark); font-weight: 600; }
+
+.ltc-badge-tipo {
+    display: inline-block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--ltc-green);
+    color: var(--ltc-green);
+    margin-bottom: 1rem;
+}
+
+/* Panel productor */
+.ltc-panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.ltc-stat-mini {
+    border: 1px solid var(--ltc-border);
+    padding: 1.25rem;
+    text-align: center;
+}
+.ltc-stat-mini .num { font-size: 1.8rem; font-weight: 700; color: var(--ltc-green-dark); }
+.ltc-stat-mini .lbl { font-size: 0.72rem; text-transform: uppercase; color: var(--ltc-muted); }
+
+.ltc-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; border-bottom: 1px solid var(--ltc-border); padding-bottom: 0.5rem; }
+.ltc-tabs button {
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    background: none;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--ltc-muted);
+}
+.ltc-tabs button.active { border-color: var(--ltc-border); color: var(--ltc-text); background: var(--ltc-soft); }
+
+.ltc-table-wrap { overflow-x: auto; margin-top: 1rem; }
+.ltc-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.ltc-table th, .ltc-table td { padding: 0.65rem; border-bottom: 1px solid var(--ltc-border); text-align: left; }
+.ltc-table th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ltc-muted); }
+
+.ltc-profile-dl { display: grid; gap: 0.75rem; }
+.ltc-profile-dl dt { font-size: 0.72rem; text-transform: uppercase; color: var(--ltc-muted); }
+.ltc-profile-dl dd { font-weight: 600; font-size: 0.95rem; }
+
+.ltc-timeline { border-left: 2px solid var(--ltc-border); padding-left: 1.5rem; margin: 1rem 0; }
+.ltc-timeline-item { margin-bottom: 1.25rem; position: relative; }
+.ltc-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.65rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    background: var(--ltc-green);
+    border-radius: 50%;
+}
+
+@media (max-width: 600px) {
+    .ltc-role-grid { grid-template-columns: 1fr; }
+}

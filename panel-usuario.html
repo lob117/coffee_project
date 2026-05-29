@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi cuenta — Usuario | Paz Magdalena</title>
+    <link rel="stylesheet" href="css/coleccion-ltc.css">
+    <link rel="stylesheet" href="css/cuenta-ltc.css">
+</head>
+<body>
+
+<div class="ltc-top-promo">Panel de <strong>usuario comprador</strong></div>
+
+<header class="ltc-header">
+    <div class="ltc-header-inner">
+        <a href="coleccion.html" class="ltc-brand"><h1>Paz Magdalena</h1><span>Mi cuenta</span></a>
+        <nav class="ltc-nav">
+            <a href="coleccion.html">Catálogo</a>
+            <button type="button" id="btnSalir" style="background:none;border:none;font:inherit;font-size:0.75rem;font-weight:600;text-transform:uppercase;cursor:pointer">Salir</button>
+        </nav>
+    </div>
+</header>
+
+<div class="ltc-page">
+    <span class="ltc-badge-tipo">Usuario · Comprador</span>
+    <h2 class="ltc-section-title" style="margin-top:0">Datos de tu cuenta</h2>
+
+    <div class="ltc-card">
+        <dl class="ltc-profile-dl" id="perfilUsuario"></dl>
+    </div>
+
+    <div class="ltc-panel-grid">
+        <div class="ltc-card">
+            <h3>Compras y trazabilidad</h3>
+            <p>Consulta lotes verificados (Fairtrade, Rainforest Alliance) y realiza pedidos desde el catálogo.</p>
+            <a href="coleccion.html" class="ltc-btn ltc-btn-primary" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Ir al catálogo</a>
+        </div>
+        <div class="ltc-card">
+            <h3>Historia del origen</h3>
+            <p>Conoce la cadena desde la finca hasta tu país.</p>
+            <a href="Historia.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Ver historia</a>
+        </div>
+        <div class="ltc-card">
+            <h3>Certificado digital</h3>
+            <p>Verifica transacciones y pasaporte del lote.</p>
+            <a href="certificado cafe.html" class="ltc-btn ltc-btn-outline" style="margin-top:1rem;width:auto;display:inline-block;padding:0.65rem 1.5rem">Ver certificado</a>
+        </div>
+    </div>
+</div>
+
+<script src="js/cuenta.js"></script>
+<script>
+var user = PazCuenta.requireSesion('usuario');
+if (user) {
+    document.getElementById('perfilUsuario').innerHTML =
+        '<dt>Correo</dt><dd>' + user.email + '</dd>' +
+        '<dt>Celular</dt><dd>' + user.celular + '</dd>' +
+        '<dt>Nacionalidad</dt><dd>' + user.nacionalidad + '</dd>' +
+        '<dt>Registro</dt><dd>' + (user.fecha ? new Date(user.fecha).toLocaleString('es-CO') : '—') + '</dd>';
+}
+document.getElementById('btnSalir').onclick = PazCuenta.cerrarSesion;
+</script>
+</body>
+</html>

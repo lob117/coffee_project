@@ -1,0 +1,152 @@
+/**
+ * Cuentas: usuario (comprador) y productor (campesino)
+ */
+var PazCuenta = (function () {
+    'use strict';
+
+    var KEY_USUARIOS = 'paz_usuarios_compradores';
+    var KEY_PRODUCTORES = 'paz_usuarios_productores';
+    var KEY_SESSION = 'paz_sesion_activa';
+    var KEY_CAMPESINOS = 'cafeteria_campesinos';
+
+    function getUsuarios() {
+        return JSON.parse(localStorage.getItem(KEY_USUARIOS) || '[]');
+    }
+    function getProductores() {
+        return JSON.parse(localStorage.getItem(KEY_PRODUCTORES) || '[]');
+    }
+    function saveUsuarios(arr) {
+        localStorage.setItem(KEY_USUARIOS, JSON.stringify(arr));
+    }
+    function saveProductores(arr) {
+        localStorage.setItem(KEY_PRODUCTORES, JSON.stringify(arr));
+    }
+
+    function validarEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    function validarCelular(cel) {
+        return /^\d{10}$/.test(cel);
+    }
+    function validarPassword(p) {
+        return p.length >= 6;
+    }
+
+    function registrarUsuario(datos) {
+        var lista = getUsuarios();
+        if (lista.some(function (u) { return u.email.toLowerCase() === datos.email.toLowerCase(); })) {
+            return { ok: false, msg: 'Este correo ya está registrado.' };
+        }
+        datos.fecha = new Date().toISOString();
+        datos.tipo = 'usuario';
+        lista.push(datos);
+        saveUsuarios(lista);
+        return { ok: true };
+    }
+
+    function registrarProductor(datos) {
+        var lista = getProductores();
+        if (lista.some(function (p) { return p.email.toLowerCase() === datos.email.toLowerCase(); })) {
+            return { ok: false, msg: 'Este correo ya está registrado como productor.' };
+        }
+        datos.fecha = new Date().toISOString();
+        datos.tipo = 'productor';
+        lista.push(datos);
+        saveProductores(lista);
+        return { ok: true };
+    }
+
+    function iniciarSesion(email, password) {
+        email = email.trim().toLowerCase();
+        var u = getUsuarios().find(function (x) {
+            return x.email.toLowerCase() === email && x.password === password;
+        });
+        if (u) {
+            sessionStorage.setItem(KEY_SESSION, JSON.stringify({ tipo: 'usuario', email: u.email }));
+            return { ok: true, tipo: 'usuario', redirect: 'panel-usuario.html' };
+        }
+        var p = getProductores().find(function (x) {
+            return x.email.toLowerCase() === email && x.password === password;
+        });
+        if (p) {
+            sessionStorage.setItem(KEY_SESSION, JSON.stringify({ tipo: 'productor', email: p.email }));
+            return { ok: true, tipo: 'productor', redirect: 'panel-productor.html' };
+        }
+        return { ok: false, msg: 'Correo o contraseña incorrectos.' };
+    }
+
+    function getSesion() {
+        try {
+            return JSON.parse(sessionStorage.getItem(KEY_SESSION) || 'null');
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function cerrarSesion() {
+        sessionStorage.removeItem(KEY_SESSION);
+        window.location.href = 'Registrarse.html';
+    }
+
+    function requireSesion(tipoEsperado) {
+        var s = getSesion();
+        if (!s || s.tipo !== tipoEsperado) {
+            window.location.href = 'iniciar-sesion.html';
+            return null;
+        }
+        var lista = tipoEsperado === 'usuario' ? getUsuarios() : getProductores();
+        var user = lista.find(function (x) { return x.email === s.email; });
+        if (!user) {
+            cerrarSesion();
+            return null;
+        }
+        return user;
+    }
+
+    function getCampesinos() {
+        return JSON.parse(localStorage.getItem(KEY_CAMPESINOS) || '[]');
+    }
+    function saveCampesinos(arr) {
+        localStorage.setItem(KEY_CAMPESINOS, JSON.stringify(arr));
+    }
+
+    function bindForm(id, handler) {
+        var form = document.getElementById(id);
+        if (form) form.addEventListener('submit', handler);
+    }
+
+    function showAlert(id, msg, tipo) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg;
+        el.className = 'ltc-alert ltc-alert-' + (tipo || 'error');
+        el.classList.remove('hidden');
+    }
+
+    function hideAlert(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    }
+
+    return {
+        KEY_USUARIOS: KEY_USUARIOS,
+        KEY_PRODUCTORES: KEY_PRODUCTORES,
+        KEY_CAMPESINOS: KEY_CAMPESINOS,
+        getUsuarios: getUsuarios,
+        getProductores: getProductores,
+        getCampesinos: getCampesinos,
+        saveCampesinos: saveCampesinos,
+        validarEmail: validarEmail,
+        validarCelular: validarCelular,
+        validarPassword: validarPassword,
+        registrarUsuario: registrarUsuario,
+        registrarProductor: registrarProductor,
+        iniciarSesion: iniciarSesion,
+        getSesion: getSesion,
+        cerrarSesion: cerrarSesion,
+        requireSesion: requireSesion,
+        bindForm: bindForm,
+        showAlert: showAlert,
+        hideAlert: hideAlert
+    };
+})();

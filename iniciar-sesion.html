@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | Paz Magdalena</title>
+    <link rel="stylesheet" href="css/coleccion-ltc.css">
+    <link rel="stylesheet" href="css/cuenta-ltc.css">
+</head>
+<body>
+
+<div class="ltc-top-promo">Acceso seguro · Usuario o productor</div>
+
+<header class="ltc-header">
+    <div class="ltc-header-inner">
+        <a href="coleccion.html" class="ltc-brand"><h1>Paz Magdalena</h1><span>Iniciar sesión</span></a>
+        <nav class="ltc-nav"><a href="Registrarse.html">Crear cuenta</a></nav>
+    </div>
+</header>
+
+<div class="ltc-page-narrow">
+    <div class="ltc-auth-box">
+        <h2>Iniciar sesión</h2>
+        <p class="ltc-auth-sub">Usa el correo y contraseña de tu cuenta (usuario o productor)</p>
+
+        <div id="alertBox" class="ltc-alert hidden"></div>
+
+        <form id="formLogin">
+            <div class="ltc-form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" required placeholder="tu@correo.com" autocomplete="email">
+            </div>
+            <div class="ltc-form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required placeholder="Tu contraseña" autocomplete="current-password">
+            </div>
+            <button type="submit" class="ltc-btn ltc-btn-primary">Entrar</button>
+        </form>
+
+        <p class="ltc-divider-text">¿No tienes cuenta? <a href="Registrarse.html">Registrarse</a></p>
+        <div class="ltc-role-grid" style="margin-top:1.5rem">
+            <a href="registro-usuario.html" class="ltc-role-card" style="padding:1rem"><h3 style="font-size:0.85rem">Nuevo usuario</h3></a>
+            <a href="registro-productor.html" class="ltc-role-card" style="padding:1rem"><h3 style="font-size:0.85rem">Nuevo productor</h3></a>
+        </div>
+    </div>
+</div>
+
+<script src="js/cuenta.js"></script>
+<script>
+PazCuenta.bindForm('formLogin', function (e) {
+    e.preventDefault();
+    PazCuenta.hideAlert('alertBox');
+    var res = PazCuenta.iniciarSesion(
+        document.getElementById('email').value,
+        document.getElementById('password').value
+    );
+    if (!res.ok) {
+        PazCuenta.showAlert('alertBox', res.msg, 'error');
+        return;
+    }
+    window.location.href = res.redirect;
+});
+</script>
+</body>
+</html>
