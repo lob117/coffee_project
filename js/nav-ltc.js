@@ -19,15 +19,12 @@
 
     function markActiveNav() {
         var path = (window.location.pathname || '').split('/').pop() || '';
-        var hash = window.location.hash || '';
         var map = {
             'ventas de cafe.html': 'inicio',
             'Benta de cafe.html': 'inicio',
             'coleccion.html': 'catalogo',
             'Historia.html': 'historia',
-            'Granos de café.html': 'historia',
             'certificado cafe.html': 'trazabilidad',
-            'pagina 2 cafe.html': 'inicio',
             'Registrarse.html': 'cuenta',
             'registro-usuario.html': 'cuenta',
             'registro-productor.html': 'cuenta',

@@ -25,7 +25,9 @@ Incluye:
 ## Otras páginas
 
 - `ventas de cafe.html` — Inicio / landing
-- `Historia.html`, `Granos de café.html`, `certificado cafe.html`, etc.
+- `Historia.html` — Historia + narrador de voz
+- `ventas de cafe.html#monitor-promo` — Monitor de ofertas (antes `pagina 2 cafe.html`)
+- `certificado cafe.html` — Trazabilidad
 
 ## Ver en VS Code
 

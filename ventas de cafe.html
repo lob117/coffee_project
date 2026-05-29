@@ -160,6 +160,16 @@
             transform: translateY(-3px);
         }
 
+        .products .btn-secondary {
+            border-color: var(--cafe-oscuro);
+            color: var(--cafe-oscuro);
+        }
+
+        .products .btn-secondary:hover {
+            background: var(--cafe-oscuro);
+            color: var(--crema);
+        }
+
         .hero-stats {
             display: flex;
             justify-content: center;
@@ -578,15 +588,12 @@
                 Descubre los mejores cafés de origen, cultivados en las montañas del Magdalena con tradición centenaria, 
                 comercio justo y sostenibilidad ambiental.
             </p>
-            <div class="hero-buttons ltc-action-bar" style="margin-top:0;padding:0">
-                <a href="coleccion.html" class="ltc-btn ltc-btn-primary">
+            <div class="hero-buttons">
+                <a href="coleccion.html" class="btn btn-primary">
                     <i class="fas fa-shopping-bag"></i> Comprar ahora
                 </a>
-                <a href="#monitor-promo" class="ltc-btn ltc-btn-outline" style="border-color:var(--crema);color:var(--crema)">
+                <a href="#monitor-promo" class="btn btn-secondary">
                     <i class="fas fa-tags"></i> Ofertas y promos
-                </a>
-                <a href="Historia.html" class="ltc-btn ltc-btn-outline" style="border-color:var(--crema);color:var(--crema)">
-                    <i class="fas fa-book-open"></i> Historia
                 </a>
             </div>
             <div class="hero-stats">
@@ -643,12 +650,6 @@
             </div>
         </div>
     </section>
-
-    <div class="ltc-action-bar">
-        <a href="ventas de cafe.html" class="ltc-btn ltc-btn-primary">Inicio</a>
-        <a href="coleccion.html" class="ltc-btn ltc-btn-outline">Catálogo</a>
-        <a href="Historia.html" class="ltc-btn ltc-btn-outline">Historia</a>
-    </div>
 
     <!-- MONITOR PROMOCIONAL -->
     <section class="monitor-promo-section" id="monitor-promo">
@@ -715,11 +716,11 @@
             <h2>Compra en el <span>catálogo</span></h2>
             <div class="section-divider"></div>
             <p style="max-width:520px;margin:1rem auto 2rem">Explora todos los orígenes con filtro por <strong>precio mínimo</strong>, <strong>máximo</strong> y <strong>rango</strong>.</p>
-            <div class="ltc-action-bar" style="margin-bottom:0">
-                <a href="coleccion.html" class="ltc-btn ltc-btn-primary">
+            <div class="hero-buttons" style="margin-top:1rem">
+                <a href="coleccion.html" class="btn btn-primary">
                     <i class="fas fa-shopping-bag"></i> Ir al catálogo
                 </a>
-                <a href="coleccion.html?promo=oferta" class="ltc-btn ltc-btn-outline">Solo ofertas</a>
+                <a href="coleccion.html?promo=oferta" class="btn btn-secondary">Solo ofertas</a>
             </div>
         </div>
     </section>
