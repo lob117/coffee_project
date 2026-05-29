@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta empresa | Paz Magdalena</title>
+    <link rel="stylesheet" href="css/coleccion-ltc.css">
+    <link rel="stylesheet" href="css/cuenta-ltc.css">
+    <script src="js/nav-ltc.js" defer></script>
+</head>
+<body>
+<div id="ltc-nav-global"></div>
+
+<div class="ltc-page-narrow">
+    <div class="ltc-auth-box">
+        <span class="ltc-badge-tipo">Empresa</span>
+        <h2>Crear cuenta empresa</h2>
+        <p class="ltc-auth-sub">Datos de contacto y tipo de empresa en la cadena del café</p>
+
+        <div id="alertBox" class="ltc-alert hidden"></div>
+
+        <form id="formRegistroEmpresa">
+            <div class="ltc-form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" required placeholder="empresa@correo.com">
+            </div>
+            <div class="ltc-form-group">
+                <label for="celular">Número de celular</label>
+                <input type="tel" id="celular" required placeholder="3001234567" maxlength="10" pattern="[0-9]{10}">
+            </div>
+            <div class="ltc-form-group">
+                <label for="nacionalidad">Nacionalidad</label>
+                <select id="nacionalidad" required>
+                    <option value="">Selecciona</option>
+                    <option>Colombia</option>
+                    <option>Estados Unidos</option>
+                    <option>México</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+            <div class="ltc-form-group">
+                <label for="tipoEmpresa">Tipo de empresa</label>
+                <select id="tipoEmpresa" required>
+                    <option value="">Selecciona</option>
+                    <option value="finca_produccion">Finca de producción de café</option>
+                    <option value="transportadora">Transportadora de café</option>
+                    <option value="puesto_venta">Puesto de venta de café</option>
+                </select>
+            </div>
+            <div class="ltc-form-group">
+                <label for="nombreEmpresa">Nombre de la empresa</label>
+                <input type="text" id="nombreEmpresa" required placeholder="Ej: Cooperativa Sierra Nevada SAS">
+            </div>
+            <div class="ltc-form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required minlength="6" placeholder="Mínimo 6 caracteres">
+            </div>
+            <div class="ltc-form-group">
+                <label for="password2">Confirmar contraseña</label>
+                <input type="password" id="password2" required minlength="6">
+            </div>
+            <button type="submit" class="ltc-btn ltc-btn-primary">Crear cuenta empresa</button>
+        </form>
+
+        <p class="ltc-divider-text">¿Ya tienes cuenta? <a href="iniciar-sesion.html">Iniciar sesión</a></p>
+        <a href="Registrarse.html" class="ltc-btn ltc-btn-outline">Elegir otro tipo de cuenta</a>
+    </div>
+</div>
+
+<script src="js/cuenta.js"></script>
+<script>
+PazCuenta.bindForm('formRegistroEmpresa', function (e) {
+    e.preventDefault();
+    PazCuenta.hideAlert('alertBox');
+    var datos = {
+        email: document.getElementById('email').value.trim(),
+        celular: document.getElementById('celular').value.trim(),
+        nacionalidad: document.getElementById('nacionalidad').value,
+        tipoEmpresa: document.getElementById('tipoEmpresa').value,
+        nombreEmpresa: document.getElementById('nombreEmpresa').value.trim(),
+        password: document.getElementById('password').value
+    };
+    var password2 = document.getElementById('password2').value;
+
+    if (!PazCuenta.validarEmail(datos.email)) { PazCuenta.showAlert('alertBox', 'Correo inválido.', 'error'); return; }
+    if (!PazCuenta.validarCelular(datos.celular)) { PazCuenta.showAlert('alertBox', 'Celular: 10 dígitos.', 'error'); return; }
+    if (!datos.nacionalidad || !datos.tipoEmpresa || !datos.nombreEmpresa) {
+        PazCuenta.showAlert('alertBox', 'Complete todos los campos.', 'error'); return;
+    }
+    if (!PazCuenta.validarPassword(datos.password)) { PazCuenta.showAlert('alertBox', 'Contraseña mínimo 6 caracteres.', 'error'); return; }
+    if (datos.password !== password2) { PazCuenta.showAlert('alertBox', 'Las contraseñas no coinciden.', 'error'); return; }
+
+    var res = PazCuenta.registrarProductor(datos);
+    if (!res.ok) { PazCuenta.showAlert('alertBox', res.msg, 'error'); return; }
+
+    PazCuenta.showAlert('alertBox', 'Cuenta empresa creada. Inicia sesión para acceder al panel.', 'success');
+    setTimeout(function () { window.location.href = 'iniciar-sesion.html'; }, 1500);
+});
+</script>
+</body>
+</html>

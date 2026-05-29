@@ -78,7 +78,7 @@
             if (gate) {
                 gate.hidden = false;
                 gate.innerHTML =
-                    '<div class="bc-card"><h2>Acceso restringido</h2><p>Inicie sesión con su cuenta de <strong>empresa</strong> (productor) o de <strong>comprador</strong> para operar la blockchain.</p>' +
+                    '<div class="bc-card"><h2>Acceso restringido</h2><p>Inicie sesión con su cuenta de <strong>empresa</strong> o de <strong>comprador</strong> para operar la blockchain.</p>' +
                     '<p style="margin-top:1rem"><a href="iniciar-sesion.html" class="bc-btn bc-btn-primary" style="display:inline-block;width:auto;text-decoration:none">Iniciar sesión</a></p></div>';
             }
             if (main) main.hidden = true;

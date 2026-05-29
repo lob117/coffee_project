@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel campesino cafetero | Paz Magdalena</title>
+    <title>Panel empresa | Paz Magdalena</title>
     <link rel="stylesheet" href="css/coleccion-ltc.css">
     <link rel="stylesheet" href="css/cuenta-ltc.css">
     <script src="js/nav-ltc.js" defer></script>
@@ -13,50 +13,51 @@
 
 <div class="ltc-page">
     <p style="text-align:right;margin-bottom:1rem"><button type="button" id="btnSalir" class="ltc-btn ltc-btn-outline" style="width:auto;display:inline-block;padding:0.5rem 1rem">Cerrar sesión</button></p>
-    <span class="ltc-badge-tipo">Productor · Campesino cafetero</span>
-    <h2 class="ltc-section-title" style="margin-top:0">Acceso campesino cafetero</h2>
+    <span class="ltc-badge-tipo" id="badgeEmpresa">Empresa</span>
+    <h2 class="ltc-section-title" style="margin-top:0" id="tituloPanel">Panel de empresa</h2>
 
     <div class="ltc-card">
-        <h3>Tu perfil de productor</h3>
-        <dl class="ltc-profile-dl" id="perfilProductor"></dl>
+        <h3>Tu perfil de empresa</h3>
+        <dl class="ltc-profile-dl" id="perfilEmpresa"></dl>
         <a href="blockchain-trazabilidad.html" id="linkBlockchain" class="ltc-btn ltc-btn-primary" style="margin-top:1rem;width:auto;display:none;padding:0.65rem 1.5rem">Blockchain — trazabilidad inmutable</a>
     </div>
 
     <div class="ltc-panel-grid">
-        <div class="ltc-stat-mini"><div class="num" id="statRegistrados">0</div><div class="lbl">Lotes / registros</div></div>
-        <div class="ltc-stat-mini"><div class="num" id="statValerosos">0</div><div class="lbl">Clientes valerosos</div></div>
+        <div class="ltc-stat-mini"><div class="num" id="statRegistrados">0</div><div class="lbl" id="lblRegistrados">Registros</div></div>
+        <div class="ltc-stat-mini" id="statValerososWrap"><div class="num" id="statValerosos">0</div><div class="lbl">Clientes valerosos</div></div>
         <div class="ltc-stat-mini"><div class="num">●</div><div class="lbl">Monitoreo activo</div></div>
     </div>
 
     <div class="ltc-tabs" id="tabs">
-        <button type="button" class="active" data-tab="registro">Registro de lote</button>
-        <button type="button" data-tab="lista">Clientes valerosos</button>
+        <button type="button" class="active" data-tab="registro" id="tabBtnRegistro">Registro</button>
+        <button type="button" data-tab="lista" id="tabBtnLista">Listado</button>
         <button type="button" data-tab="seguridad">Seguridad</button>
     </div>
 
-    <div id="tab-registro" class="ltc-card">
+    <!-- Finca de producción -->
+    <div id="tab-registro-finca" class="ltc-card tab-registro-panel" style="display:none">
         <h3>Registrar campesino / lote en campo</h3>
-        <div id="registerAlert" class="ltc-alert hidden"></div>
-        <form id="registerFormCampesino">
+        <div id="registerAlertFinca" class="ltc-alert hidden"></div>
+        <form id="registerFormFinca">
             <div class="ltc-form-group">
-                <label>Número de cédula (CC)</label>
-                <input type="text" id="cc" required pattern="[0-9]+" placeholder="1234567890">
+                <label for="fincaCc">Número de cédula (CC)</label>
+                <input type="text" id="fincaCc" required pattern="[0-9]+" placeholder="1234567890">
             </div>
             <div class="ltc-form-group">
-                <label>Nombre completo</label>
-                <input type="text" id="nombre" required>
+                <label for="fincaNombre">Nombre completo</label>
+                <input type="text" id="fincaNombre" required>
             </div>
             <div class="ltc-form-group">
-                <label>Teléfono</label>
-                <input type="tel" id="telefono" required pattern="[0-9]{7,15}">
+                <label for="fincaTelefono">Teléfono</label>
+                <input type="tel" id="fincaTelefono" required pattern="[0-9]{7,15}">
             </div>
             <div class="ltc-form-group">
-                <label>Ubicación (finca / vereda / municipio)</label>
-                <input type="text" id="ubicacion" required placeholder="Vereda, municipio">
+                <label for="fincaUbicacion">Ubicación (finca / vereda / municipio)</label>
+                <input type="text" id="fincaUbicacion" required placeholder="Vereda, municipio">
             </div>
             <div class="ltc-form-group">
-                <label>Departamento</label>
-                <select id="departamento" required>
+                <label for="fincaDepartamento">Departamento</label>
+                <select id="fincaDepartamento" required>
                     <option value="">Seleccione</option>
                     <option>Magdalena</option><option>Huila</option><option>Nariño</option>
                     <option>Caldas</option><option>Antioquia</option><option>Santander</option>
@@ -64,16 +65,16 @@
                 </select>
             </div>
             <div class="ltc-form-group">
-                <label>Tipo de café</label>
-                <select id="tipoCafe" required>
+                <label for="fincaTipoCafe">Tipo de café</label>
+                <select id="fincaTipoCafe" required>
                     <option value="">Seleccione</option>
                     <option>Café Especial</option><option>Café Artesanal</option>
                     <option>Café Orgánico</option><option>Cacao Artesanal</option>
                 </select>
             </div>
             <div class="ltc-form-group">
-                <label>Kilos por semana</label>
-                <select id="kilos" required>
+                <label for="fincaKilos">Kilos por semana</label>
+                <select id="fincaKilos" required>
                     <option value="">Seleccione</option>
                     <option value="1-10">1 - 10 kg</option>
                     <option value="11-50">11 - 50 kg</option>
@@ -86,22 +87,103 @@
         </form>
     </div>
 
-    <div id="tab-lista" class="ltc-card hidden" style="display:none">
-        <h3>★ Clientes valerosos registrados</h3>
-        <div class="ltc-table-wrap">
-            <table class="ltc-table">
-                <thead>
-                    <tr><th>Código</th><th>Nombre</th><th>CC</th><th>Teléfono</th><th>Ubicación</th><th>Kilos</th></tr>
-                </thead>
-                <tbody id="vendorTableBody"></tbody>
-            </table>
-        </div>
-        <p id="noVendors" style="text-align:center;color:var(--ltc-muted);padding:1.5rem">Sin registros aún.</p>
+    <!-- Transportadora -->
+    <div id="tab-registro-transportadora" class="ltc-card tab-registro-panel" style="display:none">
+        <h3>Registrar operador / vehículo</h3>
+        <div id="registerAlertTransporte" class="ltc-alert hidden"></div>
+        <form id="registerFormTransporte">
+            <div class="ltc-form-group">
+                <label for="transCc">Número de cédula (CC)</label>
+                <input type="text" id="transCc" required pattern="[0-9]+" placeholder="1234567890">
+            </div>
+            <div class="ltc-form-group">
+                <label for="transNombre">Nombre completo</label>
+                <input type="text" id="transNombre" required>
+            </div>
+            <div class="ltc-form-group">
+                <label for="transTelefono">Teléfono</label>
+                <input type="tel" id="transTelefono" required pattern="[0-9]{7,15}">
+            </div>
+            <div class="ltc-form-group">
+                <label for="transUbicacion">Ubicación de la transportadora</label>
+                <input type="text" id="transUbicacion" required placeholder="Sede, bodega o patio de operación">
+            </div>
+            <div class="ltc-form-group">
+                <label for="transDepartamento">Departamento</label>
+                <select id="transDepartamento" required>
+                    <option value="">Seleccione</option>
+                    <option>Magdalena</option><option>Huila</option><option>Nariño</option>
+                    <option>Caldas</option><option>Antioquia</option><option>Santander</option>
+                    <option>Tolima</option><option>Otro</option>
+                </select>
+            </div>
+            <div class="ltc-form-group">
+                <label for="transTipoVehiculo">Tipo de vehículo</label>
+                <select id="transTipoVehiculo" required>
+                    <option value="">Seleccione</option>
+                    <option value="carro_moto">Carro moto</option>
+                    <option value="furgon">Furgón</option>
+                    <option value="furgon_grande">Furgón grande</option>
+                    <option value="camioneta">Camioneta</option>
+                    <option value="tracto_camion">Tracto camión</option>
+                </select>
+            </div>
+            <div class="ltc-form-group">
+                <label for="transKilosVehiculo">Kilos del vehículo (capacidad)</label>
+                <input type="number" id="transKilosVehiculo" required min="1" step="1" placeholder="Ej. 500">
+            </div>
+            <button type="submit" class="ltc-btn ltc-btn-primary">Registrar vehículo</button>
+        </form>
     </div>
 
-    <div id="tab-seguridad" class="ltc-card hidden" style="display:none">
+    <!-- Puesto de venta / tienda -->
+    <div id="tab-registro-tienda" class="ltc-card tab-registro-panel" style="display:none">
+        <h3>Registrar punto de venta</h3>
+        <div id="registerAlertTienda" class="ltc-alert hidden"></div>
+        <form id="registerFormTienda">
+            <div class="ltc-form-group">
+                <label for="tiendaCc">Número de cédula (CC)</label>
+                <input type="text" id="tiendaCc" required pattern="[0-9]+" placeholder="1234567890">
+            </div>
+            <div class="ltc-form-group">
+                <label for="tiendaNombre">Nombre completo</label>
+                <input type="text" id="tiendaNombre" required>
+            </div>
+            <div class="ltc-form-group">
+                <label for="tiendaTelefono">Teléfono</label>
+                <input type="tel" id="tiendaTelefono" required pattern="[0-9]{7,15}">
+            </div>
+            <div class="ltc-form-group">
+                <label for="tiendaUbicacion">Ubicación de la tienda</label>
+                <input type="text" id="tiendaUbicacion" required placeholder="Dirección o local comercial">
+            </div>
+            <div class="ltc-form-group">
+                <label for="tiendaDepartamento">Departamento</label>
+                <select id="tiendaDepartamento" required>
+                    <option value="">Seleccione</option>
+                    <option>Magdalena</option><option>Huila</option><option>Nariño</option>
+                    <option>Caldas</option><option>Antioquia</option><option>Santander</option>
+                    <option>Tolima</option><option>Otro</option>
+                </select>
+            </div>
+            <button type="submit" class="ltc-btn ltc-btn-primary">Registrar punto de venta</button>
+        </form>
+    </div>
+
+    <div id="tab-lista" class="ltc-card" style="display:none">
+        <h3 id="tituloLista">Registros de la empresa</h3>
+        <div class="ltc-table-wrap">
+            <table class="ltc-table">
+                <thead id="listaHead"></thead>
+                <tbody id="listaBody"></tbody>
+            </table>
+        </div>
+        <p id="noRegistros" style="text-align:center;color:var(--ltc-muted);padding:1.5rem;display:none">Sin registros aún.</p>
+    </div>
+
+    <div id="tab-seguridad" class="ltc-card" style="display:none">
         <h3>Panel de seguridad</h3>
-        <p style="font-size:0.9rem;color:var(--ltc-muted);margin-bottom:1rem">Registro de accesos al sistema campesino.</p>
+        <p style="font-size:0.9rem;color:var(--ltc-muted);margin-bottom:1rem">Registro de accesos al panel de empresa.</p>
         <div id="accessLog" class="ltc-card" style="background:var(--ltc-soft);max-height:220px;overflow-y:auto;font-size:0.82rem"></div>
     </div>
 </div>
@@ -109,30 +191,61 @@
 <script src="js/cuenta.js"></script>
 <script>
 (function () {
-    var productor = PazCuenta.requireSesion('productor');
-    if (!productor) return;
+    var empresa = PazCuenta.requireSesion('productor');
+    if (!empresa) return;
 
-    var tipoLabel = PazCuenta.getTipoEmpresaLabel(productor.tipoEmpresa || 'finca_produccion');
-    document.getElementById('perfilProductor').innerHTML =
-        '<dt>Correo</dt><dd>' + productor.email + '</dd>' +
-        '<dt>Celular</dt><dd>' + productor.celular + '</dd>' +
-        '<dt>Nacionalidad</dt><dd>' + productor.nacionalidad + '</dd>' +
+    var T = PazCuenta.TIPO_EMPRESA;
+    var tipo = empresa.tipoEmpresa || T.FINCA;
+    var tipoLabel = PazCuenta.getTipoEmpresaLabel(tipo);
+    var LOG_KEY = 'cafeteria_access_log';
+
+    document.getElementById('badgeEmpresa').textContent = 'Empresa · ' + tipoLabel.split(' ')[0];
+    document.getElementById('tituloPanel').textContent = 'Panel — ' + tipoLabel;
+    document.getElementById('perfilEmpresa').innerHTML =
+        '<dt>Correo</dt><dd>' + empresa.email + '</dd>' +
+        '<dt>Celular</dt><dd>' + empresa.celular + '</dd>' +
+        '<dt>Nacionalidad</dt><dd>' + empresa.nacionalidad + '</dd>' +
         '<dt>Tipo de empresa</dt><dd>' + tipoLabel + '</dd>' +
-        '<dt>Nombre de la empresa</dt><dd>' + (productor.nombreEmpresa || '—') + '</dd>';
+        '<dt>Nombre de la empresa</dt><dd>' + (empresa.nombreEmpresa || '—') + '</dd>';
 
     var bcLink = document.getElementById('linkBlockchain');
-    if (bcLink) {
-        if (PazCuenta.puedeVerBlockchainProductor(productor) || PazCuenta.puedeVerBlockchainIntermediario(productor)) {
-            bcLink.style.display = 'inline-block';
-        } else {
-            bcLink.style.display = 'none';
-        }
+    if (PazCuenta.puedeVerBlockchainProductor(empresa) || PazCuenta.puedeVerBlockchainIntermediario(empresa)) {
+        bcLink.style.display = 'inline-block';
     }
 
     document.getElementById('btnSalir').onclick = PazCuenta.cerrarSesion;
 
-    var LOG_KEY = 'cafeteria_access_log';
-    var vendors = PazCuenta.getCampesinos();
+    if (tipo !== T.FINCA) {
+        document.getElementById('statValerososWrap').style.display = 'none';
+    }
+
+    var panelMap = {};
+    panelMap[T.FINCA] = 'tab-registro-finca';
+    panelMap[T.TRANSPORTE] = 'tab-registro-transportadora';
+    panelMap[T.PUESTO] = 'tab-registro-tienda';
+
+    var activeRegPanel = panelMap[tipo] || panelMap[T.FINCA];
+    document.getElementById(activeRegPanel).style.display = 'block';
+
+    if (tipo === T.TRANSPORTE) {
+        document.getElementById('tabBtnRegistro').textContent = 'Registro vehículo';
+        document.getElementById('tabBtnLista').textContent = 'Vehículos registrados';
+        document.getElementById('lblRegistrados').textContent = 'Vehículos';
+    } else if (tipo === T.PUESTO) {
+        document.getElementById('tabBtnRegistro').textContent = 'Registro tienda';
+        document.getElementById('tabBtnLista').textContent = 'Puntos registrados';
+        document.getElementById('lblRegistrados').textContent = 'Puntos';
+    } else {
+        document.getElementById('tabBtnRegistro').textContent = 'Registro campesino';
+        document.getElementById('tabBtnLista').textContent = 'Clientes valerosos';
+        document.getElementById('lblRegistrados').textContent = 'Campesinos';
+    }
+
+    function misRegistros() {
+        return PazCuenta.getCampesinos().filter(function (r) {
+            return r.empresaEmail === empresa.email || r.empresaProductor === empresa.nombreEmpresa;
+        });
+    }
 
     function logAccess(msg) {
         var log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
@@ -144,36 +257,55 @@
 
     function renderLog() {
         var log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
-        var el = document.getElementById('accessLog');
-        el.innerHTML = log.length ? log.map(function (e) {
-            return '<p><strong>' + e.t + '</strong> — ' + e.msg + '</p>';
-        }).join('') : '<p>Sin accesos registrados.</p>';
+        document.getElementById('accessLog').innerHTML = log.length
+            ? log.map(function (e) { return '<p><strong>' + e.t + '</strong> — ' + e.msg + '</p>'; }).join('')
+            : '<p>Sin accesos registrados.</p>';
     }
 
-    function generateCode() {
+    function generateCode(prefix) {
+        prefix = prefix || 'EM-';
         var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        var code = 'CC-';
+        var code = prefix;
         for (var i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-        if (vendors.some(function (v) { return v.codigo === code; })) return generateCode();
+        if (misRegistros().some(function (v) { return v.codigo === code; })) return generateCode(prefix);
         return code;
     }
 
-    function renderVendorList() {
-        vendors = PazCuenta.getCampesinos();
-        var tbody = document.getElementById('vendorTableBody');
-        var noMsg = document.getElementById('noVendors');
-        document.getElementById('statRegistrados').textContent = vendors.length;
-        document.getElementById('statValerosos').textContent = vendors.filter(function (v) { return v.valeroso; }).length;
+    function renderLista() {
+        var rows = misRegistros();
+        var head = document.getElementById('listaHead');
+        var tbody = document.getElementById('listaBody');
+        var noMsg = document.getElementById('noRegistros');
 
-        if (!vendors.length) {
+        document.getElementById('statRegistrados').textContent = rows.length;
+        if (tipo === T.FINCA) {
+            document.getElementById('statValerosos').textContent = rows.filter(function (v) { return v.valeroso; }).length;
+        }
+
+        if (!rows.length) {
+            head.innerHTML = '';
             tbody.innerHTML = '';
             noMsg.style.display = 'block';
             return;
         }
         noMsg.style.display = 'none';
-        tbody.innerHTML = vendors.slice().reverse().map(function (v) {
-            return '<tr><td>' + (v.valeroso ? '★ ' : '') + v.codigo + '</td><td>' + v.nombre + '</td><td>' + v.cc + '</td><td>' + v.telefono + '</td><td>' + v.ubicacion + '</td><td>' + v.kilos + '</td></tr>';
-        }).join('');
+
+        if (tipo === T.TRANSPORTE) {
+            head.innerHTML = '<tr><th>Código</th><th>Nombre</th><th>CC</th><th>Teléfono</th><th>Ubicación transportadora</th><th>Vehículo</th><th>Kilos</th></tr>';
+            tbody.innerHTML = rows.slice().reverse().map(function (v) {
+                return '<tr><td>' + v.codigo + '</td><td>' + v.nombre + '</td><td>' + v.cc + '</td><td>' + v.telefono + '</td><td>' + v.ubicacion + '</td><td>' + PazCuenta.getTipoVehiculoLabel(v.tipoVehiculo) + '</td><td>' + v.kilosVehiculo + ' kg</td></tr>';
+            }).join('');
+        } else if (tipo === T.PUESTO) {
+            head.innerHTML = '<tr><th>Código</th><th>Nombre</th><th>CC</th><th>Teléfono</th><th>Ubicación tienda</th><th>Departamento</th></tr>';
+            tbody.innerHTML = rows.slice().reverse().map(function (v) {
+                return '<tr><td>' + v.codigo + '</td><td>' + v.nombre + '</td><td>' + v.cc + '</td><td>' + v.telefono + '</td><td>' + v.ubicacion + '</td><td>' + v.departamento + '</td></tr>';
+            }).join('');
+        } else {
+            head.innerHTML = '<tr><th>Código</th><th>Nombre</th><th>CC</th><th>Teléfono</th><th>Ubicación finca</th><th>Kilos/sem</th></tr>';
+            tbody.innerHTML = rows.slice().reverse().map(function (v) {
+                return '<tr><td>' + (v.valeroso ? '★ ' : '') + v.codigo + '</td><td>' + v.nombre + '</td><td>' + v.cc + '</td><td>' + v.telefono + '</td><td>' + v.ubicacion + '</td><td>' + v.kilos + '</td></tr>';
+            }).join('');
+        }
     }
 
     document.getElementById('tabs').addEventListener('click', function (e) {
@@ -181,46 +313,119 @@
         if (!btn) return;
         document.querySelectorAll('#tabs button').forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        ['registro', 'lista', 'seguridad'].forEach(function (t) {
-            var panel = document.getElementById('tab-' + t);
-            if (panel) panel.style.display = t === btn.dataset.tab ? 'block' : 'none';
-        });
+        var tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-registro-panel').forEach(function (p) { p.style.display = 'none'; });
+        document.getElementById('tab-lista').style.display = 'none';
+        document.getElementById('tab-seguridad').style.display = 'none';
+        if (tab === 'registro') {
+            document.getElementById(activeRegPanel).style.display = 'block';
+        } else if (tab === 'lista') {
+            document.getElementById('tab-lista').style.display = 'block';
+            renderLista();
+        } else if (tab === 'seguridad') {
+            document.getElementById('tab-seguridad').style.display = 'block';
+        }
     });
 
-    document.getElementById('registerFormCampesino').addEventListener('submit', function (e) {
+    function ccDuplicada(cc) {
+        return misRegistros().some(function (v) { return v.cc === cc; });
+    }
+
+    document.getElementById('registerFormFinca').addEventListener('submit', function (e) {
         e.preventDefault();
-        var cc = document.getElementById('cc').value.trim();
-        vendors = PazCuenta.getCampesinos();
-        if (vendors.some(function (v) { return v.cc === cc; })) {
-            PazCuenta.showAlert('registerAlert', 'Ya existe un registro con esa cédula.', 'error');
+        var cc = document.getElementById('fincaCc').value.trim();
+        if (ccDuplicada(cc)) {
+            PazCuenta.showAlert('registerAlertFinca', 'Ya existe un registro con esa cédula.', 'error');
             return;
         }
-        var kilos = document.getElementById('kilos').value;
-        var esValeroso = kilos === '101-500' || kilos === '500+';
-        var codigo = generateCode();
-        vendors.push({
+        var kilos = document.getElementById('fincaKilos').value;
+        var codigo = generateCode('CC-');
+        var registro = {
             codigo: codigo,
             cc: cc,
-            nombre: document.getElementById('nombre').value.trim(),
-            telefono: document.getElementById('telefono').value.trim(),
-            ubicacion: document.getElementById('ubicacion').value.trim(),
-            departamento: document.getElementById('departamento').value,
-            tipoCafe: document.getElementById('tipoCafe').value,
+            nombre: document.getElementById('fincaNombre').value.trim(),
+            telefono: document.getElementById('fincaTelefono').value.trim(),
+            ubicacion: document.getElementById('fincaUbicacion').value.trim(),
+            departamento: document.getElementById('fincaDepartamento').value,
+            tipoCafe: document.getElementById('fincaTipoCafe').value,
             kilos: kilos,
-            valeroso: esValeroso,
-            empresaProductor: productor.nombreEmpresa,
-            tipoEmpresa: productor.tipoEmpresa,
+            valeroso: kilos === '101-500' || kilos === '500+',
+            empresaProductor: empresa.nombreEmpresa,
+            empresaEmail: empresa.email,
+            tipoEmpresa: tipo,
             fecha: new Date().toISOString()
-        });
-        PazCuenta.saveCampesinos(vendors);
-        PazCuenta.showAlert('registerAlert', 'Registrado. Código: ' + codigo + (esValeroso ? ' ★ Valeroso' : ''), 'success');
+        };
+        var all = PazCuenta.getCampesinos();
+        all.push(registro);
+        PazCuenta.saveCampesinos(all);
+        PazCuenta.showAlert('registerAlertFinca', 'Registrado. Código: ' + codigo + (registro.valeroso ? ' ★ Valeroso' : ''), 'success');
         e.target.reset();
-        renderVendorList();
-        logAccess('Registro: ' + codigo + ' por ' + productor.email);
+        renderLista();
+        logAccess('Registro campesino: ' + codigo);
     });
 
-    logAccess('Ingreso panel: ' + productor.nombreEmpresa);
-    renderVendorList();
+    document.getElementById('registerFormTransporte').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var cc = document.getElementById('transCc').value.trim();
+        if (ccDuplicada(cc)) {
+            PazCuenta.showAlert('registerAlertTransporte', 'Ya existe un registro con esa cédula.', 'error');
+            return;
+        }
+        var codigo = generateCode('TR-');
+        var registro = {
+            codigo: codigo,
+            cc: cc,
+            nombre: document.getElementById('transNombre').value.trim(),
+            telefono: document.getElementById('transTelefono').value.trim(),
+            ubicacion: document.getElementById('transUbicacion').value.trim(),
+            departamento: document.getElementById('transDepartamento').value,
+            tipoVehiculo: document.getElementById('transTipoVehiculo').value,
+            kilosVehiculo: parseInt(document.getElementById('transKilosVehiculo').value, 10),
+            empresaProductor: empresa.nombreEmpresa,
+            empresaEmail: empresa.email,
+            tipoEmpresa: tipo,
+            fecha: new Date().toISOString()
+        };
+        var all = PazCuenta.getCampesinos();
+        all.push(registro);
+        PazCuenta.saveCampesinos(all);
+        PazCuenta.showAlert('registerAlertTransporte', 'Vehículo registrado. Código: ' + codigo, 'success');
+        e.target.reset();
+        renderLista();
+        logAccess('Registro vehículo: ' + codigo);
+    });
+
+    document.getElementById('registerFormTienda').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var cc = document.getElementById('tiendaCc').value.trim();
+        if (ccDuplicada(cc)) {
+            PazCuenta.showAlert('registerAlertTienda', 'Ya existe un registro con esa cédula.', 'error');
+            return;
+        }
+        var codigo = generateCode('PV-');
+        var registro = {
+            codigo: codigo,
+            cc: cc,
+            nombre: document.getElementById('tiendaNombre').value.trim(),
+            telefono: document.getElementById('tiendaTelefono').value.trim(),
+            ubicacion: document.getElementById('tiendaUbicacion').value.trim(),
+            departamento: document.getElementById('tiendaDepartamento').value,
+            empresaProductor: empresa.nombreEmpresa,
+            empresaEmail: empresa.email,
+            tipoEmpresa: tipo,
+            fecha: new Date().toISOString()
+        };
+        var all = PazCuenta.getCampesinos();
+        all.push(registro);
+        PazCuenta.saveCampesinos(all);
+        PazCuenta.showAlert('registerAlertTienda', 'Punto de venta registrado. Código: ' + codigo, 'success');
+        e.target.reset();
+        renderLista();
+        logAccess('Registro tienda: ' + codigo);
+    });
+
+    logAccess('Ingreso panel: ' + empresa.nombreEmpresa);
+    renderLista();
     renderLog();
 })();
 </script>
